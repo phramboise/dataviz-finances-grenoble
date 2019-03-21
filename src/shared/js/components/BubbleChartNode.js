@@ -1,6 +1,8 @@
 import React from 'react';
 import page from 'page'
 import {pack, hierarchy} from 'd3-hierarchy';
+import {scaleLinear} from 'd3-scale';
+
 import ReactTooltip from 'react-tooltip'
 
 import MoneyAmount from "./MoneyAmount.js";
@@ -12,14 +14,16 @@ export default class BubbleChartNode extends React.Component {
     }
 
     render() {
-        const {node} = this.props;
+        const {node, maxNodeValue} = this.props;
         const {total, label, children} = node;
         const WIDTH = 400;
         const HEIGHT = 400;
+        const r = scaleLinear().domain([0, maxNodeValue]).range([0, WIDTH / 2]);
 
         const bubbles = pack({children})
             .size([WIDTH, HEIGHT])
-            .padding(30);
+            .radius(d => Math.max(r(d.value), 3))
+            .padding(20);
         const nodes = hierarchy({children}).sum(d => d.total);
         const listMapNodes = new Map(bubbles(nodes)
             .descendants()

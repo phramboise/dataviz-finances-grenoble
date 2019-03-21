@@ -3,6 +3,8 @@ import React from 'react';
 import { hierarchicalByFunction } from "../finance/memoized.js";
 import {aggregatedDocumentBudgetaireNodeTotal} from "../finance/AggregationDataStructures.js"
 
+import {max} from "d3-array";
+
 import MoneyAmount from "./MoneyAmount.js";
 import BubbleChartNode from "./BubbleChartNode.js";
 
@@ -13,6 +15,7 @@ const mergeHierarchies = (...hierarchies) => {
     hierarchies.forEach(children => {
         children.forEach(node => {
             const {id, label, children} = node
+            // We get the '122' part of `M52-DF-122`
             const levelId = id.split('-').pop();
 
             if (!levels.has(levelId)) {
