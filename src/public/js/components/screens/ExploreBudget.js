@@ -24,7 +24,6 @@ import makeAggregateFunction from "../../../../shared/js/finance/makeAggregateFu
 
 
 import PageTitle from "../../../../shared/js/components/gironde.fr/PageTitle";
-import SecundaryTitle from "../../../../shared/js/components/gironde.fr/SecundaryTitle";
 import DownloadSection from "../../../../shared/js/components/gironde.fr/DownloadSection";
 import PrimaryCallToAction from "../../../../shared/js/components/gironde.fr/PrimaryCallToAction";
 
@@ -36,7 +35,6 @@ import LegendList from "../../../../shared/js/components/LegendList.js";
 
 import { assets } from "../../constants/resources";
 
-import M52ByFonction from "../M52ByFonction";
 import BubbleChartCluster from "../../../../shared/js/components/BubbleChartCluster.js";
 
 const MAX_HEIGHT = 30;
@@ -128,14 +126,6 @@ Ainsi les résultats financiers de la Gironde pour cet exercice se traduisent pa
             <h2>Explorer le budget</h2>
 
             <BubbleChartCluster recetteTree={recetteTree} dépenseTree={dépenseTree} />
-        </section>
-
-        <section className="m52">
-            <SecundaryTitle text="Les comptes par fonction (norme M14)" />
-            <M52ByFonction  m52Instruction={m52Instruction}
-                urlByFonction={byFonction}
-                labelsById={labelsById}
-                screenWidth={screenWidth} />
         </section>
 
         <DownloadSection />
