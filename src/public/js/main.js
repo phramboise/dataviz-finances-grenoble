@@ -39,6 +39,8 @@ import {fonctionLabels} from '../../../build/finances/finance-strings.json';
 const REACT_CONTAINER_SELECTOR = '.finance-dataviz-container';
 const CONTAINER_ELEMENT = document.querySelector(REACT_CONTAINER_SELECTOR);
 
+CONTAINER_ELEMENT.setAttribute('aria-live', true);
+
 // Breadcrumb
 const BREADCRUMB_CONTAINER = document.body.querySelector('.breadcrumb-container');
 
@@ -144,8 +146,8 @@ csv(assets[AGGREGATED_TEMPORAL])
     });
 
 Promise.all([
-    csv(assets[MONTREUIL_NOMENCLATURE]), 
-    csv(assets[MONTREUIL_NOMENCLATURE_2]), 
+    csv(assets[MONTREUIL_NOMENCLATURE]),
+    csv(assets[MONTREUIL_NOMENCLATURE_2]),
     docBudgsP
 ])
     .then(([aggrDesc, aggrDesc2, docBudgs]) => MontreuilNomenclatureToAggregationDescription(aggrDesc.concat(aggrDesc2), docBudgs))
