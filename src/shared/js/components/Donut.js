@@ -26,7 +26,7 @@ export default function Donut ({
 
     return (<figure className={`donut ${colorClassName}`}>
         <svg viewBox={`0 0 ${width} ${height}`}>
-            <g transform={`translate(${width/2}, ${height/2})`}>
+            <g transform={`translate(${width/2}, ${height/2})`} role="row">
                 {arcDescs.map(ad => {
                     const d = arc({
                         outerRadius,
@@ -34,9 +34,9 @@ export default function Donut ({
                         ...ad
                     });
 
-                    return <g className={ad.data.colorClassName} key={ad.data.id}>
+                    return <g className={ad.data.colorClassName} key={ad.data.id} tabIndex="0" role="cell">
                         <path d={d} />
-                        <title>{ad.data.text}</title>
+                        <title>{ad.data.text} : {ad.data.value}€</title>
                     </g>
                 })}
             </g>

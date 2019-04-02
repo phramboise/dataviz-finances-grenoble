@@ -100,7 +100,7 @@ Ainsi les résultats financiers de la Gironde pour cet exercice se traduisent pa
         <section className="yearly-budget">
             <h2>Le budget {currentYear}</h2>
 
-            <figure className="side-by-side">
+            <figure className="side-by-side" role="table">
                 <Donut items={revenueItems} padAngle={0.015}>
                     <MoneyAmount amount={revenue} />
                     de recettes

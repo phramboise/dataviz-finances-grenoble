@@ -2,6 +2,11 @@ figure.donut {
     margin: 0;
     position: relative;
 
+    g:focus {
+        stroke: $brand-color;
+        stroke-width: 2;
+    }
+
     .money-amount {
         display: block;
     }
