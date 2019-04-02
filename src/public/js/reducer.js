@@ -1,13 +1,11 @@
 import { Record } from 'immutable';
 import { markdown as md } from '../../shared/js/components/Markdown';
-import { hierarchicalByFunction, hierarchicalAggregated, m52ToAggregated } from '../../shared/js/finance/memoized';
 
 import {
     FINANCE_DETAIL_ID_CHANGE, DOCUMENTS_BUDGETAIRES_RECEIVED, CORRECTION_AGGREGATION_RECEIVED,
     ATEMPORAL_TEXTS_RECEIVED, TEMPORAL_TEXTS_RECEIVED,
-    CHANGE_EXPLORATION_YEAR
+    CHANGE_EXPLORATION_YEAR, AGGREGATION_DESCRIPTION_RECEIVED
 } from './constants/actions';
-import { DF, DI } from './constants/pages';
 
 const FinanceElementTextsRecord = Record({
     label: undefined,
@@ -22,21 +20,6 @@ export default function reducer(state, action) {
     switch (type) {
         case DOCUMENTS_BUDGETAIRES_RECEIVED:{
             const {docBudgs} = action;
-            const {corrections} = state;
-
-            if(corrections){
-                // these variables will be unused. These calls exist for the sole purpose of memoization as
-                // soon as the data arrives
-                docBudgs.forEach(db => {
-                    const aggregated = m52ToAggregated(db, corrections);
-                    const hierAgg = hierarchicalAggregated(aggregated);
-                    const hierarchicalByFunctionDF = hierarchicalByFunction(db, DF);
-                    const hierarchicalByFunctionDI = hierarchicalByFunction(db, DI);
-
-                    // to prevent minifier optimizations
-                    console.log('memz', hierarchicalByFunctionDI, hierarchicalByFunctionDF, hierAgg);
-                })
-            }
 
             let newState = state;
 
@@ -86,6 +69,9 @@ export default function reducer(state, action) {
         case CHANGE_EXPLORATION_YEAR: {
             const {year} = action;
             return state.set('explorationYear', year);
+        }
+        case AGGREGATION_DESCRIPTION_RECEIVED: {
+            return state.set('aggregationDescription', action.aggregationDescription);
         }
         case '@@redux/INIT':
             return state

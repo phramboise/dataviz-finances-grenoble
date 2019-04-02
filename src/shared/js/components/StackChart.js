@@ -113,7 +113,6 @@ export default function ({
             // content
             React.createElement('g', {className: 'content'},
                 ysByX.entrySeq().toJS().map(([x, ys]) => {
-                    ys = ys.toJS();
 
                     const total = sum(ys);
 

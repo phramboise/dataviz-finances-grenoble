@@ -1,22 +1,25 @@
 import React from 'react';
 
 import { hierarchicalByFunction } from "../finance/memoized.js";
+import {aggregatedDocumentBudgetaireNodeTotal} from "../finance/AggregationDataStructures.js"
 
 import MoneyAmount from "./MoneyAmount.js";
 import BubbleChartNode from "./BubbleChartNode.js";
 
+// TODO not sure this function makes sense with aggregation
 const mergeHierarchies = (...hierarchies) => {
     const levels = new Map();
 
     hierarchies.forEach(children => {
-        children.forEach(({id, label, total, children}) => {
+        children.forEach(node => {
+            const {id, label, children} = node
             const levelId = id.split('-').pop();
 
             if (!levels.has(levelId)) {
                 levels.set(levelId, {
                     id: levelId,
                     label,
-                    total,
+                    total: aggregatedDocumentBudgetaireNodeTotal(node),
                     children: [],
                 });
             }
@@ -48,16 +51,49 @@ export default class BubbleChartCluster extends React.Component {
     }
 
     render() {
-        const {m52Instruction} = this.props;
+        const {recetteTree, dépenseTree} = this.props;
         const {RorD, F, I} = this.state;
-        if (!m52Instruction) {
+        const RD = RorD ? 'R' : 'D';
+
+        if (!recetteTree || !dépenseTree) {
             return null;
         }
+       
+        // PROBLEM This is super-hardcoded
+        if(!(RorD === 'D' && F)){
+            return null
+        }
 
-        const families = mergeHierarchies(
-            F ? hierarchicalByFunction(m52Instruction, RorD + 'F').children : [],
-            I ? hierarchicalByFunction(m52Instruction, RorD + 'I').children : []
-        );
+        const families = dépenseTree
+            .children.find(c => c.id.includes('FONCTIONNEMENT'))
+            .children.find(c => c.id.includes('Gestion courante'))
+            .children.toJS()
+            .map(node => {
+                return {
+                    id: node.id,
+                    label: node.label,
+                    total: aggregatedDocumentBudgetaireNodeTotal(node),
+                    rdfi: 'DF',
+                    children: node.children.map(c => {
+                        return {
+                            id: c.id,
+                            label: c.label,
+                            total: aggregatedDocumentBudgetaireNodeTotal(c),
+                            rdfi: 'DF',
+                            children: node.children.map(c => {
+                                return {
+                                    id: c.id,
+                                    label: c.label,
+                                    total: aggregatedDocumentBudgetaireNodeTotal(c),
+                                    rdfi: 'DF'
+                                }
+                            })
+                        }
+                    })
+                }
+            })
+
+        console.log('families', families)
 
         return (<div className="bubble-chart-cluster">
             <nav className="legend-list legend-list--interactive">
