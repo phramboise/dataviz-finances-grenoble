@@ -1,5 +1,4 @@
 import React from 'react';
-import {findDOMNode} from 'react-dom';
 
 import {pack, hierarchy} from 'd3-hierarchy';
 import page from "page";
