@@ -31,100 +31,43 @@ const mergeHierarchies = (...hierarchies) => {
     return Array.from(levels.values()).sort((a, b) => b.total - a.total);
 };
 
-export default class BubbleChartCluster extends React.Component {
-    constructor(props) {
-        super(props);
+export default function BubbleChartCluster({tree}){
 
-        this.state = {
-            RorD: 'D',
-            F: true,
-            I: true,
-            activeElement: null
-        }
-
-        this.toggle = this.toggle.bind(this);
+    if (!tree) {
+        return null;
     }
 
-    toggle (RDFI) {
-        const stateValue = this.state[RDFI];
-        this.setState({ [RDFI]: !stateValue });
-    }
+    // PROBLEM This is super-hardcoded
+    const families = tree
+        .children.toJS()
+        .map(node => {
+            return {
+                id: node.id,
+                label: node.label,
+                total: aggregatedDocumentBudgetaireNodeTotal(node),
+                rdfi: 'DF',
+                children: node.children.map(c => {
+                    return {
+                        id: c.id,
+                        label: c.label,
+                        total: aggregatedDocumentBudgetaireNodeTotal(c),
+                        rdfi: 'DF',
+                        children: node.children.map(c => {
+                            return {
+                                id: c.id,
+                                label: c.label,
+                                total: aggregatedDocumentBudgetaireNodeTotal(c),
+                                rdfi: 'DF'
+                            }
+                        })
+                    }
+                })
+            }
+        })
 
-    render() {
-        const {recetteTree, dépenseTree} = this.props;
-        const {RorD, F, I} = this.state;
-        const RD = RorD ? 'R' : 'D';
+    console.log('families', families)
 
-        if (!recetteTree || !dépenseTree) {
-            return null;
-        }
-       
-        // PROBLEM This is super-hardcoded
-        if(!(RorD === 'D' && F)){
-            return null
-        }
-
-        const families = dépenseTree
-            .children.find(c => c.id.includes('FONCTIONNEMENT'))
-            .children.find(c => c.id.includes('Gestion courante'))
-            .children.toJS()
-            .map(node => {
-                return {
-                    id: node.id,
-                    label: node.label,
-                    total: aggregatedDocumentBudgetaireNodeTotal(node),
-                    rdfi: 'DF',
-                    children: node.children.map(c => {
-                        return {
-                            id: c.id,
-                            label: c.label,
-                            total: aggregatedDocumentBudgetaireNodeTotal(c),
-                            rdfi: 'DF',
-                            children: node.children.map(c => {
-                                return {
-                                    id: c.id,
-                                    label: c.label,
-                                    total: aggregatedDocumentBudgetaireNodeTotal(c),
-                                    rdfi: 'DF'
-                                }
-                            })
-                        }
-                    })
-                }
-            })
-
-        console.log('families', families)
-
-        return (<div className="bubble-chart-cluster">
-            <nav className="legend-list legend-list--interactive">
-                <ul>
-                    <li>
-                        <label>
-                            <input type="radio" name="rd" value="R" onClick={() => this.setState({ RorD: 'R' })} defaultChecked={RorD === 'R'} /> recettes
-                        </label>
-                    </li>
-                    <li>
-                        <label>
-                            <input type="radio" name="rd" value="D" onClick={() => this.setState({ RorD: 'D' })} defaultChecked={RorD === 'D'} /> dépenses
-                        </label>
-                    </li>
-                </ul>
-
-                <ul>
-                    <li>
-                        <label>
-                            <input type="checkbox" name="fi" value="F" onClick={() => this.toggle('F')} defaultChecked={F} /> fonctionnement
-                        </label>
-                    </li>
-                    <li>
-                        <label>
-                            <input type="checkbox" name="fi" value="I" onClick={() => this.toggle('I')} defaultChecked={I} /> investissement
-                        </label>
-                    </li>
-                </ul>
-            </nav>
-
-            {families.map((node) => (<BubbleChartNode key={`rd-CH${node.id}`} node={node} />))}
-        </div>)
-    }
+    return (<div className="bubble-chart-cluster">
+        {families.map((node) => (<BubbleChartNode key={`rd-CH${node.id}`} node={node} />))}
+    </div>)
 }

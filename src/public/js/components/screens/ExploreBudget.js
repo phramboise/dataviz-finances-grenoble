@@ -1,6 +1,6 @@
 import { Map as ImmutableMap, List } from "immutable";
 
-import React from "react";
+import React, {Component} from "react";
 import { connect } from "react-redux";
 
 import { sum } from "d3-array";
@@ -39,97 +39,132 @@ import BubbleChartCluster from "../../../../shared/js/components/BubbleChartClus
 
 const MAX_HEIGHT = 30;
 
-export function TotalBudget({
-    currentYear,
-    totals,
-    m52Instruction,
-    recetteTree,
-    dépenseTree,
-    labelsById,
-    assets: {
-        expenditures: expURL,
-        revenue: revURL,
-        rf,
-        ri,
-        df,
-        di,
-        byFonction
-    },
-    screenWidth
-}) {
-    const expenditures = totals.get(EXPENDITURES);
-    const revenue = totals.get(REVENUE);
 
-    const expenditureItems = new List([
-        { id: 'DF', colorClassName:'rdfi-D rdfi-F', text: 'Dépenses de fonctionnement', value: totals.get(DF) },
-        { id: 'DI', colorClassName:'rdfi-D rdfi-I', text: 'Dépenses d\'investissement', value: totals.get(DI) },
-    ]);
 
-    const revenueItems = new List([
-        { id: 'RF', colorClassName:'rdfi-R rdfi-F', text: 'Recettes de fonctionnement', value: totals.get(RF) },
-        { id: 'RI', colorClassName:'rdfi-R rdfi-I', text: 'Recettes d\'investissement', value: totals.get(RI) },
-    ]);
+export class ExploreBudget extends Component{
 
-    return <article className="explore-budget">
-        <PageTitle text={`Exploration des comptes ${currentYear}`} />
+    constructor(props) {
+        super(props);
+        this.state = {
+            RD: 'D',
+            FI: 'F'
+        };
+    }
 
-        <section>
-            <Markdown>
-Le contexte financier dans lequel s’est déroulée l’exécution de ce troisième
-budget de la mandature a été marqué par l’accentuation de la contribution des
-collectivités locales à la réduction des déficits publics et par une modification
-des compétences résultant de la mise en œuvre des transferts de compétences avec
-la Région et Bordeaux Métropole issus des lois MAPTAM de 2014 et NOTRe de 2015.
+    render(){
+        const { currentYear, totals, recetteTree, dépenseTree } = this.props
+        const {RD, FI} = this.state
 
-Dans un contexte national où les contraintes financières se sont durcies, l’année
-2017 confirme le dynamisme des dépenses de solidarité obligatoires et incompressibles et la difficulté d’accentuer encore la maitrise des dépenses de gestion courante.
+        const expenditures = totals.get(EXPENDITURES);
+        const revenue = totals.get(REVENUE);
 
-Le Département voit également ses recettes de fonctionnement évoluer plus
-favorablement que prévu grâce aux droits de mutation recette conjoncturelle
-mais non pérenne liée au fort dynamisme de l’immobilier et à l’attraction du
-département.
+        const expenditureItems = new List([
+            { id: 'DF', colorClassName:'rdfi-D rdfi-F', text: 'Dépenses de fonctionnement', value: totals.get(DF) },
+            { id: 'DI', colorClassName:'rdfi-D rdfi-I', text: 'Dépenses d\'investissement', value: totals.get(DI) },
+        ]);
 
-Ainsi les résultats financiers de la Gironde pour cet exercice se traduisent par :
+        const revenueItems = new List([
+            { id: 'RF', colorClassName:'rdfi-R rdfi-F', text: 'Recettes de fonctionnement', value: totals.get(RF) },
+            { id: 'RI', colorClassName:'rdfi-R rdfi-I', text: 'Recettes d\'investissement', value: totals.get(RI) },
+        ]);
 
--	Une épargne brute qui s’améliore fortement
--	Une réduction importante du besoin de financement par l’emprunt</Markdown>
-        </section>
+        // PROBLEM This is super-hardcoded
+        const displayedTree = dépenseTree && RD === 'D' && FI === 'F' ? 
+            dépenseTree
+                .children.find(c => c.id.includes('FONCTIONNEMENT'))
+                .children.find(c => c.id.includes('Gestion courante'))
+            : undefined;
 
-        <section className="yearly-budget">
-            <h2>Le budget {currentYear}</h2>
+        console.log('render ExploreBudget', RD, FI, displayedTree)
 
-            <figure className="side-by-side" role="table">
-                <Donut items={revenueItems} padAngle={0.015}>
-                    <MoneyAmount amount={revenue} />
-                    de recettes
-                </Donut>
+        return <article className="explore-budget">
+            <PageTitle text={`Exploration des comptes ${currentYear}`} />
 
-                <Donut items={expenditureItems} padAngle={0.015}>
-                    <MoneyAmount amount={expenditures} />
-                    de dépenses
-                </Donut>
+            <section>
+                <Markdown>
+    Le contexte financier dans lequel s’est déroulée l’exécution de ce troisième
+    budget de la mandature a été marqué par l’accentuation de la contribution des
+    collectivités locales à la réduction des déficits publics et par une modification
+    des compétences résultant de la mise en œuvre des transferts de compétences avec
+    la Région et Bordeaux Métropole issus des lois MAPTAM de 2014 et NOTRe de 2015.
 
-                <Markdown className="todo">
-                    Les chiffres étant issus du compte administratif, la différence entre
-                    le montant des recettes et le montant des dépenses représente l’excédent
-                    de l’exercice.
-                </Markdown>
+    Dans un contexte national où les contraintes financières se sont durcies, l’année
+    2017 confirme le dynamisme des dépenses de solidarité obligatoires et incompressibles et la difficulté d’accentuer encore la maitrise des dépenses de gestion courante.
 
-                <LegendList items={new List([
-                    { text: 'Fonctionnement', colorClassName: 'rdfi-F' },
-                    { text: 'Investissement', colorClassName: 'rdfi-I' },
-                ])} />
-            </figure>
-        </section>
+    Le Département voit également ses recettes de fonctionnement évoluer plus
+    favorablement que prévu grâce aux droits de mutation recette conjoncturelle
+    mais non pérenne liée au fort dynamisme de l’immobilier et à l’attraction du
+    département.
 
-        <section>
-            <h2>Explorer le budget</h2>
+    Ainsi les résultats financiers de la Gironde pour cet exercice se traduisent par :
 
-            <BubbleChartCluster recetteTree={recetteTree} dépenseTree={dépenseTree} />
-        </section>
+    -	Une épargne brute qui s’améliore fortement
+    -	Une réduction importante du besoin de financement par l’emprunt</Markdown>
+            </section>
 
-        <DownloadSection />
-    </article>;
+            <section className="yearly-budget">
+                <h2>Le budget {currentYear}</h2>
+
+                <figure className="side-by-side" role="table">
+                    <Donut items={revenueItems} padAngle={0.015}>
+                        <MoneyAmount amount={revenue} />
+                        de recettes
+                    </Donut>
+
+                    <Donut items={expenditureItems} padAngle={0.015}>
+                        <MoneyAmount amount={expenditures} />
+                        de dépenses
+                    </Donut>
+
+                    <Markdown className="todo">
+                        Les chiffres étant issus du compte administratif, la différence entre
+                        le montant des recettes et le montant des dépenses représente l’excédent
+                        de l’exercice.
+                    </Markdown>
+
+                    <LegendList items={new List([
+                        { text: 'Fonctionnement', colorClassName: 'rdfi-F' },
+                        { text: 'Investissement', colorClassName: 'rdfi-I' },
+                    ])} />
+                </figure>
+            </section>
+
+            <section>
+                <h2>Explorer le budget</h2>
+                <nav className="rdfi-choice">
+                    <ul>
+                        <li>
+                            <label>
+                                <input type="radio" name="rd" value="R" onClick={() => this.setState({ RD: 'R' })} defaultChecked={RD === 'R'} /> recettes
+                            </label>
+                        </li>
+                        <li>
+                            <label>
+                                <input type="radio" name="rd" value="D" onClick={() => this.setState({ RD: 'D' })} defaultChecked={RD === 'D'} /> dépenses
+                            </label>
+                        </li>
+                    </ul>
+
+                    <ul>
+                        <li>
+                            <label>
+                                <input type="radio" name="fi" value="F" onClick={() => this.setState({ FI: 'F' })} defaultChecked={FI === 'F'} /> fonctionnement
+                            </label>
+                        </li>
+                        <li>
+                            <label>
+                                <input type="radio" name="fi" value="I" onClick={() => this.setState({ FI: 'I' })} defaultChecked={FI === 'I'} /> investissement
+                            </label>
+                        </li>
+                    </ul>
+                </nav>
+
+                <BubbleChartCluster tree={displayedTree} />
+            </section>
+
+            <DownloadSection />
+        </article>;
+    }
 }
 
 export default connect(
@@ -137,9 +172,7 @@ export default connect(
         const {
             docBudgByYear,
             aggregationDescription,
-            currentYear,
-            textsById,
-            screenWidth
+            currentYear
         } = state;
 
         const documentBudgetaire = docBudgByYear.get(currentYear);
@@ -162,42 +195,9 @@ export default connect(
         return {
             currentYear,
             totals,
-            m52Instruction: documentBudgetaire,
             recetteTree: hierAgg && hierAgg.children.find(c => c.id.includes('RECETTE')),
             dépenseTree: hierAgg && hierAgg.children.find(c => c.id.includes('DEPENSE')),
-            labelsById: textsById.map(texts => texts.label),
-            assets: {
-                expenditures: "#!/finance-details/" + EXPENDITURES,
-                revenue: "#!/finance-details/" + REVENUE,
-                rf: "#!/finance-details/" + RF,
-                ri: "#!/finance-details/" + RI,
-                df: "#!/finance-details/" + DF,
-                di: "#!/finance-details/" + DI,
-                byFonction: {
-                    "M52-DF-0": `#!/finance-details/M52-DF-0`,
-                    "M52-DF-1": `#!/finance-details/M52-DF-1`,
-                    "M52-DF-2": `#!/finance-details/M52-DF-2`,
-                    "M52-DF-3": `#!/finance-details/M52-DF-3`,
-                    "M52-DF-4": `#!/finance-details/M52-DF-4`,
-                    "M52-DF-5": `#!/finance-details/M52-DF-5`,
-                    "M52-DF-6": `#!/finance-details/M52-DF-6`,
-                    "M52-DF-7": `#!/finance-details/M52-DF-7`,
-                    "M52-DF-8": `#!/finance-details/M52-DF-8`,
-                    "M52-DF-9": `#!/finance-details/M52-DF-9`,
-                    "M52-DI-0": `#!/finance-details/M52-DI-0`,
-                    "M52-DI-1": `#!/finance-details/M52-DI-1`,
-                    "M52-DI-2": `#!/finance-details/M52-DI-2`,
-                    "M52-DI-3": `#!/finance-details/M52-DI-3`,
-                    "M52-DI-4": `#!/finance-details/M52-DI-4`,
-                    "M52-DI-5": `#!/finance-details/M52-DI-5`,
-                    "M52-DI-6": `#!/finance-details/M52-DI-6`,
-                    "M52-DI-7": `#!/finance-details/M52-DI-7`,
-                    "M52-DI-8": `#!/finance-details/M52-DI-8`,
-                    "M52-DI-9": `#!/finance-details/M52-DI-9`
-                }
-            },
-            screenWidth
         };
     },
     () => ({})
-)(TotalBudget);
+)(ExploreBudget);
