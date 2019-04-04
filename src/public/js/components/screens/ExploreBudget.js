@@ -14,31 +14,20 @@ import {
     REVENUE
 } from "../../../../shared/js/finance/constants";
 
-import {
-    hierarchicalByFunction,
-    m52ToAggregated,
-    hierarchicalAggregated
-} from "../../../../shared/js/finance/memoized";
-import { flattenTree } from "../../../../shared/js/finance/visitHierarchical.js";
+import { hierarchicalByFunction } from "../../../../shared/js/finance/memoized";
 import makeAggregateFunction from "../../../../shared/js/finance/makeAggregateFunction.js"
 
 
 import PageTitle from "../../../../shared/js/components/gironde.fr/PageTitle";
 import DownloadSection from "../../../../shared/js/components/gironde.fr/DownloadSection";
-import PrimaryCallToAction from "../../../../shared/js/components/gironde.fr/PrimaryCallToAction";
 
 import Markdown from "../../../../shared/js/components/Markdown";
-import MoneyAmount, {SVGMoneyAmount} from "../../../../shared/js/components/MoneyAmount";
+import MoneyAmount from "../../../../shared/js/components/MoneyAmount";
 
 import Donut from "../../../../shared/js/components/Donut.js";
 import LegendList from "../../../../shared/js/components/LegendList.js";
 
-import { assets } from "../../constants/resources";
-
 import BubbleChartCluster from "../../../../shared/js/components/BubbleChartCluster.js";
-
-const MAX_HEIGHT = 30;
-
 
 
 export class ExploreBudget extends Component{
@@ -52,7 +41,7 @@ export class ExploreBudget extends Component{
     }
 
     render(){
-        const { currentYear, totals, recetteTree, dépenseTree } = this.props
+        const { currentYear, totals, aggregationTree } = this.props
         const {RD, FI} = this.state
 
         const expenditures = totals.get(EXPENDITURES);
@@ -68,12 +57,23 @@ export class ExploreBudget extends Component{
             { id: 'RI', colorClassName:'rdfi-R rdfi-I', text: 'Recettes d\'investissement', value: totals.get(RI) },
         ]);
 
-        // PROBLEM This is super-hardcoded
-        const displayedTree = dépenseTree && RD === 'D' && FI === 'F' ? 
-            dépenseTree
-                .children.find(c => c.id.includes('FONCTIONNEMENT'))
-                .children.find(c => c.id.includes('Gestion courante'))
-            : undefined;
+
+        const rdTree = aggregationTree && (RD === 'D' ?
+            aggregationTree.children.find(c => c.id.includes('DEPENSE')) :
+            aggregationTree.children.find(c => c.id.includes('RECETTE'))
+        )
+        
+        let displayedTree = rdTree && (FI === 'I' ?
+            rdTree.children.find(c => c.id.includes('INVESTISSEMENT')) : 
+            rdTree.children.find(c => c.id.includes('FONCTIONNEMENT'))
+        );
+
+        console.log('dt', displayedTree)
+
+        // For DF, dig to a specific level
+        displayedTree = (displayedTree && RD === 'D' && FI === 'F') ? 
+            displayedTree.children.find(c => c.id.includes('Gestion courante'))
+            : displayedTree
 
         console.log('render ExploreBudget', RD, FI, displayedTree)
 
@@ -178,7 +178,7 @@ export default connect(
         const documentBudgetaire = docBudgByYear.get(currentYear);
         const aggregate = aggregationDescription && makeAggregateFunction(aggregationDescription)
 
-        const hierAgg = documentBudgetaire && aggregate && aggregate(documentBudgetaire);
+        const aggregationTree = documentBudgetaire && aggregate && aggregate(documentBudgetaire);
 
         let totals = new ImmutableMap();
         if (documentBudgetaire) {
@@ -195,8 +195,7 @@ export default connect(
         return {
             currentYear,
             totals,
-            recetteTree: hierAgg && hierAgg.children.find(c => c.id.includes('RECETTE')),
-            dépenseTree: hierAgg && hierAgg.children.find(c => c.id.includes('DEPENSE')),
+            aggregationTree
         };
     },
     () => ({})
