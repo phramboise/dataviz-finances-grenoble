@@ -54,8 +54,11 @@ export default class BubbleChartNode extends React.Component {
                             /*xlinkHref={`#!/finance-details/${data.id}`}*/
                             className="clickable"
                             onClick={e => this.onClick(e, data.id)}
+                            onFocus={e => ReactTooltip.show(e.target)}
+                            onBlur={e => ReactTooltip.hide(e.target)}
                             data-tip={data.id}
                             data-for={`tooltip-${node.id}`}
+                            tabIndex="0"
                         >
                             <circle r={r}
                                 className={`rdfi-${data.rdfi[0]} rdfi-${data.rdfi[1]}`}
