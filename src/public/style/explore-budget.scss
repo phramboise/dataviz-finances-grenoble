@@ -21,6 +21,11 @@ $RX-L: 60%;
         margin-bottom: 3em;
     }
 
+    .rdfi-choice{
+        display: flex;
+        flex-direction: row;
+    }
+
     .side-by-side {
         display: flex;
         flex-flow: row wrap;
