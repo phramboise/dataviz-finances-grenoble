@@ -15,6 +15,7 @@ import {
 } from "../../../../shared/js/finance/constants";
 
 import { hierarchicalByFunction } from "../../../../shared/js/finance/memoized";
+import { aggregatedDocumentBudgetaireNodeTotal } from '../../../../shared/js/finance/AggregationDataStructures'
 import makeAggregateFunction from "../../../../shared/js/finance/makeAggregateFunction.js"
 
 
@@ -22,11 +23,12 @@ import PageTitle from "../../../../shared/js/components/gironde.fr/PageTitle";
 import DownloadSection from "../../../../shared/js/components/gironde.fr/DownloadSection";
 
 import Markdown from "../../../../shared/js/components/Markdown";
-import MoneyAmount from "../../../../shared/js/components/MoneyAmount";
+import {makeAmountString, default as MoneyAmount} from "../../../../shared/js/components/MoneyAmount";
 
 import Donut from "../../../../shared/js/components/Donut.js";
 import LegendList from "../../../../shared/js/components/LegendList.js";
 
+import StackChart from '../../../../shared/js/components/StackChart';
 import BubbleChartCluster from "../../../../shared/js/components/BubbleChartCluster.js";
 
 
@@ -41,12 +43,27 @@ export class ExploreBudget extends Component{
     }
 
     render(){
-        const { currentYear, totals, aggregationTree } = this.props
+        const { currentYear, totals, aggregationTreeByYear } = this.props
         const {RD, FI} = this.state
+
+        const rdfiTreeByYear = aggregationTreeByYear.map(aggregationTree => {
+            const rdTree = (RD === 'D' ?
+                aggregationTree.children.find(c => c.id.includes('DEPENSE')) :
+                aggregationTree.children.find(c => c.id.includes('RECETTE'))
+            )
+            
+            return rdTree && (FI === 'I' ?
+                rdTree.children.find(c => c.id.includes('INVESTISSEMENT')) : 
+                rdTree.children.find(c => c.id.includes('FONCTIONNEMENT'))
+            );
+        })
+
+
 
         const expenditures = totals.get(EXPENDITURES);
         const revenue = totals.get(REVENUE);
 
+        // Donut data
         const expenditureItems = new List([
             { id: 'DF', colorClassName:'rdfi-D rdfi-F', text: 'Dépenses de fonctionnement', value: totals.get(DF) },
             { id: 'DI', colorClassName:'rdfi-D rdfi-I', text: 'Dépenses d\'investissement', value: totals.get(DI) },
@@ -58,24 +75,62 @@ export class ExploreBudget extends Component{
         ]);
 
 
-        const rdTree = aggregationTree && (RD === 'D' ?
-            aggregationTree.children.find(c => c.id.includes('DEPENSE')) :
-            aggregationTree.children.find(c => c.id.includes('RECETTE'))
-        )
-        
-        let displayedTree = rdTree && (FI === 'I' ?
-            rdTree.children.find(c => c.id.includes('INVESTISSEMENT')) : 
-            rdTree.children.find(c => c.id.includes('FONCTIONNEMENT'))
-        );
+        // Bubble data
+        const currentYearrdfiTree = rdfiTreeByYear.get(currentYear);
 
-        console.log('dt', displayedTree)
+            // For DF, dig to a specific level
+        let bubbleTreeData = (currentYearrdfiTree && RD === 'D' && FI === 'F') ? 
+            currentYearrdfiTree.children.find(c => c.id.includes('Gestion courante'))
+            : currentYearrdfiTree
 
-        // For DF, dig to a specific level
-        displayedTree = (displayedTree && RD === 'D' && FI === 'F') ? 
-            displayedTree.children.find(c => c.id.includes('Gestion courante'))
-            : displayedTree
 
-        console.log('render ExploreBudget', RD, FI, displayedTree)
+        // Build stackachart data from rdfiTree
+        const years = aggregationTreeByYear.keySeq().toJS();
+
+        const barchartPartitionByYear = rdfiTreeByYear.map(rdfiTree => {
+            // Create "level 2" data as a list
+            return rdfiTree.children.toList().map(c => {
+                return {
+                    contentId: c.id,
+                    partAmount: aggregatedDocumentBudgetaireNodeTotal(c),
+                    label: c.label
+                    //url: `#!/TODO`
+                }
+            })
+        })
+
+        const colorClassById = new Map()
+        let legendItemIds = [];
+        if(barchartPartitionByYear.get(currentYear)){
+            barchartPartitionByYear.get(currentYear).forEach(({contentId}, i) => {
+                const colorClassList = ['rdfi-D rdfi-F', 'rdfi-D rdfi-I', 'rdfi-R rdfi-F', 'rdfi-R rdfi-I']
+                colorClassById.set(contentId, colorClassList[i % colorClassList.length])
+            })
+            
+            legendItemIds = barchartPartitionByYear
+                .map(partition => partition.map(part => part.contentId).toSet())
+                .toSet().flatten().toArray()
+        }
+
+         
+
+        const legendItems = legendItemIds.map(id => {
+            let foundPart;
+
+            barchartPartitionByYear.find(partition => {
+                foundPart = partition.find(p => p.contentId === id )
+                return foundPart;
+            })
+
+            return {
+                id: foundPart.contentId,
+                className: foundPart.contentId,
+                //url: foundPart.url,
+                text: foundPart.label,
+                colorClassName: colorClassById.get(foundPart.contentId)
+            }
+        });
+
 
         return <article className="explore-budget">
             <PageTitle text={`Exploration des comptes ${currentYear}`} />
@@ -159,7 +214,20 @@ export class ExploreBudget extends Component{
                     </ul>
                 </nav>
 
-                <BubbleChartCluster tree={displayedTree} />
+                { 
+                    currentYearrdfiTree ? 
+                        <StackChart
+                            xs={ years }
+                            ysByX={barchartPartitionByYear.map(partition => partition.map(part => part.partAmount))}
+                            selectedX={ currentYear }
+                            legendItems={ legendItems }
+                            yValueDisplay={makeAmountString}
+                            contentId={currentYearrdfiTree.id}
+                        /> :
+                        undefined
+                }
+
+                <BubbleChartCluster tree={bubbleTreeData} />
             </section>
 
             <DownloadSection />
@@ -175,10 +243,11 @@ export default connect(
             currentYear
         } = state;
 
-        const documentBudgetaire = docBudgByYear.get(currentYear);
-        const aggregate = aggregationDescription && makeAggregateFunction(aggregationDescription)
+        const aggregationTreeByYear = aggregationDescription ? docBudgByYear.map(
+            documentBudgetaire => makeAggregateFunction(aggregationDescription)(documentBudgetaire)
+        ) : new ImmutableMap()
 
-        const aggregationTree = documentBudgetaire && aggregate && aggregate(documentBudgetaire);
+        const documentBudgetaire = docBudgByYear.get(currentYear);
 
         let totals = new ImmutableMap();
         if (documentBudgetaire) {
@@ -195,7 +264,7 @@ export default connect(
         return {
             currentYear,
             totals,
-            aggregationTree
+            aggregationTreeByYear
         };
     },
     () => ({})
