@@ -44,12 +44,7 @@ CONTAINER_ELEMENT.setAttribute('aria-live', true);
 // Breadcrumb
 const BREADCRUMB_CONTAINER = document.body.querySelector('.breadcrumb-container');
 
-const DEFAULT_BREADCRUMB = List([
-    {
-        text: 'Explorer les comptes',
-        url: '#'
-    }
-]);
+const DEFAULT_BREADCRUMB = List([]);
 
 
 const StoreRecord = Record({

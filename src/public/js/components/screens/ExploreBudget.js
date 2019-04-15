@@ -62,25 +62,25 @@ export class ExploreBudget extends Component{
             aggregationTree.children.find(c => c.id.includes('DEPENSE')) :
             aggregationTree.children.find(c => c.id.includes('RECETTE'))
         )
-        
+
         let displayedTree = rdTree && (FI === 'I' ?
-            rdTree.children.find(c => c.id.includes('INVESTISSEMENT')) : 
+            rdTree.children.find(c => c.id.includes('INVESTISSEMENT')) :
             rdTree.children.find(c => c.id.includes('FONCTIONNEMENT'))
         );
 
         console.log('dt', displayedTree)
 
         // For DF, dig to a specific level
-        displayedTree = (displayedTree && RD === 'D' && FI === 'F') ? 
+        displayedTree = (displayedTree && RD === 'D' && FI === 'F') ?
             displayedTree.children.find(c => c.id.includes('Gestion courante'))
             : displayedTree
 
         console.log('render ExploreBudget', RD, FI, displayedTree)
 
-        return <article className="explore-budget">
-            <PageTitle text={`Exploration des comptes ${currentYear}`} />
+        return <article className="explore-budget" aria-label={`Exploration des comptes ${currentYear}`}>
+            <h1 className="title--page title--bold">Exploration des comptes {currentYear}</h1>
 
-            <section>
+            <section aria-label="Contexte financier">
                 <Markdown>
     Le contexte financier dans lequel s’est déroulée l’exécution de ce troisième
     budget de la mandature a été marqué par l’accentuation de la contribution des
@@ -102,27 +102,27 @@ export class ExploreBudget extends Component{
     -	Une réduction importante du besoin de financement par l’emprunt</Markdown>
             </section>
 
-            <section className="yearly-budget">
+            <section className="yearly-budget" aria-label={`Le budget ${currentYear}`}>
                 <h2>Le budget {currentYear}</h2>
 
-                <figure className="side-by-side" role="table">
-                    <Donut items={revenueItems} padAngle={0.015}>
+                <figure className="side-by-side" role="table" aria-label="Recettes et dépenses">
+                    <Donut aria-label="Recettes" items={revenueItems} padAngle={0.015}>
                         <MoneyAmount amount={revenue} />
                         de recettes
                     </Donut>
 
-                    <Donut items={expenditureItems} padAngle={0.015}>
+                    <Donut aria-label="Dépenses" items={expenditureItems} padAngle={0.015}>
                         <MoneyAmount amount={expenditures} />
                         de dépenses
                     </Donut>
 
-                    <Markdown className="todo">
+                    <Markdown className="todo" aria-label="Explications">
                         Les chiffres étant issus du compte administratif, la différence entre
                         le montant des recettes et le montant des dépenses représente l’excédent
                         de l’exercice.
                     </Markdown>
 
-                    <LegendList items={new List([
+                    <LegendList aria-hidden items={new List([
                         { text: 'Fonctionnement', colorClassName: 'rdfi-F' },
                         { text: 'Investissement', colorClassName: 'rdfi-I' },
                     ])} />
