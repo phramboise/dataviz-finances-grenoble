@@ -6,7 +6,7 @@ import { Record, Map as ImmutableMap, List, Set as ImmutableSet } from 'immutabl
 import { csv } from 'd3-fetch';
 import page from 'page';
 
-import {assets, COMPTES_ADMINISTRATIFS, AGGREGATED_ATEMPORAL, AGGREGATED_TEMPORAL, CORRECTIONS_AGGREGATED, MONTREUIL_NOMENCLATURE, MONTREUIL_NOMENCLATURE_2} from './constants/resources';
+import {assets, COMPTES_ADMINISTRATIFS, AGGREGATED_ATEMPORAL, AGGREGATED_TEMPORAL, CORRECTIONS_AGGREGATED, MONTREUIL_NOMENCLATURE} from './constants/resources';
 import reducer from './reducer';
 
 import {LigneBudgetRecord, DocumentBudgetaire} from 'document-budgetaire/Records.js';
@@ -145,12 +145,8 @@ csv(assets[AGGREGATED_TEMPORAL])
         });
     });
 
-Promise.all([
-    csv(assets[MONTREUIL_NOMENCLATURE]),
-    csv(assets[MONTREUIL_NOMENCLATURE_2]),
-    docBudgsP
-])
-    .then(([aggrDesc, aggrDesc2, docBudgs]) => MontreuilNomenclatureToAggregationDescription(aggrDesc.concat(aggrDesc2), docBudgs))
+Promise.all([ csv(assets[MONTREUIL_NOMENCLATURE]), docBudgsP ])
+    .then(([aggrDesc, docBudgs]) => MontreuilNomenclatureToAggregationDescription(aggrDesc, docBudgs))
     .then(aggregationDescription => {
         console.log('aggregationDescription', aggregationDescription.toJS())
 
