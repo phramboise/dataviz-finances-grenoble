@@ -67,8 +67,12 @@ export default function BubbleChartCluster({tree}){
                 })
             }
         })
+        .sort((a, b) => b.total - a.total)
+
+    console.log('families', families)
+    const maxNodeValue = max([].concat(...families.map(f => f.children)), f => f.total);
 
     return (<div className="bubble-chart-cluster">
-        {families.map((node) => (<BubbleChartNode key={`rd-CH${node.id}`} node={node} />))}
+        {families.map((node) => (<BubbleChartNode key={`rd-CH${node.id}`} node={node} maxNodeValue={maxNodeValue} />))}
     </div>)
 }
