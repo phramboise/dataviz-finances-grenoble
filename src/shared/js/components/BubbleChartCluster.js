@@ -42,32 +42,25 @@ export default function BubbleChartCluster({tree}){
 
     // PROBLEM This is super-hardcoded
     const families = tree
-        .children.toJS()
-        .map(node => {
+        .children
+        .map(node1 => {
             return {
-                id: node.id,
-                label: node.label,
-                total: aggregatedDocumentBudgetaireNodeTotal(node),
+                id: node1.id,
+                label: node1.label,
+                total: aggregatedDocumentBudgetaireNodeTotal(node1),
                 rdfi: 'DF',
-                children: node.children.map(c => {
+                children: node1.children.map(node2 => {
                     return {
-                        id: c.id,
-                        label: c.label,
-                        total: aggregatedDocumentBudgetaireNodeTotal(c),
-                        rdfi: 'DF',
-                        children: node.children.map(c => {
-                            return {
-                                id: c.id,
-                                label: c.label,
-                                total: aggregatedDocumentBudgetaireNodeTotal(c),
-                                rdfi: 'DF'
-                            }
-                        })
+                        id: node2.id,
+                        label: node2.label,
+                        total: aggregatedDocumentBudgetaireNodeTotal(node2),
+                        rdfi: 'DF'
                     }
                 })
             }
         })
         .sort((a, b) => b.total - a.total)
+        .toJS()
 
     console.log('families', families)
     const maxNodeValue = max([].concat(...families.map(f => f.children)), f => f.total);
