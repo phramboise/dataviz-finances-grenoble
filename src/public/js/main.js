@@ -150,7 +150,7 @@ Promise.all([
     csv(assets[MONTREUIL_NOMENCLATURE_2]),
     docBudgsP
 ])
-    .then(([aggrDesc, aggrDesc2, docBudgs]) => MontreuilNomenclatureToAggregationDescription(aggrDesc.concat(aggrDesc2), docBudgs))
+    .then(([aggrDesc, aggrDesc2, docBudgs]) => MontreuilNomenclatureToAggregationDescription(aggrDesc.concat(aggrDesc2).slice(0, 100), docBudgs))
     .then(aggregationDescription => {
         console.log('aggregationDescription', aggregationDescription.toJS())
 
@@ -205,7 +205,7 @@ page('/finance-details/:contentId', ({params: {contentId}}) => {
         CONTAINER_ELEMENT
     );
 
-    const breadcrumbData = [];
+    /*const breadcrumbData = [];
 
     let currentContentId = contentId.startsWith('M52-') ?
         contentId.slice(7) :
@@ -228,7 +228,7 @@ page('/finance-details/:contentId', ({params: {contentId}}) => {
 
     const breadcrumb = DEFAULT_BREADCRUMB.concat(breadcrumbData.reverse());
 
-    ReactDOM.render( React.createElement(Breadcrumb, { items: breadcrumb }), BREADCRUMB_CONTAINER );
+    ReactDOM.render( React.createElement(Breadcrumb, { items: breadcrumb }), BREADCRUMB_CONTAINER );*/
 
 });
 

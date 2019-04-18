@@ -9,9 +9,12 @@ import { max } from 'd3-array';
 
 import {makeLigneBudgetId}  from 'document-budgetaire/Records.js';
 import {m52ToAggregated, hierarchicalAggregated, hierarchicalByFunction}  from '../../../../shared/js/finance/memoized';
+import makeAggregateFunction from "../../../../shared/js/finance/makeAggregateFunction.js"
 import {default as visit, flattenTree} from '../../../../shared/js/finance/visitHierarchical.js';
 
 import { DF, DI } from '../../../../shared/js/finance/constants';
+
+
 
 import {fonctionLabels, natureLabels} from '../../../../../build/finances/finance-strings.json';
 
@@ -65,8 +68,8 @@ interface FinanceElementProps{
 */
 
 
-export function FinanceElement({contentId, RDFI, amountByYear, contextElements, texts, partitionByYear, year, m52Rows, changeExplorationYear, screenWidth}) {
-    const label = texts && texts.label || '';
+export function FinanceElement({contentId, element}) {
+    /*const label = texts && texts.label || '';
     const atemporalText = texts && texts.atemporal;
     const temporalText = texts && texts.temporal;
 
@@ -147,12 +150,13 @@ export function FinanceElement({contentId, RDFI, amountByYear, contextElements, 
             `Dépense d'investissement`:
             '';
 
-    const isLeaf = !(thisYearPartition && thisYearPartition.size >= 2);
+    const isLeaf = !(thisYearPartition && thisYearPartition.size >= 2);*/
+
+    console.log('element', element)
+
     return React.createElement('article', {className: 'finance-element'},
-        React.createElement(PageTitle, {text: RDFI ?
-            `${RDFIText} - ${label} en ${year}` :
-            `${label} en ${year}`}),
-        React.createElement('section', {},
+        element ? React.createElement('h1', {}, element.label) : undefined
+        /*React.createElement('section', {},
             React.createElement('div', {className: 'top-infos'},
                 contextElements ? React.createElement(FinanceElementContext, { contextElements }) : undefined,
                 React.createElement('div', {},
@@ -213,7 +217,7 @@ export function FinanceElement({contentId, RDFI, amountByYear, contextElements, 
             )
         ) : undefined,
 
-        React.createElement(DownloadSection)
+        React.createElement(DownloadSection)*/
     );
 }
 
@@ -253,19 +257,7 @@ export function makePartition(element, totalById, textsById, possibleChildrenIds
 
 
 
-export function makeElementById(hierAgg, hierM52 = {}){
-    let elementById = new ImmutableMap();
-
-    flattenTree(hierAgg).forEach(aggHierNode => {
-        elementById = elementById.set(aggHierNode.id, aggHierNode);
-    });
-
-    flattenTree(hierM52).forEach(m52HierNode => {
-        elementById = elementById.set(m52HierNode.id, m52HierNode);
-    });
-
-    return elementById;
-}
+const getElementById = (tree, id) => flattenTree(tree).find(node => node.id === id)
 
 /**
  *
@@ -273,7 +265,8 @@ export function makeElementById(hierAgg, hierM52 = {}){
  * @param  {WeakMap}         wm  Remonte le child au parent
  * @return {[type]}      [description]
  */
-function fillChildToParent(tree, wm){
+const makeChildToParent = tree => {
+    const wm = new WeakMap()
     visit(tree, e => {
         if(e.children){
             e.children.forEach(c => {
@@ -281,6 +274,7 @@ function fillChildToParent(tree, wm){
             })
         }
     });
+    return wm
 }
 
 function makeContextList(element, childToParent){
@@ -311,42 +305,27 @@ function makeContextList(element, childToParent){
 
 export default connect(
     state => {
-        const { docBudgByYear, corrections, textsById, financeDetailId, explorationYear, screenWidth } = state;
+        const { 
+            docBudgByYear,
+            aggregationDescription,
+            currentYear,
+            financeDetailId: displayedContentId
+        } = state;
 
-        const isM52Element = financeDetailId.startsWith('M52-');
+        const documentBudgetaire = docBudgByYear.get(currentYear);
+        const aggregate = aggregationDescription && makeAggregateFunction(aggregationDescription)
 
-        let RDFI;
-        if(isM52Element){
-            RDFI = financeDetailId.slice(4, 4+2);
-        }
+        const aggregationTree = documentBudgetaire && aggregate && aggregate(documentBudgetaire);
 
-        const m52Instruction = docBudgByYear.get(explorationYear);
-        const hierM52 = m52Instruction && RDFI && hierarchicalByFunction(m52Instruction, RDFI);
-        const aggregated = m52Instruction && corrections && m52ToAggregated(m52Instruction, corrections);
-        const hierAgg = m52Instruction && hierarchicalAggregated(aggregated);
+        const element = aggregationTree && getElementById(aggregationTree, displayedContentId);
 
-        const childToParent = new WeakMap();
-
-        if(m52Instruction){
-            if(hierM52) {
-                fillChildToParent(hierM52, childToParent);
-            }
-
-            // je ne sais plus si on a besoin du hiérarchique pour le breadcrumb Agrégé
-            // peut-être que la ligne suivante devrait être dans un bloc "else"
-            fillChildToParent(hierAgg, childToParent);
-        }
-
-        const displayedContentId = financeDetailId;
-
-        const elementById = (m52Instruction && makeElementById(hierAgg, hierM52)) || new ImmutableMap();
-        const element = elementById.get(displayedContentId);
+        //const childToParent = aggregationTree && makeChildToParent(aggregationTree)
 
         // c'est la hiérarchie qui permet de créer le breadcrumb
         // si hierM52 est descendant, la contextList est ascendante
-        const contextList = makeContextList(element, childToParent);
+        //const contextList = makeContextList(element, childToParent);
 
-        const elementByIdByYear = docBudgByYear.map(m52i => {
+        /*const elementByIdByYear = docBudgByYear.map(m52i => {
             return makeElementById(
                 hierarchicalAggregated(m52ToAggregated(m52i, corrections)),
                 RDFI ? hierarchicalByFunction(m52i, RDFI): undefined
@@ -391,10 +370,12 @@ export default connect(
             undefined;
 
         const texts = textsById.get(displayedContentId);
-
+        
+        */
         return {
             contentId: displayedContentId,
-            RDFI,
+            element
+            /*RDFI,
             amountByYear,
             contextElements: contextList.map((c, i) => ({
                 id: c.id,
@@ -410,7 +391,7 @@ export default connect(
             partitionByYear,
             m52Rows,
             year: explorationYear,
-            screenWidth
+            screenWidth*/
         }
 
     },

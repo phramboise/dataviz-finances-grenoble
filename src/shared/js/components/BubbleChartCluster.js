@@ -65,8 +65,6 @@ export default function BubbleChartCluster({tree}){
             }
         })
 
-    console.log('families', families)
-
     return (<div className="bubble-chart-cluster">
         {families.map((node) => (<BubbleChartNode key={`rd-CH${node.id}`} node={node} />))}
     </div>)
