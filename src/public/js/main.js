@@ -150,7 +150,7 @@ Promise.all([
     csv(assets[MONTREUIL_NOMENCLATURE_2]),
     docBudgsP
 ])
-    .then(([aggrDesc, aggrDesc2, docBudgs]) => MontreuilNomenclatureToAggregationDescription(aggrDesc.concat(aggrDesc2).slice(0, 100), docBudgs))
+    .then(([aggrDesc, aggrDesc2, docBudgs]) => MontreuilNomenclatureToAggregationDescription(aggrDesc.concat(aggrDesc2), docBudgs))
     .then(aggregationDescription => {
         console.log('aggregationDescription', aggregationDescription.toJS())
 

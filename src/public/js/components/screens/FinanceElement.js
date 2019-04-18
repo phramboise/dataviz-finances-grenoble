@@ -11,6 +11,8 @@ import {makeLigneBudgetId}  from 'document-budgetaire/Records.js';
 import {m52ToAggregated, hierarchicalAggregated, hierarchicalByFunction}  from '../../../../shared/js/finance/memoized';
 import makeAggregateFunction from "../../../../shared/js/finance/makeAggregateFunction.js"
 import {default as visit, flattenTree} from '../../../../shared/js/finance/visitHierarchical.js';
+import {aggregatedDocumentBudgetaireNodeTotal, aggregatedDocumentBudgetaireNodeElements} from '../../../../shared/js/finance/AggregationDataStructures.js';
+
 
 import { DF, DI } from '../../../../shared/js/finance/constants';
 
@@ -68,7 +70,7 @@ interface FinanceElementProps{
 */
 
 
-export function FinanceElement({contentId, element}) {
+export function FinanceElement({contentId, element, year}) {
     /*const label = texts && texts.label || '';
     const atemporalText = texts && texts.atemporal;
     const temporalText = texts && texts.temporal;
@@ -153,9 +155,15 @@ export function FinanceElement({contentId, element}) {
     const isLeaf = !(thisYearPartition && thisYearPartition.size >= 2);*/
 
     console.log('element', element)
+    const total = element && aggregatedDocumentBudgetaireNodeTotal(element)
+    const lignesBudget = element && aggregatedDocumentBudgetaireNodeElements(element)
 
     return React.createElement('article', {className: 'finance-element'},
-        element ? React.createElement('h1', {}, element.label) : undefined
+        React.createElement('header', {}, 
+            element ? React.createElement('h1', {}, `${element.label} : ${total}€`) : undefined,
+            React.createElement('h2', {}, year)
+        ),
+        
         /*React.createElement('section', {},
             React.createElement('div', {className: 'top-infos'},
                 contextElements ? React.createElement(FinanceElementContext, { contextElements }) : undefined,
@@ -189,9 +197,9 @@ export function FinanceElement({contentId, element}) {
                 yValueDisplay: makeAmountString,
                 contentId,
             })
-        ),
+        ),*/
 
-        m52Rows ? React.createElement('section', { className: 'raw-data'},
+        lignesBudget ? React.createElement('section', { className: 'raw-data'},
             React.createElement(SecundaryTitle, {text: `Consultez ces données en détail à la norme comptable M14 pour l'année ${year}`}),
             React.createElement('table', {},
                 React.createElement('thead', {},
@@ -202,14 +210,14 @@ export function FinanceElement({contentId, element}) {
                     )
                 ),
                 React.createElement('tbody', {},
-                    m52Rows
+                    lignesBudget
                         .sort((r1, r2) => r2['MtReal'] - r1['MtReal'])
-                        .map(row => {
-                            return React.createElement('tr', {title: makeLigneBudgetId(row)},
-                                React.createElement('td', {}, fonctionLabels[row['Fonction']]),
-                                React.createElement('td', {}, natureLabels[row['Nature']]),
+                        .map(ligne => {
+                            return React.createElement('tr', {title: makeLigneBudgetId(ligne)},
+                                React.createElement('td', {}, fonctionLabels[ligne['Fonction']]),
+                                React.createElement('td', {}, natureLabels[ligne['Nature']]),
                                 React.createElement('td', {},
-                                    React.createElement(MoneyAmount, {amount: row['MtReal']})
+                                    React.createElement(MoneyAmount, {amount: ligne['MtReal']})
                                 )
                             )
                         })
@@ -217,7 +225,7 @@ export function FinanceElement({contentId, element}) {
             )
         ) : undefined,
 
-        React.createElement(DownloadSection)*/
+        /*React.createElement(DownloadSection)*/
     );
 }
 
@@ -309,6 +317,7 @@ export default connect(
             docBudgByYear,
             aggregationDescription,
             currentYear,
+            explorationYear,
             financeDetailId: displayedContentId
         } = state;
 
@@ -374,7 +383,8 @@ export default connect(
         */
         return {
             contentId: displayedContentId,
-            element
+            element,
+            year: explorationYear,
             /*RDFI,
             amountByYear,
             contextElements: contextList.map((c, i) => ({
@@ -390,7 +400,6 @@ export default connect(
             texts,
             partitionByYear,
             m52Rows,
-            year: explorationYear,
             screenWidth*/
         }
 
