@@ -7,6 +7,7 @@
 	- Grand public - [questionnaire](https://user-research-survey.typeform.com/to/HnqT90) - [réponses](https://docs.google.com/spreadsheets/d/1bq3RgbBxszusUOePxZxiuY-tskr-9pDOdBRFrzH3WfM/edit#gid=955416595)
 	- Personnel administratif -  [questionnaire](https://user-research-survey.typeform.com/to/EO04Gl) - réponses
 
+---
 
 ## Résumé des interviews guérillas
 
