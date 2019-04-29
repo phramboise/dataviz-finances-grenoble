@@ -1,11 +1,11 @@
 ## Documentation
 
-• 📊 [Recueil des données][https://docs.google.com/spreadsheets/d/1ITRSYGH1Skik5H5YWibwo_o2fQhKGyBzih-3VsJX4RQ/edit#gid=1736760728]
-• ✍️ Résumé des interviews guérillas réalisés
-• 👨‍👩‍👧‍👦 Transcripts des interviews guérillas
-• 🧐 Questionnaires en ligne
-	• Grand public - [questionnaire][https://user-research-survey.typeform.com/to/HnqT90] - [réponses][https://docs.google.com/spreadsheets/d/1bq3RgbBxszusUOePxZxiuY-tskr-9pDOdBRFrzH3WfM/edit#gid=955416595]
-	• Personnel administratif -  [questionnaire][https://user-research-survey.typeform.com/to/EO04Gl] - réponses
+- 📊 [Recueil des données](https://docs.google.com/spreadsheets/d/1ITRSYGH1Skik5H5YWibwo_o2fQhKGyBzih-3VsJX4RQ/edit#gid=1736760728)
+- ✍️ Résumé des interviews guérillas
+- 👨‍👩‍👧‍👦 Transcripts des interviews guérillas
+- 🧐 Questionnaires en ligne
+	- Grand public - [questionnaire](https://user-research-survey.typeform.com/to/HnqT90) - [réponses](https://docs.google.com/spreadsheets/d/1bq3RgbBxszusUOePxZxiuY-tskr-9pDOdBRFrzH3WfM/edit#gid=955416595)
+	- Personnel administratif -  [questionnaire](https://user-research-survey.typeform.com/to/EO04Gl) - réponses
 
 ---
 
