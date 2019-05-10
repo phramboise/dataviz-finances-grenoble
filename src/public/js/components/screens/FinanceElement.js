@@ -225,7 +225,7 @@ export function FinanceElement({contentId, element, year}) {
             )
         ) : undefined,
 
-        /*React.createElement(DownloadSection)*/
+        React.createElement(DownloadSection)
     );
 }
 
