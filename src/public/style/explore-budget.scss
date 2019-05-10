@@ -59,6 +59,31 @@ $RX-L: 60%;
         }
     }
 
+    .stackchart{
+        display: flex;
+        flex-direction: column;
+
+        .over-time{
+            flex: 2;
+        }
+
+        .legend-list{
+            flex: 1;
+            margin-bottom: 2em;
+        }
+
+
+        @media screen and (min-width: $stackchart-medium-breakpoint) {
+            align-items: flex-start;
+        }
+
+        @media screen and (min-width: $stackchart-large-breakpoint) {
+            flex-direction: row;
+            justify-content: space-around;
+            align-items: center;
+        }
+    }
+
     @each $rd, $pairs in $rdfi {
         @each $fi, $color in $pairs {
             .donut g.rdfi-#{$rd}.rdfi-#{$fi} {
