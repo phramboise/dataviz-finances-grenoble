@@ -111,6 +111,12 @@ $RX-L: 60%;
             flex: 1 1 100%;
         }
 
+        /* makes it clear for keyboard navigation */
+        a:focus circle {
+            stroke: $brand-color;
+            stroke-width: 5px;
+        }
+
         .legend-list {
             display: flex;
             justify-content: space-between;

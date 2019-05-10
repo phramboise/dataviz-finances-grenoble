@@ -6,7 +6,7 @@ import { Record, Map as ImmutableMap, List, Set as ImmutableSet } from 'immutabl
 import { csv } from 'd3-fetch';
 import page from 'page';
 
-import {assets, COMPTES_ADMINISTRATIFS, AGGREGATED_ATEMPORAL, AGGREGATED_TEMPORAL, CORRECTIONS_AGGREGATED, MONTREUIL_NOMENCLATURE, MONTREUIL_NOMENCLATURE_2} from './constants/resources';
+import {assets, COMPTES_ADMINISTRATIFS, AGGREGATED_ATEMPORAL, AGGREGATED_TEMPORAL, CORRECTIONS_AGGREGATED, MONTREUIL_NOMENCLATURE} from './constants/resources';
 import reducer from './reducer';
 
 import {LigneBudgetRecord, DocumentBudgetaire} from 'document-budgetaire/Records.js';
@@ -38,6 +38,8 @@ import {fonctionLabels} from '../../../build/finances/finance-strings.json';
  */
 const REACT_CONTAINER_SELECTOR = '.finance-dataviz-container';
 const CONTAINER_ELEMENT = document.querySelector(REACT_CONTAINER_SELECTOR);
+
+CONTAINER_ELEMENT.setAttribute('aria-live', true);
 
 // Breadcrumb
 const BREADCRUMB_CONTAINER = document.body.querySelector('.breadcrumb-container');
@@ -143,12 +145,8 @@ csv(assets[AGGREGATED_TEMPORAL])
         });
     });
 
-Promise.all([
-    csv(assets[MONTREUIL_NOMENCLATURE]), 
-    csv(assets[MONTREUIL_NOMENCLATURE_2]), 
-    docBudgsP
-])
-    .then(([aggrDesc, aggrDesc2, docBudgs]) => MontreuilNomenclatureToAggregationDescription(aggrDesc.concat(aggrDesc2), docBudgs))
+Promise.all([ csv(assets[MONTREUIL_NOMENCLATURE]), docBudgsP ])
+    .then(([aggrDesc, docBudgs]) => MontreuilNomenclatureToAggregationDescription(aggrDesc, docBudgs))
     .then(aggregationDescription => {
         console.log('aggregationDescription', aggregationDescription.toJS())
 
@@ -203,7 +201,7 @@ page('/finance-details/:contentId', ({params: {contentId}}) => {
         CONTAINER_ELEMENT
     );
 
-    const breadcrumbData = [];
+    /*const breadcrumbData = [];
 
     let currentContentId = contentId.startsWith('M52-') ?
         contentId.slice(7) :
@@ -226,7 +224,7 @@ page('/finance-details/:contentId', ({params: {contentId}}) => {
 
     const breadcrumb = DEFAULT_BREADCRUMB.concat(breadcrumbData.reverse());
 
-    ReactDOM.render( React.createElement(Breadcrumb, { items: breadcrumb }), BREADCRUMB_CONTAINER );
+    ReactDOM.render( React.createElement(Breadcrumb, { items: breadcrumb }), BREADCRUMB_CONTAINER );*/
 
 });
 
