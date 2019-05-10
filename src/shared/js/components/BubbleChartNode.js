@@ -1,28 +1,14 @@
 import React from 'react';
-
+import page from 'page'
 import {pack, hierarchy} from 'd3-hierarchy';
-import page from "page";
 import ReactTooltip from 'react-tooltip'
 
 import MoneyAmount from "./MoneyAmount.js";
 
 
-
 export default class BubbleChartNode extends React.Component {
     constructor(props) {
         super(props);
-
-        this.onClick = this.onClick.bind(this);
-    }
-
-    /*
-    TODO this is a hack til the following issue is solved
-         https://github.com/visionmedia/page.js/issues/532
-     */
-    onClick (event, nodeId) {
-        // event.stopPropagation();
-        // event.preventDefault();
-        page(`/finance-details/${nodeId}`);
     }
 
     render() {
@@ -47,13 +33,13 @@ export default class BubbleChartNode extends React.Component {
                 <span>{label}</span>
             </figurelegend>
 
-            <svg viewBox={`0 0 ${WIDTH} ${HEIGHT}`} xmlnsXlink="http://www.w3.org/1999/xlink">
+            <svg viewBox={`0 0 ${WIDTH} ${HEIGHT}`}>
                 {[...listMapNodes.values()].map(({r, x, y, data}) => (
                     <g key={data.id} transform={`translate(${x}, ${y})`}>
                         <a
-                            /*xlinkHref={`#!/finance-details/${data.id}`}*/
+                            // href={}
+                            onClick={e => page(`/finance-details/${data.id}`)}
                             className="clickable"
-                            onClick={e => this.onClick(e, data.id)}
                             onFocus={e => ReactTooltip.show(e.target)}
                             onBlur={e => ReactTooltip.hide(e.target)}
                             data-tip={data.id}

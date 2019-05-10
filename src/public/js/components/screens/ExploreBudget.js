@@ -68,14 +68,10 @@ export class ExploreBudget extends Component{
             rdTree.children.find(c => c.id.includes('FONCTIONNEMENT'))
         );
 
-        console.log('dt', displayedTree)
-
         // For DF, dig to a specific level
         displayedTree = (displayedTree && RD === 'D' && FI === 'F') ? 
             displayedTree.children.find(c => c.id.includes('Gestion courante'))
             : displayedTree
-
-        console.log('render ExploreBudget', RD, FI, displayedTree)
 
         return <article className="explore-budget">
             <PageTitle text={`Exploration des comptes ${currentYear}`} />

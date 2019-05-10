@@ -201,7 +201,7 @@ page('/finance-details/:contentId', ({params: {contentId}}) => {
         CONTAINER_ELEMENT
     );
 
-    const breadcrumbData = [];
+    /*const breadcrumbData = [];
 
     let currentContentId = contentId.startsWith('M52-') ?
         contentId.slice(7) :
@@ -224,7 +224,7 @@ page('/finance-details/:contentId', ({params: {contentId}}) => {
 
     const breadcrumb = DEFAULT_BREADCRUMB.concat(breadcrumbData.reverse());
 
-    ReactDOM.render( React.createElement(Breadcrumb, { items: breadcrumb }), BREADCRUMB_CONTAINER );
+    ReactDOM.render( React.createElement(Breadcrumb, { items: breadcrumb }), BREADCRUMB_CONTAINER );*/
 
 });
 
