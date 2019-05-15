@@ -105,8 +105,7 @@ export class ExploreBudget extends Component{
         let legendItemIds = [];
         if(barchartPartitionByYear.get(explorationYear)){
             barchartPartitionByYear.get(explorationYear).forEach(({contentId}, i) => {
-                const colorClassList = ['rdfi-D', 'rdfi-D', 'rdfi-R', 'rdfi-R']
-                colorClassById.set(contentId, colorClassList[i % colorClassList.length] + ` area-color-${i+1}`)
+                colorClassById.set(contentId, `rdfi-${RD} rdfi-${FI} area-color-${i+1}`)
             })
 
             legendItemIds = barchartPartitionByYear
