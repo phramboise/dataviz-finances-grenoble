@@ -22,7 +22,8 @@ import { HOME } from './constants/pages';
 import {
     DOCUMENTS_BUDGETAIRES_RECEIVED, CORRECTION_AGGREGATION_RECEIVED,
     ATEMPORAL_TEXTS_RECEIVED, TEMPORAL_TEXTS_RECEIVED,
-    FINANCE_DETAIL_ID_CHANGE, AGGREGATION_DESCRIPTION_RECEIVED
+    FINANCE_DETAIL_ID_CHANGE, AGGREGATION_DESCRIPTION_RECEIVED,
+    CHANGE_CURRENT_YEAR, CHANGE_EXPLORATION_YEAR,
 } from './constants/actions';
 
 import MontreuilNomenclatureToAggregationDescription from './MontreuilNomenclatureToAggregationDescription.js'
@@ -69,8 +70,6 @@ const store = createStore(
     new StoreRecord({
         docBudgByYear: new ImmutableMap(),
         aggregationDescription: undefined,
-        currentYear: 2017,
-        explorationYear: 2017,
         financeDetailId: undefined,
         textsById: ImmutableMap([[HOME, {label: 'Accueil'}]]),
         screenWidth: window.innerWidth
@@ -119,6 +118,18 @@ const docBudgsP = fetch(assets[COMPTES_ADMINISTRATIFS]).then(resp => resp.json()
             db.rows = new ImmutableSet(db.rows.map(LigneBudgetRecord))
             return DocumentBudgetaire(db)
         })
+
+        const mostRecentYear = docBudgs.map(({Exer}) => Exer).sort((a, b) => a-b).pop()
+
+        store.dispatch({
+            type: CHANGE_EXPLORATION_YEAR,
+            year: mostRecentYear,
+        });
+
+        store.dispatch({
+            type: CHANGE_CURRENT_YEAR,
+            year: mostRecentYear,
+        });
 
         store.dispatch({
             type: DOCUMENTS_BUDGETAIRES_RECEIVED,
