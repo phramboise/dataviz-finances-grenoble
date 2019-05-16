@@ -19,7 +19,7 @@ export default class BubbleChartNode extends React.Component {
         const RorD = node.rdfi[0];
         const WIDTH = 400;
         const HEIGHT = 400;
-        const radius = scaleLinear().domain([0, maxNodeValue]).range([0, WIDTH / 2]);
+        const radius = scaleLinear().domain([0, maxNodeValue]).range([0, WIDTH / 2.5]);
 
         const nodes = hierarchy({name: label, children})
             .sort((a, b) => b.total - a.total);
@@ -27,10 +27,9 @@ export default class BubbleChartNode extends React.Component {
         const bubbles = pack()
             .size([WIDTH, HEIGHT])
             .padding(10)
-            .radius(d => radius(d.data.total))
+            .radius(d => Math.max(radius(d.data.total), 3))
 
         const listMapNodes = bubbles(nodes).children;
-        console.log(label, listMapNodes)
 
         return (<figure className={`bubble-chart rdfi-${RorD}`}>
             <figurelegend>
@@ -39,10 +38,11 @@ export default class BubbleChartNode extends React.Component {
             </figurelegend>
 
             <svg viewBox={`0 0 ${WIDTH} ${HEIGHT}`}>
-                {[...listMapNodes.values()].map(({r, x, y, data}) => (
+                {listMapNodes.map(({r, x, y, data}) => (
                     <g key={data.id} transform={`translate(${x}, ${y})`}>
                         <a
-                            href={`#!/finance-details/${data.id}`}
+                            // href={`#!/finance-details/${data.id}`}
+                            onClick={e => e.preventDefault() && page(`/finance-details/${data.id}`)}
                             className="clickable"
                             onFocus={e => ReactTooltip.show(e.target)}
                             onBlur={e => ReactTooltip.hide(e.target)}
@@ -67,7 +67,8 @@ export default class BubbleChartNode extends React.Component {
                 effect='solid'
                 getContent={(nodeId) => {
                     if (!nodeId) return null;
-                    const {data} = listMapNodes.find(d => d.id === nodeId).pop();
+
+                    const {data} = listMapNodes.find(d => d.data.id === nodeId);
                     return (<div className={`rdfi-${data.rdfi[0]} rdfi-${data.rdfi[1]}`}>
                         <p className='react-tooltip-type-aggregation'>
                             {data.rdfi[0] === 'R'? 'Recette': 'Dépense'}
