@@ -43,6 +43,7 @@ export default class BubbleChartNode extends React.Component {
                         <a
                             // href={`#!/finance-details/${data.id}`}
                             onClick={e => e.preventDefault() && page(`/finance-details/${data.id}`)}
+                            onTouchEnd={e => e.preventDefault() && ReactTooltip.show(e.target)}
                             className="clickable"
                             onFocus={e => ReactTooltip.show(e.target)}
                             onBlur={e => ReactTooltip.hide(e.target)}
