@@ -13,6 +13,7 @@ import {
     EXPENDITURES,
     REVENUE
 } from "../../../../shared/js/finance/constants";
+import { CHANGE_EXPLORATION_YEAR } from "../../constants/actions.js";
 
 import { hierarchicalByFunction } from "../../../../shared/js/finance/memoized";
 import { aggregatedDocumentBudgetaireNodeTotal } from '../../../../shared/js/finance/AggregationDataStructures'
@@ -43,7 +44,8 @@ export class ExploreBudget extends Component{
     }
 
     render(){
-        const { currentYear, totals, aggregationTreeByYear } = this.props
+        const { explorationYear, totals, aggregationTreeByYear } = this.props
+        const { changeExplorationYear } = this.props;
         const {RD, FI} = this.state
 
         const rdfiTreeByYear = aggregationTreeByYear.map(aggregationTree => {
@@ -76,7 +78,7 @@ export class ExploreBudget extends Component{
 
 
         // Bubble data
-        const currentYearrdfiTree = rdfiTreeByYear.get(currentYear);
+        const currentYearrdfiTree = rdfiTreeByYear.get(explorationYear);
 
             // For DF, dig to a specific level
         let bubbleTreeData = (currentYearrdfiTree && RD === 'D' && FI === 'F') ?
@@ -101,8 +103,8 @@ export class ExploreBudget extends Component{
 
         const colorClassById = new Map()
         let legendItemIds = [];
-        if(barchartPartitionByYear.get(currentYear)){
-            barchartPartitionByYear.get(currentYear).forEach(({contentId}, i) => {
+        if(barchartPartitionByYear.get(explorationYear)){
+            barchartPartitionByYear.get(explorationYear).forEach(({contentId}, i) => {
                 const colorClassList = ['rdfi-D rdfi-F', 'rdfi-D rdfi-I', 'rdfi-R rdfi-F', 'rdfi-R rdfi-I']
                 colorClassById.set(contentId, colorClassList[i % colorClassList.length])
             })
@@ -133,7 +135,7 @@ export class ExploreBudget extends Component{
 
 
         return <article className="explore-budget">
-            <PageTitle text={`Exploration des comptes ${currentYear || ''}`} />
+            <PageTitle text={`Exploration des comptes ${explorationYear || ''}`} />
 
             <section>
                 <Markdown>
@@ -158,7 +160,7 @@ export class ExploreBudget extends Component{
             </section>
 
             <section className="yearly-budget">
-                <h2>Le budget {currentYear}</h2>
+                <h2>Le budget {explorationYear}</h2>
 
                 <figure className="side-by-side" role="table">
                     <Donut items={revenueItems} padAngle={0.015}>
@@ -219,10 +221,11 @@ export class ExploreBudget extends Component{
                         <StackChart
                             xs={ years }
                             ysByX={barchartPartitionByYear.map(partition => partition.map(part => part.partAmount))}
-                            selectedX={ currentYear }
+                            selectedX={ explorationYear }
                             legendItems={ legendItems }
                             yValueDisplay={makeAmountString}
                             contentId={currentYearrdfiTree.id}
+                            onSelectedXAxisItem={changeExplorationYear}
                         /> :
                         undefined
                 }
@@ -240,14 +243,14 @@ export default connect(
         const {
             docBudgByYear,
             aggregationDescription,
-            currentYear
+            explorationYear
         } = state;
 
         const aggregationTreeByYear = aggregationDescription ? docBudgByYear.map(
             documentBudgetaire => makeAggregateFunction(aggregationDescription)(documentBudgetaire)
         ) : new ImmutableMap()
 
-        const documentBudgetaire = docBudgByYear.get(currentYear);
+        const documentBudgetaire = docBudgByYear.get(explorationYear);
 
         let totals = new ImmutableMap();
         if (documentBudgetaire) {
@@ -262,10 +265,17 @@ export default connect(
         }
 
         return {
-            currentYear,
+            explorationYear,
             totals,
             aggregationTreeByYear
         };
     },
-    () => ({})
+    (dispatch) => ({
+        changeExplorationYear(year){
+            dispatch({
+                type: CHANGE_EXPLORATION_YEAR,
+                year
+            })
+        },
+    })
 )(ExploreBudget);

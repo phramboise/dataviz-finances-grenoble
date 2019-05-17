@@ -159,11 +159,11 @@ export function FinanceElement({contentId, element, year}) {
     const lignesBudget = element && aggregatedDocumentBudgetaireNodeElements(element)
 
     return React.createElement('article', {className: 'finance-element'},
-        React.createElement('header', {}, 
+        React.createElement('header', {},
             element ? React.createElement('h1', {}, `${element.label} : ${total}€`) : undefined,
             React.createElement('h2', {}, year)
         ),
-        
+
         /*React.createElement('section', {},
             React.createElement('div', {className: 'top-infos'},
                 contextElements ? React.createElement(FinanceElementContext, { contextElements }) : undefined,
@@ -313,15 +313,14 @@ function makeContextList(element, childToParent){
 
 export default connect(
     state => {
-        const { 
+        const {
             docBudgByYear,
             aggregationDescription,
-            currentYear,
             explorationYear,
             financeDetailId: displayedContentId
         } = state;
 
-        const documentBudgetaire = docBudgByYear.get(currentYear);
+        const documentBudgetaire = docBudgByYear.get(explorationYear);
         const aggregate = aggregationDescription && makeAggregateFunction(aggregationDescription)
 
         const aggregationTree = documentBudgetaire && aggregate && aggregate(documentBudgetaire);
@@ -379,7 +378,7 @@ export default connect(
             undefined;
 
         const texts = textsById.get(displayedContentId);
-        
+
         */
         return {
             contentId: displayedContentId,
