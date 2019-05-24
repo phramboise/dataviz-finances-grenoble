@@ -57,7 +57,6 @@ const StoreRecord = Record({
     docBudgByYear: undefined,
     aggregationDescription: undefined,
     corrections: undefined,
-    currentYear: undefined,
     explorationYear: undefined,
     // ImmutableMap<id, FinanceElementTextsRecord>
     textsById: undefined,
@@ -70,6 +69,7 @@ const store = createStore(
     new StoreRecord({
         docBudgByYear: new ImmutableMap(),
         aggregationDescription: undefined,
+        explorationYear: undefined,
         financeDetailId: undefined,
         textsById: ImmutableMap([[HOME, {label: 'Accueil'}]]),
         screenWidth: window.innerWidth
@@ -123,11 +123,6 @@ const docBudgsP = fetch(assets[COMPTES_ADMINISTRATIFS]).then(resp => resp.json()
 
         store.dispatch({
             type: CHANGE_EXPLORATION_YEAR,
-            year: mostRecentYear,
-        });
-
-        store.dispatch({
-            type: CHANGE_CURRENT_YEAR,
             year: mostRecentYear,
         });
 
