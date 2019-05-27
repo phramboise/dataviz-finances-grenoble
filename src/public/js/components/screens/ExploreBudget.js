@@ -228,6 +228,10 @@ export class ExploreBudget extends Component{
                         /> :
                         undefined
                 }
+            </section>
+
+            <section>
+                <h2>Répartition par politique</h2>
 
                 <BubbleChartCluster tree={bubbleTreeData} />
             </section>
