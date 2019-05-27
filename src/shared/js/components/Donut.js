@@ -41,7 +41,7 @@ export default function Donut ({
                 })}
             </g>
         </svg>
-        <figurelegend>{children}</figurelegend>
+        <figcaption>{children}</figcaption>
     </figure>);
 
 }

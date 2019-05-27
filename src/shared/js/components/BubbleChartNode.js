@@ -32,10 +32,10 @@ export default class BubbleChartNode extends React.Component {
         const listMapNodes = bubbles(nodes).children;
 
         return (<figure className={`bubble-chart rdfi-${RorD}`}>
-            <figurelegend>
+            <figcaption>
                 <MoneyAmount amount={total} />
                 <span>{label}</span>
-            </figurelegend>
+            </figcaption>
 
             <svg viewBox={`0 0 ${WIDTH} ${HEIGHT}`}>
                 {listMapNodes.map(({r, x, y, data}) => (
