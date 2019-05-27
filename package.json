@@ -6,7 +6,7 @@
   "main": "index.js",
   "scripts": {
     "watch": "run-p watch:*",
-    "serve": "http-server --cors -p 3000 -a 127.0.0.1 .",
+    "serve": "http-server --cors -p 3000 --silent -a 127.0.0.1 .",
     "start": "run-p serve watch:*",
     "test": "jest",
     "build-demo": "cross-env NODE_ENV=demo BASE_URL=${BASE_URL:=https://dtc-innovation.github.io/dataviz-finances-montreuil} npm-run-all --serial build-demo:public build:finance-overview",
