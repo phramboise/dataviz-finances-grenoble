@@ -15,7 +15,6 @@ import {childToParent, elementById} from '../../shared/js/finance/flatHierarchic
 
 import Breadcrumb from '../../shared/js/components/Breadcrumb';
 import FinanceElement from './components/screens/FinanceElement';
-
 import ExploreBudget from './components/screens/ExploreBudget';
 
 import { HOME } from './constants/pages';
@@ -61,7 +60,11 @@ const StoreRecord = Record({
     // ImmutableMap<id, FinanceElementTextsRecord>
     textsById: undefined,
     financeDetailId: undefined,
-    screenWidth: undefined
+    screenWidth: undefined,
+    resources: {
+        dataUrl: undefined,
+        sourceCodeUrl: undefined,
+    },
 });
 
 const store = createStore(
@@ -72,7 +75,11 @@ const store = createStore(
         explorationYear: undefined,
         financeDetailId: undefined,
         textsById: ImmutableMap([[HOME, {label: 'Accueil'}]]),
-        screenWidth: window.innerWidth
+        screenWidth: window.innerWidth,
+        resources: {
+            dataUrl: 'https://montreuil.opendatasoft.com/explore/dataset/comptes-administratifs/',
+            sourceCodeUrl: 'https://github.com/dtc-innovation/dataviz-finances-montreuil/',
+        }
     })
 );
 

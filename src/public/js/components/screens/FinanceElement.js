@@ -70,7 +70,7 @@ interface FinanceElementProps{
 */
 
 
-export function FinanceElement({contentId, element, year}) {
+export function FinanceElement({contentId, element, year, resources}) {
     /*const label = texts && texts.label || '';
     const atemporalText = texts && texts.atemporal;
     const temporalText = texts && texts.temporal;
@@ -225,7 +225,7 @@ export function FinanceElement({contentId, element, year}) {
             )
         ) : undefined,
 
-        React.createElement(DownloadSection)
+        React.createElement(DownloadSection, resources)
     );
 }
 
@@ -317,7 +317,8 @@ export default connect(
             docBudgByYear,
             aggregationDescription,
             explorationYear,
-            financeDetailId: displayedContentId
+            financeDetailId: displayedContentId,
+            resources,
         } = state;
 
         const documentBudgetaire = docBudgByYear.get(explorationYear);
@@ -384,6 +385,7 @@ export default connect(
             contentId: displayedContentId,
             element,
             year: explorationYear,
+            resources,
             /*RDFI,
             amountByYear,
             contextElements: contextList.map((c, i) => ({

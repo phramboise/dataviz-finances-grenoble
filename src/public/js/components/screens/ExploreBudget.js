@@ -44,7 +44,7 @@ export class ExploreBudget extends Component{
     }
 
     render(){
-        const { explorationYear, totals, aggregationTreeByYear } = this.props
+        const { explorationYear, totals, aggregationTreeByYear, resources } = this.props
         const { changeExplorationYear } = this.props;
         const {RD, FI} = this.state
 
@@ -231,7 +231,7 @@ export class ExploreBudget extends Component{
                 <BubbleChartCluster tree={bubbleTreeData} />
             </section>
 
-            <DownloadSection />
+            <DownloadSection {...resources} />
         </article>;
     }
 }
@@ -241,7 +241,8 @@ export default connect(
         const {
             docBudgByYear,
             aggregationDescription,
-            explorationYear
+            explorationYear,
+            resources,
         } = state;
 
         const aggregationTreeByYear = aggregationDescription ? docBudgByYear.map(
@@ -265,7 +266,8 @@ export default connect(
         return {
             explorationYear,
             totals,
-            aggregationTreeByYear
+            aggregationTreeByYear,
+            resources,
         };
     },
     (dispatch) => ({
