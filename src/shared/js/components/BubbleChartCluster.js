@@ -8,31 +8,14 @@ import {max} from "d3-array";
 import MoneyAmount from "./MoneyAmount.js";
 import BubbleChartNode from "./BubbleChartNode.js";
 
-// TODO not sure this function makes sense with aggregation
-const mergeHierarchies = (...hierarchies) => {
-    const levels = new Map();
+const rdfi = (node) => {
+    let rdfi = '';
 
-    hierarchies.forEach(children => {
-        children.forEach(node => {
-            const {id, label, children} = node
-            // We get the '122' part of `M52-DF-122`
-            const levelId = id.split('-').pop();
+    rdfi += ([' RECETTE ', ' DEPENSE' ].find(type => node.id.includes(type)) || 'X').trim()[0]
+    rdfi += ([' FONCTIONNEMENT ', 'INVESTISSEMENT '].find(type => node.id.includes(type)) || 'X').trim()[0]
 
-            if (!levels.has(levelId)) {
-                levels.set(levelId, {
-                    id: levelId,
-                    label,
-                    total: aggregatedDocumentBudgetaireNodeTotal(node),
-                    children: [],
-                });
-            }
-
-            levels.get(levelId).children = levels.get(levelId).children.concat(children.toArray());
-        });
-    });
-
-    return Array.from(levels.values()).sort((a, b) => b.total - a.total);
-};
+    return rdfi;
+}
 
 export default function BubbleChartCluster({tree}){
 
@@ -43,24 +26,24 @@ export default function BubbleChartCluster({tree}){
     // PROBLEM This is super-hardcoded
     const families = tree
         .children
+        .toJS()
         .map(node1 => {
             return {
                 id: node1.id,
                 label: node1.label,
                 total: aggregatedDocumentBudgetaireNodeTotal(node1),
-                rdfi: 'DF',
+                rdfi: rdfi(node1),
                 children: node1.children.map(node2 => {
                     return {
                         id: node2.id,
                         label: node2.label,
                         total: aggregatedDocumentBudgetaireNodeTotal(node2),
-                        rdfi: 'DF'
+                        rdfi: rdfi(node2)
                     }
                 })
             }
         })
         .sort((a, b) => b.total - a.total)
-        .toJS()
 
     console.log('families', families)
     const maxNodeValue = max([].concat(...families.map(f => f.children)), f => f.total);
