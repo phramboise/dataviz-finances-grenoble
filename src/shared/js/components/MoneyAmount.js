@@ -21,5 +21,9 @@ export function makeAmountString(amount){
 }
 
 export default ({amount}) => {
-    return <span className="money-amount">{makeAmountString(amount)}</span>;
+    if (Number.isFinite(amount) === false) {
+        return null
+    }
+
+    return <span className="money-amount">{makeAmountString(amount)}</span>
 };

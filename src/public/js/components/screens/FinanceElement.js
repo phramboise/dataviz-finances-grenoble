@@ -158,13 +158,17 @@ export function FinanceElement({contentId, element, year, resources}) {
     const total = element && aggregatedDocumentBudgetaireNodeTotal(element)
     const lignesBudget = element && aggregatedDocumentBudgetaireNodeElements(element)
 
-    return React.createElement('article', {className: 'finance-element'},
-        React.createElement('header', {},
-            element ? React.createElement('h1', {}, `${element.label} : ${total}€`) : undefined,
-            React.createElement('h2', {}, year)
-        ),
+    return <>
+        <article className="finance-element">
+            <header>
+                <h1>
+                    {element && `${element.label} : `}
+                    <MoneyAmount amount={total} />
+                </h1>
+                <h2>Année {year}</h2>
+            </header>
 
-        /*React.createElement('section', {},
+        {/*React.createElement('section', {},
             React.createElement('div', {className: 'top-infos'},
                 contextElements ? React.createElement(FinanceElementContext, { contextElements }) : undefined,
                 React.createElement('div', {},
@@ -197,36 +201,33 @@ export function FinanceElement({contentId, element, year, resources}) {
                 yValueDisplay: makeAmountString,
                 contentId,
             })
-        ),*/
+        ),*/}
 
-        lignesBudget ? React.createElement('section', { className: 'raw-data'},
-            React.createElement(SecundaryTitle, {text: `Consultez ces données en détail à la norme comptable M14 pour l'année ${year}`}),
-            React.createElement('table', {},
-                React.createElement('thead', {},
-                    React.createElement('tr', {},
-                        React.createElement('th', {}, 'Fonction'),
-                        React.createElement('th', {}, 'Nature'),
-                        React.createElement('th', {}, 'Montant')
-                    )
-                ),
-                React.createElement('tbody', {},
-                    lignesBudget
+            <section className="raw-data">
+                <SecundaryTitle text={`Détail de cette politique budgétaire pour l'année ${year}`} />
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Fonction</th>
+                            <th>Nature</th>
+                            <th>Montant</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {lignesBudget && lignesBudget
                         .sort((r1, r2) => r2['MtReal'] - r1['MtReal'])
-                        .map(ligne => {
-                            return React.createElement('tr', {title: makeLigneBudgetId(ligne)},
-                                React.createElement('td', {}, fonctionLabels[ligne['Fonction']]),
-                                React.createElement('td', {}, natureLabels[ligne['Nature']]),
-                                React.createElement('td', {},
-                                    React.createElement(MoneyAmount, {amount: ligne['MtReal']})
-                                )
-                            )
-                        })
-                )
-            )
-        ) : undefined,
-
-        React.createElement(DownloadSection, resources)
-    );
+                        .map(ligne => <tr title={makeLigneBudgetId(ligne)}>
+                            <td>{fonctionLabels[ligne['Fonction']]}</td>
+                            <td>{natureLabels[ligne['Nature']]}</td>
+                            <td><MoneyAmount amount={ligne['MtReal']} /></td>
+                        </tr>
+                    )}
+                    </tbody>
+                </table>
+            </section>
+        </article>
+        <DownloadSection {...resources} />
+    </>
 }
 
 

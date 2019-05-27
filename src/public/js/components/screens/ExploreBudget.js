@@ -132,7 +132,8 @@ export class ExploreBudget extends Component{
         });
 
 
-        return <article className="explore-budget">
+        return <>
+        <article className="explore-budget">
             <PageTitle text={`Exploration des comptes ${explorationYear || ''}`} />
 
             <section>
@@ -230,9 +231,9 @@ export class ExploreBudget extends Component{
 
                 <BubbleChartCluster tree={bubbleTreeData} />
             </section>
-
-            <DownloadSection {...resources} />
-        </article>;
+        </article>
+        <DownloadSection {...resources} />
+    </>;
     }
 }
 

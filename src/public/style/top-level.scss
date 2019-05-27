@@ -2,12 +2,12 @@
 
 .finance-dataviz-container{
     font: 16px/1.3 $font-copy;
-    color: #000;
+    color: #333;
     width: 100%;
 
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: flex-start;
 
     h1, .h1,
     h2, .h2,
