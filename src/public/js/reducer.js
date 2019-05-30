@@ -2,7 +2,7 @@ import { Record } from 'immutable';
 import { markdown as md } from '../../shared/js/components/Markdown';
 
 import {
-    FINANCE_DETAIL_ID_CHANGE, DOCUMENTS_BUDGETAIRES_RECEIVED, CORRECTION_AGGREGATION_RECEIVED,
+    FINANCE_DETAIL_ID_CHANGE, FINANCE_DATA_RECIEVED, CORRECTION_AGGREGATION_RECEIVED,
     ATEMPORAL_TEXTS_RECEIVED, TEMPORAL_TEXTS_RECEIVED,
     CHANGE_EXPLORATION_YEAR, CHANGE_CURRENT_YEAR, AGGREGATION_DESCRIPTION_RECEIVED
 } from './constants/actions';
@@ -18,7 +18,7 @@ export default function reducer(state, action) {
     const {type} = action;
 
     switch (type) {
-        case DOCUMENTS_BUDGETAIRES_RECEIVED:{
+        case FINANCE_DATA_RECIEVED:{
             const {docBudgs} = action;
 
             let newState = state;

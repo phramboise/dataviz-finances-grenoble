@@ -1,4 +1,4 @@
-export const COMPTES_ADMINISTRATIFS = 'COMPTES_ADMINISTRATIFS';
+export const FINANCE_DATA = 'FINANCE_DATA';
 
 export const AGGREGATED_ATEMPORAL = "AGGREGATED_ATEMPORAL";
 export const AGGREGATED_TEMPORAL = "AGGREGATED_TEMPORAL";
@@ -17,7 +17,7 @@ if (!BASE_URL) {
 
 export const assets = {
     // finance data
-    [COMPTES_ADMINISTRATIFS]: `${BASE_URL}/build/finances/doc-budgs.json`,
+    [FINANCE_DATA]: `${BASE_URL}/build/finances/finance-data.json`,
     [CORRECTIONS_AGGREGATED]: `${BASE_URL}/data/finances/corrections-agregation.csv`,
     [MONTREUIL_NOMENCLATURE]: `${BASE_URL}/data/agrégation-montreuil.csv`,
 

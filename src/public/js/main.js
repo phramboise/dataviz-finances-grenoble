@@ -6,7 +6,7 @@ import { Record, Map as ImmutableMap, List, Set as ImmutableSet } from 'immutabl
 import { csv } from 'd3-fetch';
 import page from 'page';
 
-import {assets, COMPTES_ADMINISTRATIFS, AGGREGATED_ATEMPORAL, AGGREGATED_TEMPORAL, CORRECTIONS_AGGREGATED, MONTREUIL_NOMENCLATURE} from './constants/resources';
+import {assets, FINANCE_DATA, AGGREGATED_ATEMPORAL, AGGREGATED_TEMPORAL, CORRECTIONS_AGGREGATED, MONTREUIL_NOMENCLATURE} from './constants/resources';
 import reducer from './reducer';
 
 import {LigneBudgetRecord, DocumentBudgetaire} from 'document-budgetaire/Records.js';
@@ -19,7 +19,7 @@ import ExploreBudget from './components/screens/ExploreBudget';
 
 import { HOME } from './constants/pages';
 import {
-    DOCUMENTS_BUDGETAIRES_RECEIVED, CORRECTION_AGGREGATION_RECEIVED,
+    FINANCE_DATA_RECIEVED, CORRECTION_AGGREGATION_RECEIVED,
     ATEMPORAL_TEXTS_RECEIVED, TEMPORAL_TEXTS_RECEIVED,
     FINANCE_DETAIL_ID_CHANGE, AGGREGATION_DESCRIPTION_RECEIVED,
     CHANGE_CURRENT_YEAR, CHANGE_EXPLORATION_YEAR,
@@ -119,14 +119,14 @@ fetch(assets[CORRECTIONS_AGGREGATED]).then(resp => resp.text())
     });
 
 
-const docBudgsP = fetch(assets[COMPTES_ADMINISTRATIFS]).then(resp => resp.json())
-    .then(docBudgs => {
-        docBudgs = docBudgs.map(db => {
+const docBudgsP = fetch(assets[FINANCE_DATA]).then(resp => resp.json())
+    .then(({documentBudgetaires, aggregations}) => {
+        documentBudgetaires = documentBudgetaires.map(db => {
             db.rows = new ImmutableSet(db.rows.map(LigneBudgetRecord))
             return DocumentBudgetaire(db)
         })
 
-        const mostRecentYear = docBudgs.map(({Exer}) => Exer).sort((a, b) => a-b).pop()
+        const mostRecentYear = documentBudgetaires.map(({Exer}) => Exer).sort((a, b) => a-b).pop()
 
         store.dispatch({
             type: CHANGE_EXPLORATION_YEAR,
@@ -134,11 +134,11 @@ const docBudgsP = fetch(assets[COMPTES_ADMINISTRATIFS]).then(resp => resp.json()
         });
 
         store.dispatch({
-            type: DOCUMENTS_BUDGETAIRES_RECEIVED,
-            docBudgs,
+            type: FINANCE_DATA_RECIEVED,
+            docBudgs: documentBudgetaires,
         });
 
-        return docBudgs;
+        return documentBudgetaires;
     });
 
 
