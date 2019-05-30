@@ -6,7 +6,7 @@ import { Record, Map as ImmutableMap, List, Set as ImmutableSet } from 'immutabl
 import { csv } from 'd3-fetch';
 import page from 'page';
 
-import {assets, FINANCE_DATA, AGGREGATED_ATEMPORAL, AGGREGATED_TEMPORAL, CORRECTIONS_AGGREGATED, MONTREUIL_NOMENCLATURE} from './constants/resources';
+import {assets, FINANCE_DATA, AGGREGATED_ATEMPORAL, AGGREGATED_TEMPORAL, CORRECTIONS_AGGREGATED} from './constants/resources';
 import reducer from './reducer';
 
 import {LigneBudgetRecord, DocumentBudgetaire} from 'document-budgetaire/Records.js';
@@ -21,11 +21,8 @@ import { HOME } from './constants/pages';
 import {
     FINANCE_DATA_RECIEVED, CORRECTION_AGGREGATION_RECEIVED,
     ATEMPORAL_TEXTS_RECEIVED, TEMPORAL_TEXTS_RECEIVED,
-    FINANCE_DETAIL_ID_CHANGE, AGGREGATION_DESCRIPTION_RECEIVED,
-    CHANGE_CURRENT_YEAR, CHANGE_EXPLORATION_YEAR,
+    FINANCE_DETAIL_ID_CHANGE, CHANGE_EXPLORATION_YEAR
 } from './constants/actions';
-
-import MontreuilNomenclatureToAggregationDescription from './MontreuilNomenclatureToAggregationDescription.js'
 
 
 import {fonctionLabels} from '../../../build/finances/finance-strings.json';
@@ -55,7 +52,6 @@ const DEFAULT_BREADCRUMB = List([
 const StoreRecord = Record({
     docBudgByYear: undefined,
     aggregationByYear: undefined,
-    aggregationDescription: undefined,
     corrections: undefined,
     explorationYear: undefined,
     // ImmutableMap<id, FinanceElementTextsRecord>
@@ -73,7 +69,6 @@ const store = createStore(
     new StoreRecord({
         docBudgByYear: new ImmutableMap(),
         aggregationByYear: new ImmutableMap(),
-        aggregationDescription: undefined,
         explorationYear: undefined,
         financeDetailId: undefined,
         textsById: ImmutableMap([[HOME, {label: 'Accueil'}]]),
@@ -158,17 +153,6 @@ csv(assets[AGGREGATED_TEMPORAL])
         store.dispatch({
             type: TEMPORAL_TEXTS_RECEIVED,
             textList
-        });
-    });
-
-Promise.all([ csv(assets[MONTREUIL_NOMENCLATURE]), docBudgsP ])
-    .then(([aggrDesc, docBudgs]) => MontreuilNomenclatureToAggregationDescription(aggrDesc, docBudgs))
-    .then(aggregationDescription => {
-        console.log('aggregationDescription', aggregationDescription.toJS())
-
-        store.dispatch({
-            type: AGGREGATION_DESCRIPTION_RECEIVED,
-            aggregationDescription
         });
     });
 

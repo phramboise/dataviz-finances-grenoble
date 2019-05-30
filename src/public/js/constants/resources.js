@@ -5,8 +5,6 @@ export const AGGREGATED_TEMPORAL = "AGGREGATED_TEMPORAL";
 export const M52_FONCTION_ATEMPORAL = "M52_FONCTION_ATEMPORAL";
 export const M52_FONCTION_TEMPORAL = "M52_FONCTION_TEMPORAL";
 
-export const MONTREUIL_NOMENCLATURE = 'MONTREUIL_NOMENCLATURE';
-
 export const CORRECTIONS_AGGREGATED = "CORRECTIONS_AGGREGATED";
 
 const {BASE_URL} = process.env;
@@ -19,7 +17,6 @@ export const assets = {
     // finance data
     [FINANCE_DATA]: `${BASE_URL}/build/finances/finance-data.json`,
     [CORRECTIONS_AGGREGATED]: `${BASE_URL}/data/finances/corrections-agregation.csv`,
-    [MONTREUIL_NOMENCLATURE]: `${BASE_URL}/data/agrégation-montreuil.csv`,
 
     // texts
     [AGGREGATED_ATEMPORAL]: `${BASE_URL}/data/texts/aggregated-atemporal.csv`,

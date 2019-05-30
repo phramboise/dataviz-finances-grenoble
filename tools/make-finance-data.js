@@ -38,8 +38,6 @@ mkdir(BUILD_FINANCE_DIR)
     return montreuilNomenclatureP
     .then((montreuilNomenclature) => MontreuilNomenclatureToAggregationDescription(montreuilNomenclature, documentBudgetaires))
     .then(aggregationDescription => {
-        console.log('aggregationDescription', aggregationDescription.toJS())
-
         return {
             documentBudgetaires,
             aggregations: documentBudgetaires.map(docBudg => ({

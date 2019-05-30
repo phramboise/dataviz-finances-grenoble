@@ -4,7 +4,7 @@ import { markdown as md } from '../../shared/js/components/Markdown';
 import {
     FINANCE_DETAIL_ID_CHANGE, FINANCE_DATA_RECIEVED, CORRECTION_AGGREGATION_RECEIVED,
     ATEMPORAL_TEXTS_RECEIVED, TEMPORAL_TEXTS_RECEIVED,
-    CHANGE_EXPLORATION_YEAR, CHANGE_CURRENT_YEAR, AGGREGATION_DESCRIPTION_RECEIVED
+    CHANGE_EXPLORATION_YEAR, CHANGE_CURRENT_YEAR
 } from './constants/actions';
 
 const FinanceElementTextsRecord = Record({
@@ -77,9 +77,6 @@ export default function reducer(state, action) {
         case CHANGE_CURRENT_YEAR: {
             const {year} = action;
             return state.set('currentYear', year);
-        }
-        case AGGREGATION_DESCRIPTION_RECEIVED: {
-            return state.set('aggregationDescription', action.aggregationDescription);
         }
         case '@@redux/INIT':
             return state
