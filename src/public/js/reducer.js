@@ -19,13 +19,17 @@ export default function reducer(state, action) {
 
     switch (type) {
         case FINANCE_DATA_RECIEVED:{
-            const {docBudgs} = action;
+            const {documentBudgetaires, aggregations} = action;
 
             let newState = state;
 
-            docBudgs.forEach(db => {
+            for(const db of documentBudgetaires){
                 newState = newState.setIn(['docBudgByYear', db.Exer], db);
-            })
+            }
+
+            for(const {year, aggregation} of aggregations){
+                newState = newState.setIn(['aggregationByYear', year], aggregation);
+            }
 
             return newState
         }

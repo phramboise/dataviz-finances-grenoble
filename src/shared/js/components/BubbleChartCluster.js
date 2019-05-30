@@ -26,7 +26,6 @@ export default function BubbleChartCluster({tree}){
     // PROBLEM This is super-hardcoded
     const families = tree
         .children
-        .toJS()
         .map(node1 => {
             return {
                 id: node1.id,

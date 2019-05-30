@@ -54,6 +54,7 @@ const DEFAULT_BREADCRUMB = List([
 
 const StoreRecord = Record({
     docBudgByYear: undefined,
+    aggregationByYear: undefined,
     aggregationDescription: undefined,
     corrections: undefined,
     explorationYear: undefined,
@@ -71,6 +72,7 @@ const store = createStore(
     reducer,
     new StoreRecord({
         docBudgByYear: new ImmutableMap(),
+        aggregationByYear: new ImmutableMap(),
         aggregationDescription: undefined,
         explorationYear: undefined,
         financeDetailId: undefined,
@@ -135,7 +137,8 @@ const docBudgsP = fetch(assets[FINANCE_DATA]).then(resp => resp.json())
 
         store.dispatch({
             type: FINANCE_DATA_RECIEVED,
-            docBudgs: documentBudgetaires,
+            documentBudgetaires,
+            aggregations
         });
 
         return documentBudgetaires;
