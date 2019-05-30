@@ -15,7 +15,7 @@
     "build-demo:public": "npm-run-all --serial build:public:data:* --parallel build:public:style build:public:script",
     "build:public:style": "node-sass --importer src/public/style/env-importer.js src/public/style/main.scss build/public.css",
     "build:public:script": "browserify src/public/js/main.js -o build/dataviz-finance-bundle.js -p tinyify",
-    "build:public:data:finance-data": "cross-env SOURCE_COMPTES_DIR=data/finances/plansDeCompte SOURCE_CA_DIR=data/finances/CA BUILD_FINANCE_DIR=build/finances node -r esm tools/make-public-data.js",
+    "build:public:data:finance-data": "cross-env SOURCE_COMPTES_DIR=data/finances/plansDeCompte SOURCE_CA_DIR=data/finances/CA BUILD_FINANCE_DIR=build/finances node -r esm tools/make-finance-data.js",
     "build:public:data:finance-strings": "cross-env SOURCE_COMPTES_DIR=data/finances/plansDeCompte BUILD_FINANCE_DIR=build/finances node -r esm tools/make-doc-budg-strings.js",
     "dl:plans-de-compte": "npx github:dtc-innovation/plans-de-compte --in data/finances/CA --out data/finances/plansDeCompte",
     "watch:finance-overview": "cross-env NODE_ENV=development BASE_URL=http://localhost:3000 watchify src/finance-overview/js/main.js -o build/finance-overview-bundle.js -d -v",
@@ -57,7 +57,8 @@
   "esm": {
     "mode": "auto",
     "cjs": {
-      "namedExports": true
+      "namedExports": true,
+      "vars":true
     }
   },
   "dependencies": {
