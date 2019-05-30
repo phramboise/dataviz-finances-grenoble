@@ -17,7 +17,6 @@ import { CHANGE_EXPLORATION_YEAR } from "../../constants/actions.js";
 
 import { hierarchicalByFunction } from "../../../../shared/js/finance/memoized";
 import { aggregatedDocumentBudgetaireNodeTotal } from '../../../../shared/js/finance/AggregationDataStructures'
-import makeAggregateFunction from "../../../../shared/js/finance/makeAggregateFunction.js"
 
 
 import PageTitle from "../../../../shared/js/components/gironde.fr/PageTitle";
