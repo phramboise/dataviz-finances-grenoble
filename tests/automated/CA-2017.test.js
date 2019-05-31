@@ -12,9 +12,9 @@ import { EXPENDITURES, REVENUE, DF, RF, RI, DI } from '../../src/shared/js/finan
 
 jest.addMatchers(matchers);
 
-const docBudgs = require('../../build/finances/doc-budgs.json').map(d => {
-    d.rows = new ImmutableSet( d.rows.map(LigneBudgetRecord) )
-    return DocumentBudgetaire(d)
+const docBudgs = require('../../build/finances/finance-data.json').documentBudgetaires.map(db => {
+    db.rows = new ImmutableSet( db.rows.map(LigneBudgetRecord) )
+    return DocumentBudgetaire(db)
 });
 const docBudg = docBudgs.find(db => db['Exer'] === 2017);
 
