@@ -48,8 +48,7 @@ const DEFAULT_BREADCRUMB = List([
     }
 ]);
 
-const logError = (error) => console.error(error);
-
+const logError = (error) => console.error(error.message, error.trace);
 
 const StoreRecord = Record({
     docBudgByYear: undefined,
