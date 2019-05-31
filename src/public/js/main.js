@@ -48,6 +48,8 @@ const DEFAULT_BREADCRUMB = List([
     }
 ]);
 
+const logError = (error) => console.error(error);
+
 
 const StoreRecord = Record({
     docBudgByYear: undefined,
@@ -113,7 +115,8 @@ fetch(assets[CORRECTIONS_AGGREGATED]).then(resp => resp.text())
             type: CORRECTION_AGGREGATION_RECEIVED,
             corrections
         });
-    });
+    })
+    .catch(logError);
 
 
 const docBudgsP = fetch(assets[FINANCE_DATA]).then(resp => resp.json())
@@ -137,7 +140,8 @@ const docBudgsP = fetch(assets[FINANCE_DATA]).then(resp => resp.json())
         });
 
         return documentBudgetaires;
-    });
+    })
+    .catch(logError);
 
 
 csv(assets[AGGREGATED_ATEMPORAL])
@@ -146,7 +150,8 @@ csv(assets[AGGREGATED_ATEMPORAL])
             type: ATEMPORAL_TEXTS_RECEIVED,
             textList
         });
-    });
+    })
+    .catch(logError);
 
 csv(assets[AGGREGATED_TEMPORAL])
     .then(textList => {
@@ -154,7 +159,8 @@ csv(assets[AGGREGATED_TEMPORAL])
             type: TEMPORAL_TEXTS_RECEIVED,
             textList
         });
-    });
+    })
+    .catch(logError);
 
 
 
