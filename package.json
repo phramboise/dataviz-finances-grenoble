@@ -6,7 +6,7 @@
   "main": "index.js",
   "scripts": {
     "watch": "run-p watch:*",
-    "serve": "http-server --cors -p 3000 --silent -a 127.0.0.1 .",
+    "serve": "serve -l 3000 --no-clipboard",
     "start": "run-p serve watch:*",
     "test": "jest",
     "build-demo": "cross-env NODE_ENV=demo BASE_URL=${BASE_URL:=https://dtc-innovation.github.io/dataviz-finances-montreuil} npm-run-all --serial build-demo:public build:finance-overview",
@@ -58,7 +58,7 @@
     "mode": "auto",
     "cjs": {
       "namedExports": true,
-      "vars":true
+      "vars": true
     }
   },
   "dependencies": {
@@ -105,12 +105,12 @@
     "enzyme-adapter-react-16": "^1.13.2",
     "eslint": "^5.16.0",
     "eslint-plugin-react": "^7.13.0",
-    "http-server": "^0.11.1",
     "jest": "^24.8.0",
     "jest-immutable-matchers": "^1.4.0",
     "node-sass": "^4.12.0",
     "npm-run-all": "^4.1.5",
     "react-test-renderer": "^16.8.6",
+    "serve": "^11.0.1",
     "tinyify": "^2.5.1",
     "watchify": "^3.11.1"
   }
