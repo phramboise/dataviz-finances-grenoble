@@ -17,7 +17,6 @@ import { CHANGE_EXPLORATION_YEAR } from "../../constants/actions.js";
 
 import { hierarchicalByFunction } from "../../../../shared/js/finance/memoized";
 import { aggregatedDocumentBudgetaireNodeTotal } from '../../../../shared/js/finance/AggregationDataStructures'
-import makeAggregateFunction from "../../../../shared/js/finance/makeAggregateFunction.js"
 
 
 import PageTitle from "../../../../shared/js/components/gironde.fr/PageTitle";
@@ -44,11 +43,11 @@ export class ExploreBudget extends Component{
     }
 
     render(){
-        const { explorationYear, totals, aggregationTreeByYear, resources } = this.props
+        const { explorationYear, totals, aggregationByYear, resources } = this.props
         const { changeExplorationYear } = this.props;
         const {RD, FI} = this.state
 
-        const rdfiTreeByYear = aggregationTreeByYear.map(aggregationTree => {
+        const rdfiTreeByYear = aggregationByYear.map(aggregationTree => {
             const rdTree = (RD === 'D' ?
                 aggregationTree.children.find(c => c.id.includes('DEPENSE')) :
                 aggregationTree.children.find(c => c.id.includes('RECETTE'))
@@ -59,7 +58,6 @@ export class ExploreBudget extends Component{
                 rdTree.children.find(c => c.id.includes('FONCTIONNEMENT'))
             );
         })
-
 
 
         const expenditures = totals.get(EXPENDITURES);
@@ -80,18 +78,18 @@ export class ExploreBudget extends Component{
         // Bubble data
         const currentYearrdfiTree = rdfiTreeByYear.get(explorationYear);
 
-            // For DF, dig to a specific level
+        // For DF, dig to a specific level
         let bubbleTreeData = (currentYearrdfiTree && RD === 'D' && FI === 'F') ?
             currentYearrdfiTree.children.find(c => c.id.includes('Gestion courante'))
             : currentYearrdfiTree
 
 
         // Build stackachart data from rdfiTree
-        const years = aggregationTreeByYear.keySeq().toJS();
+        const years = aggregationByYear.keySeq().toArray();
 
         const barchartPartitionByYear = rdfiTreeByYear.map(rdfiTree => {
             // Create "level 2" data as a list
-            return rdfiTree.children.toList().map(c => {
+            return rdfiTree.children.map(c => {
                 return {
                     contentId: c.id,
                     partAmount: aggregatedDocumentBudgetaireNodeTotal(c),
@@ -108,13 +106,11 @@ export class ExploreBudget extends Component{
                 colorClassById.set(contentId, `rdfi-${RD} rdfi-${FI} area-color-${i+1}`)
             })
 
-            legendItemIds = barchartPartitionByYear
-                .map(partition => partition.map(part => part.contentId).toSet())
-                .toSet().flatten().toArray()
+            legendItemIds = new Set(barchartPartitionByYear
+                .map(partition => partition.map(part => part.contentId)).valueSeq().toArray().flat())
         }
 
-
-        const legendItems = legendItemIds.map(id => {
+        const legendItems = [...legendItemIds].map(id => {
             let foundPart;
 
             barchartPartitionByYear.find(partition => {
@@ -245,14 +241,10 @@ export default connect(
     state => {
         const {
             docBudgByYear,
-            aggregationDescription,
+            aggregationByYear,
             explorationYear,
             resources,
         } = state;
-
-        const aggregationTreeByYear = aggregationDescription ? docBudgByYear.map(
-            documentBudgetaire => makeAggregateFunction(aggregationDescription)(documentBudgetaire)
-        ) : new ImmutableMap()
 
         const documentBudgetaire = docBudgByYear.get(explorationYear);
 
@@ -271,7 +263,7 @@ export default connect(
         return {
             explorationYear,
             totals,
-            aggregationTreeByYear,
+            aggregationByYear,
             resources,
         };
     },

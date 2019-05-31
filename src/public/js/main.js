@@ -6,7 +6,7 @@ import { Record, Map as ImmutableMap, List, Set as ImmutableSet } from 'immutabl
 import { csv } from 'd3-fetch';
 import page from 'page';
 
-import {assets, COMPTES_ADMINISTRATIFS, AGGREGATED_ATEMPORAL, AGGREGATED_TEMPORAL, CORRECTIONS_AGGREGATED, MONTREUIL_NOMENCLATURE} from './constants/resources';
+import {assets, FINANCE_DATA, AGGREGATED_ATEMPORAL, AGGREGATED_TEMPORAL, CORRECTIONS_AGGREGATED} from './constants/resources';
 import reducer from './reducer';
 
 import {LigneBudgetRecord, DocumentBudgetaire} from 'document-budgetaire/Records.js';
@@ -19,13 +19,10 @@ import ExploreBudget from './components/screens/ExploreBudget';
 
 import { HOME } from './constants/pages';
 import {
-    DOCUMENTS_BUDGETAIRES_RECEIVED, CORRECTION_AGGREGATION_RECEIVED,
+    FINANCE_DATA_RECIEVED, CORRECTION_AGGREGATION_RECEIVED,
     ATEMPORAL_TEXTS_RECEIVED, TEMPORAL_TEXTS_RECEIVED,
-    FINANCE_DETAIL_ID_CHANGE, AGGREGATION_DESCRIPTION_RECEIVED,
-    CHANGE_CURRENT_YEAR, CHANGE_EXPLORATION_YEAR,
+    FINANCE_DETAIL_ID_CHANGE, CHANGE_EXPLORATION_YEAR
 } from './constants/actions';
-
-import MontreuilNomenclatureToAggregationDescription from './MontreuilNomenclatureToAggregationDescription.js'
 
 
 import {fonctionLabels} from '../../../build/finances/finance-strings.json';
@@ -54,7 +51,7 @@ const DEFAULT_BREADCRUMB = List([
 
 const StoreRecord = Record({
     docBudgByYear: undefined,
-    aggregationDescription: undefined,
+    aggregationByYear: undefined,
     corrections: undefined,
     explorationYear: undefined,
     // ImmutableMap<id, FinanceElementTextsRecord>
@@ -71,7 +68,7 @@ const store = createStore(
     reducer,
     new StoreRecord({
         docBudgByYear: new ImmutableMap(),
-        aggregationDescription: undefined,
+        aggregationByYear: new ImmutableMap(),
         explorationYear: undefined,
         financeDetailId: undefined,
         textsById: ImmutableMap([[HOME, {label: 'Accueil'}]]),
@@ -119,14 +116,14 @@ fetch(assets[CORRECTIONS_AGGREGATED]).then(resp => resp.text())
     });
 
 
-const docBudgsP = fetch(assets[COMPTES_ADMINISTRATIFS]).then(resp => resp.json())
-    .then(docBudgs => {
-        docBudgs = docBudgs.map(db => {
+const docBudgsP = fetch(assets[FINANCE_DATA]).then(resp => resp.json())
+    .then(({documentBudgetaires, aggregations}) => {
+        documentBudgetaires = documentBudgetaires.map(db => {
             db.rows = new ImmutableSet(db.rows.map(LigneBudgetRecord))
             return DocumentBudgetaire(db)
         })
 
-        const mostRecentYear = docBudgs.map(({Exer}) => Exer).sort((a, b) => a-b).pop()
+        const mostRecentYear = documentBudgetaires.map(({Exer}) => Exer).sort((a, b) => a-b).pop()
 
         store.dispatch({
             type: CHANGE_EXPLORATION_YEAR,
@@ -134,11 +131,12 @@ const docBudgsP = fetch(assets[COMPTES_ADMINISTRATIFS]).then(resp => resp.json()
         });
 
         store.dispatch({
-            type: DOCUMENTS_BUDGETAIRES_RECEIVED,
-            docBudgs,
+            type: FINANCE_DATA_RECIEVED,
+            documentBudgetaires,
+            aggregations
         });
 
-        return docBudgs;
+        return documentBudgetaires;
     });
 
 
@@ -155,17 +153,6 @@ csv(assets[AGGREGATED_TEMPORAL])
         store.dispatch({
             type: TEMPORAL_TEXTS_RECEIVED,
             textList
-        });
-    });
-
-Promise.all([ csv(assets[MONTREUIL_NOMENCLATURE]), docBudgsP ])
-    .then(([aggrDesc, docBudgs]) => MontreuilNomenclatureToAggregationDescription(aggrDesc, docBudgs))
-    .then(aggregationDescription => {
-        console.log('aggregationDescription', aggregationDescription.toJS())
-
-        store.dispatch({
-            type: AGGREGATION_DESCRIPTION_RECEIVED,
-            aggregationDescription
         });
     });
 
