@@ -9,6 +9,14 @@ const FORMULA_MAP = {
     'FONCTIONNEMENT': 'F',
 }
 
+function fixLabels(row) {
+    return Object.fromEntries(
+        Object.entries(row).map(([key, value], i, array) => {
+            return [ key, value !== '-' ? value : array[i-1][1] ]
+        })
+    )
+}
+
 function makeFormulaFromMontreuilRows(rows){
     const rowsByRDFI = new Map()
 
@@ -37,7 +45,7 @@ function makeFormulaFromMontreuilRows(rows){
 
         return `${RDFI}*(${rowsFormula})`
     }).join(' + ')
-        
+
 }
 
 function getMontreuilNomenclatureRowKeys(MontreuilNomenclatureRow){
@@ -87,13 +95,14 @@ export default function MontreuilNomenclatureToAggregationDescription(montreuilN
     }
 
     montreuilNomenclature = montreuilNomenclature
-        .filter(r => r["Nature Mvt"] === "REELLE" && 
+        .filter(r => r["Nature Mvt"] === "REELLE" &&
             docBudgsFonctionNatureCombos.has(makeFonctionNatureCombo(r["Fonction - Code"], r['Nature - Code']))
         )
-        
+
     for(const row of montreuilNomenclature){
-        map = map.updateIn(getMontreuilNomenclatureRowKeys(row), val => val ? val.add(row) : new ImmutableSet([row]))
+        const fixedRow = fixLabels(row)
+        map = map.updateIn(getMontreuilNomenclatureRowKeys(fixedRow), val => val ? val.add(fixedRow) : new ImmutableSet([fixedRow]))
     }
-    
+
     return nomenclatureNodeToAggregationNode(map, 'Budget Montreuil', 'Budget Montreuil');
 }
