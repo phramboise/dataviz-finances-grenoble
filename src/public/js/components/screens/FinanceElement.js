@@ -20,7 +20,7 @@ import { DF, DI } from '../../../../shared/js/finance/constants';
 import {fonctionLabels, natureLabels} from '../../../../../build/finances/finance-strings.json';
 
 import StackChart from '../../../../shared/js/components/StackChart';
-import {makeAmountString, default as MoneyAmount} from '../../../../shared/js/components/MoneyAmount';
+import {ScaledAmount, default as MoneyAmount} from '../../../../shared/js/components/MoneyAmount';
 
 import PageTitle from '../../../../shared/js/components/gironde.fr/PageTitle';
 import SecundaryTitle from '../../../../shared/js/components/gironde.fr/SecundaryTitle';
@@ -215,10 +215,10 @@ export function FinanceElement({contentId, element, year, resources}) {
                     <tbody>
                     {lignesBudget && lignesBudget
                         .sort((r1, r2) => r2['MtReal'] - r1['MtReal'])
-                        .map(ligne => <tr title={makeLigneBudgetId(ligne)}>
-                            <td>{fonctionLabels[ligne['Fonction']]}</td>
-                            <td>{natureLabels[ligne['Nature']]}</td>
-                            <td><MoneyAmount amount={ligne['MtReal']} /></td>
+                        .map(ligne => <tr data-id={makeLigneBudgetId(ligne)}>
+                            <td data-id={'F'+ligne['Fonction']}>{fonctionLabels[ligne['Fonction']]}</td>
+                            <td data-id={'N'+ligne['Nature']}>{natureLabels[ligne['Nature']]}</td>
+                            <td title={ligne['MtReal']+'€'}><ScaledAmount amount={ligne['MtReal']} /></td>
                         </tr>
                     )}
                     </tbody>
