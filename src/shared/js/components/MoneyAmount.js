@@ -46,7 +46,7 @@ function makeParts(amount, {scale}) {
 
     if (Math.abs(amount) < scale.threshold) {
         return [
-            { className: 'hundreds', string: amount.toFixed(2) },
+            { className: 'hundreds', string: currency.format(amount) },
             { className: 'suffix', string: '€' },
         ]
     }

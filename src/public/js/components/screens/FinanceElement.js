@@ -2,6 +2,7 @@ import { Map as ImmutableMap, List, Set as ImmutableSet } from 'immutable';
 
 import React from 'react';
 import { connect } from 'react-redux';
+import ReactTooltip from 'react-tooltip'
 
 import page from 'page';
 
@@ -218,7 +219,8 @@ export function FinanceElement({contentId, element, year, resources}) {
                         .map(ligne => <tr data-id={makeLigneBudgetId(ligne)}>
                             <td data-id={'F'+ligne['Fonction']}>{fonctionLabels[ligne['Fonction']]}</td>
                             <td data-id={'N'+ligne['Nature']}>{natureLabels[ligne['Nature']]}</td>
-                            <td title={ligne['MtReal']+'€'}><ScaledAmount amount={ligne['MtReal']} /></td>
+                            <td data-tip={ligne['MtReal']+'€'}><ScaledAmount amount={ligne['MtReal']} /></td>
+                            <ReactTooltip effect="solid" place="left" delayShow="100" />
                         </tr>
                     )}
                     </tbody>
