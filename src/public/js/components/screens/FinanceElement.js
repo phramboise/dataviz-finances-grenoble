@@ -70,14 +70,15 @@ interface FinanceElementProps{
 */
 
 
-export function FinanceElement({contentId, element, year, resources}) {
+export function FinanceElement({contentId, element, explorationYear, aggregationByYear, resources, changeExplorationYear}) {
+    const years = aggregationByYear.keySeq().toArray();
+
     /*const label = texts && texts.label || '';
     const atemporalText = texts && texts.atemporal;
     const temporalText = texts && texts.temporal;
 
     const amount = amountByYear.get(year);
 
-    const years = partitionByYear.keySeq().toJS();
 
     // sort all partitions part according to the order of the last year partition
     let lastYearPartition = partitionByYear.get(max(years))
@@ -165,7 +166,12 @@ export function FinanceElement({contentId, element, year, resources}) {
                     {element && `${element.label} : `}
                     <MoneyAmount amount={total} />
                 </h1>
-                <h2>Année {year}</h2>
+                <h2>
+                    Année
+                    <select value={explorationYear} onChange={(event) => changeExplorationYear(Number(event.target.value))}>
+                    {years.map(year => <option key={year} value={year}>{year}</option>)}
+                    </select>
+                </h2>
             </header>
 
         {/*React.createElement('section', {},
@@ -204,7 +210,7 @@ export function FinanceElement({contentId, element, year, resources}) {
         ),*/}
 
             <section className="raw-data">
-                <SecundaryTitle text={`Détail de cette politique budgétaire pour l'année ${year}`} />
+                <SecundaryTitle text={`Détail de cette politique budgétaire pour l'année ${explorationYear}`} />
                 <table>
                     <thead>
                         <tr>
@@ -384,7 +390,8 @@ export default connect(
         return {
             contentId: displayedContentId,
             element,
-            year: explorationYear,
+            explorationYear,
+            aggregationByYear,
             resources,
             /*RDFI,
             amountByYear,
@@ -399,7 +406,6 @@ export default connect(
                         '')
             })),
             texts,
-            partitionByYear,
             m52Rows,
             screenWidth*/
         }
