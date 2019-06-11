@@ -9,6 +9,14 @@ const FORMULA_MAP = {
     'FONCTIONNEMENT': 'F',
 }
 
+function rdfiFromSection (row) {
+    const parts = row['Niveau 1 - Section'].trim().split(' ')
+
+    //returns first and last parts of the Section string
+    //-> [RD, FI]
+    return [ parts[0], parts.pop() ]
+}
+
 function fixLabels(row) {
     return Object.fromEntries(
         Object.entries(row).map(([key, value], i, array) => {
@@ -95,6 +103,13 @@ export default function MontreuilNomenclatureToAggregationDescription(montreuilN
     }
 
     montreuilNomenclature = montreuilNomenclature
+        .map(row => {
+            // we patch the Sens and Section from the Niveau 1 label
+            // this is used to override where a content can be located
+            // see https://github.com/dtc-innovation/dataviz-finances-montreuil/issues/101
+            const [Sens, Section] = rdfiFromSection(row)
+            return {...row, Sens, Section}
+        })
         .filter(r => r["Nature Mvt"] === "REELLE" &&
             docBudgsFonctionNatureCombos.has(makeFonctionNatureCombo(r["Fonction - Code"], r['Nature - Code']))
         )
