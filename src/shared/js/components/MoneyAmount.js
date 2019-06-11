@@ -31,11 +31,15 @@ const short = new Intl.NumberFormat('fr-FR', {
 
 const getScale = (scaleId) => SCALES.find(s => s.suffix === scaleId)
 
+export function currencyFormat(amount) {
+    return currency.format(amount) + '€';
+}
+
 export function makeAmountString(amount){
     const {suffix, divideBy, threshold} = getScale('M')
 
     return Math.abs(amount) < threshold ?
-        currency.format(amount) + '€' :
+        currencyFormat(amount) :
         short.format(amount / divideBy) + suffix + '€'
 }
 

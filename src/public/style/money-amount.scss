@@ -3,6 +3,10 @@
     font-weight: bold;
     white-space: nowrap;
 
+    &.tooltip {
+        font-weight: normal;
+    }
+
     @each $rd, $palette in $rdfi {
         .rdfi-#{$rd} & {
             color: map-get($palette, 'F');

@@ -21,7 +21,7 @@ import { DF, DI } from '../../../../shared/js/finance/constants';
 import {fonctionLabels, natureLabels} from '../../../../../build/finances/finance-strings.json';
 
 import StackChart from '../../../../shared/js/components/StackChart';
-import {ScaledAmount, default as MoneyAmount} from '../../../../shared/js/components/MoneyAmount';
+import {currencyFormat, ScaledAmount, default as MoneyAmount} from '../../../../shared/js/components/MoneyAmount';
 
 import PageTitle from '../../../../shared/js/components/gironde.fr/PageTitle';
 import SecundaryTitle from '../../../../shared/js/components/gironde.fr/SecundaryTitle';
@@ -216,11 +216,13 @@ export function FinanceElement({contentId, element, year, resources}) {
                     <tbody>
                     {lignesBudget && lignesBudget
                         .sort((r1, r2) => r2['MtReal'] - r1['MtReal'])
-                        .map(ligne => <tr data-id={makeLigneBudgetId(ligne)}>
+                        .map(ligne => <tr key={makeLigneBudgetId(ligne)}>
                             <td data-id={'F'+ligne['Fonction']}>{fonctionLabels[ligne['Fonction']]}</td>
                             <td data-id={'N'+ligne['Nature']}>{natureLabels[ligne['Nature']]}</td>
-                            <td data-tip={ligne['MtReal']+'€'}><ScaledAmount amount={ligne['MtReal']} /></td>
-                            <ReactTooltip effect="solid" place="left" delayShow="100" />
+                            <td data-tip={currencyFormat(ligne['MtReal'])}>
+                                <ScaledAmount amount={ligne['MtReal']} />
+                                <ReactTooltip className="money-amount tooltip" effect="solid" place="left" delayShow={10} />
+                            </td>
                         </tr>
                     )}
                     </tbody>
