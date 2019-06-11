@@ -155,7 +155,12 @@ export class ExploreBudget extends Component{
             </section>
 
             <section className="yearly-budget">
-                <h2>Le budget {explorationYear}</h2>
+                <h2>
+                    Le budget
+                    <select value={explorationYear} onChange={(event) => changeExplorationYear(Number(event.target.value))}>
+                    {years.map(year => <option key={year} value={year}>{year}</option>)}
+                    </select>
+                </h2>
 
                 <figure className="side-by-side" role="table">
                     <Donut items={revenueItems} padAngle={0.015}>
@@ -220,7 +225,6 @@ export class ExploreBudget extends Component{
                             legendItems={ legendItems }
                             yValueDisplay={makeAmountString}
                             contentId={currentYearrdfiTree.id}
-                            onSelectedXAxisItem={changeExplorationYear}
                         /> :
                         undefined
                 }
