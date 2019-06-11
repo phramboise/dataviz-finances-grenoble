@@ -4,6 +4,9 @@
   "version": "1.0.0",
   "description": "...",
   "main": "index.js",
+  "engines": {
+    "node": ">=12"
+  },
   "scripts": {
     "watch": "run-p watch:*",
     "serve": "serve -l 3000 --no-clipboard",
