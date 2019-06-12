@@ -17,17 +17,18 @@ export default class BubbleChartNode extends React.Component {
         const {node, maxNodeValue} = this.props;
         const {total, label, children} = node;
         const RorD = node.rdfi[0];
-        const WIDTH = 400;
-        const HEIGHT = 400;
-        const radius = scaleLinear().domain([0, maxNodeValue]).range([0, WIDTH / 2.5]);
+        const WIDTH = 250;
+        const HEIGHT = 200;
+        const radius = scaleLinear().domain([0, maxNodeValue]).range([3, 80]);
 
         const nodes = hierarchy({name: label, children})
+            .sum(d => d.total)
             .sort((a, b) => b.total - a.total);
 
         const bubbles = pack()
             .size([WIDTH, HEIGHT])
-            .padding(10)
-            .radius(d => Math.max(radius(d.data.total), 3))
+            .padding(3)
+            .radius(d => radius(d.data.total))
 
         const listMapNodes = bubbles(nodes).children;
 
@@ -42,8 +43,8 @@ export default class BubbleChartNode extends React.Component {
                     <g key={data.id} transform={`translate(${x}, ${y})`}>
                         <a
                             // href={`#!/finance-details/${data.id}`}
-                            onClick={e => e.preventDefault() && page(`/finance-details/${data.id}`)}
-                            onTouchEnd={e => e.preventDefault() && ReactTooltip.show(e.target)}
+                            onClick={e => page(`/finance-details/${data.id}`)}
+                            onKeyPress={e => e.key === 'Enter' && page(`/finance-details/${data.id}`)}
                             className="clickable"
                             onFocus={e => ReactTooltip.show(e.target)}
                             onBlur={e => ReactTooltip.hide(e.target)}

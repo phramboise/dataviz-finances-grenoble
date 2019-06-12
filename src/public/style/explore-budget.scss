@@ -114,12 +114,6 @@ $RX-L: 60%;
             flex: 1 1 100%;
         }
 
-        /* makes it clear for keyboard navigation */
-        a:focus circle {
-            stroke: $brand-color;
-            stroke-width: 5px;
-        }
-
         .legend-list {
             display: flex;
             justify-content: space-between;
@@ -135,12 +129,15 @@ $RX-L: 60%;
 
         .bubble-chart {
             margin: 1.5em 0;
-            width: 30%;
+            width: 25%;
 
             figcaption {
                 display: block;
-                margin-bottom: -1em;
                 text-align: center;
+
+                span:not(.money-amount) {
+                    font-size: .8em;
+                }
             }
 
             .money-amount {
@@ -151,7 +148,16 @@ $RX-L: 60%;
         @each $rd, $pairs in $rdfi {
             @each $fi, $color in $pairs {
                 .rdfi-#{$rd}.rdfi-#{$fi} {
+                    stroke: darken($color, 8%);
+                    stroke-width: 2px;
                     fill: $color;
+                }
+
+                /* makes it clear for keyboard navigation */
+                a:focus .rdfi-#{$rd}.rdfi-#{$fi},
+                a:hover .rdfi-#{$rd}.rdfi-#{$fi} {
+                    fill: lighten($color, 10%);
+                    stroke: darken($color, 15%);
                 }
             }
         }
