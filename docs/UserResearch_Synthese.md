@@ -5,81 +5,80 @@
 - 🧐 Questionnaires en ligne
     - Personnel administratif -  [questionnaire](https://user-research-survey.typeform.com/to/EO04Gl) - [réponses](https://docs.google.com/spreadsheets/d/1HIrIyv6kfMvXCFMFj2AEcWlCy2iOijsKtijgTJP1KPM/edit?usp=drive_web&ouid=110663118079093106153)
 	- Grand public - [questionnaire](https://user-research-survey.typeform.com/to/HnqT90) - [réponses](https://docs.google.com/spreadsheets/d/1bq3RgbBxszusUOePxZxiuY-tskr-9pDOdBRFrzH3WfM/edit#gid=955416595)
-	
 - ✍️ Résumé des interviews guérillas
 - 👨‍👩‍👧‍👦 Transcripts des interviews guérillas
 
 ---
-# Résumé des questionnaires en ligne
-## Personnel administratif - 8 participants de 8 services différents
+## Résumé des questionnaires en ligne
+### 👩‍💼 👨‍💼 Personnel administratif - 8 participants de 8 services différents
 #### Tranche d’age
-• 57.1% entre 35 et 49 ans
-• 28.6% entre 50 et 64 ans
-• 14.3% entre 25 et 34 ans
+- 57.1% entre 35 et 49 ans
+- 28.6% entre 50 et 64 ans
+- 14.3% entre 25 et 34 ans
 
-## Les besoins / attentes
-• **Consulter les budgets transversaux**, notamment le budget participatif et les subventions aux associations
-	• question : aujourd’hui il n’est pas possible d’isoler l’information du budget participatif : comment faire demain ?
-• **Consulter la répartition du budget** par :
-	• secteur d’intervention
-	• service
-	• direction (exemple “Jeunesse et éducation populaire”)
-		• question : est-ce que “secteur d’intervention”, “service”, “direction” correspondent à la norme M14 ou au Politique / Sous-politique ?
-• **Consulter le budget RH**
-	• masse salariale
-	• les directifs
-		• question : est-ce que ces informations sont accessibles ?
+#### Les besoins / attentes
+- **Consulter les budgets transversaux**, notamment le budget participatif et les subventions aux associations
+	- ❓ question : aujourd’hui il n’est pas possible d’isoler l’information du budget participatif : comment faire demain ?
+- **Consulter la répartition du budget** par :
+	- secteur d’intervention
+	- service 
+	- direction (exemple “Jeunesse et éducation populaire”)
+	- ❓ : est-ce que “secteur d’intervention”, “service”, “direction” correspondent à la norme M14 ou au Politique / Sous-politique ?
+- **Consulter le budget RH**
+	- masse salariale
+	- les directifs
+	- ❓ : est-ce que ces informations sont accessibles ?
 
-## Pourquoi ces besoins / attentes
-• Suivre / Vérifier les budgets (ex : est-ce que les subventions aux associations ont bien été budgétées avant de valider une convention d’objectifs et de moyens)
-• Comprendre et analyser les politiques publiques dans lesquelles l’action d’un service se construit pour être plus actif dans la proposition d’améliorations et ajustements
-• Communiquer / Informer les équipes
-• Créer des bilans à destination par exemple des financeurs ( CAF, CNAV, département, etc.)
-• S’informer à titre personnel
+#### Pourquoi ces besoins / attentes
+- Suivre / Vérifier les budgets (ex : est-ce que les subventions aux associations ont bien été budgétées avant de valider une convention d’objectifs et de moyens)
+- Comprendre et analyser les politiques publiques dans lesquelles l’action d’un service se construit pour être plus actif dans la proposition d’améliorations et ajustements
+- Communiquer / Informer les équipes
+- Créer des bilans à destination par exemple des financeurs ( CAF, CNAV, département, etc.)
+- S’informer à titre personnel
 
 
-## Grand public - 21 participants dont 57,1% ont un métier ou une activité en lien avec les chiffres
+### 👩 👨 Grand public - 21 participants dont 57,1% ont un métier ou une activité en lien avec les chiffres
 #### Tranche d’age
-• 61.9% entre 35 et 49 ans
-• 33.3%% entre 25 et 34 ans
-• 4.8% entre 18 et 24 ans
+- 61.9% entre 35 et 49 ans
+- 33.3%% entre 25 et 34 ans
+- 4.8% entre 18 et 24 ans
 
-## Les besoins / attentes
-#### Comment est construit et répartit le budget :
-• d’où viennent les recettes ? Et plus particulièrement
-	• quelle est la part de recettes provenant des impôts locaux ?
-	• quelle est la part de recettes provenant de la publicité sur la voie publique ?
-	• quelles est l’affectation des dons des entreprises ?
-• où vont les dépenses ? Et plus particulièrement :
-	• quel est le salaire des personnels et des élus ?
-	• quels sont les frais de fonctionnement des la mairie et des services de la ville ?
-	• quelle est la répartition des dépenses par quartier ?
+#### Les besoins / attentes
+**Comment est construit et répartit le budget :**
+- d’où viennent les recettes ? Et plus particulièrement
+	- quelle est la part de recettes provenant des impôts locaux ?
+	- quelle est la part de recettes provenant de la publicité sur la voie publique ?
+	- quelles est l’affectation des dons des entreprises ?
+- où vont les dépenses ? Et plus particulièrement :
+	- quel est le salaire des personnels et des élus ?
+	- quels sont les frais de fonctionnement des la mairie et des services de la ville ?
+	- quelle est la répartition des dépenses par quartier ?
 
-#### Est-ce que cette répartition est le reflet des politiques publiques (annoncées) ?
-• est-ce que la commune priorise bien le bien commun ?
-• est-ce que la commune à bien pour objectif de réduire les inégalités ?
-• est-ce que la commune prévoit l’adaptation des infrastructures (commerces, services publics, transports) à la croissance de population ?
-• 	est-ce que la police reçoit de l’argent de la ville ? comment est-il utilisé ? (salaires, vidéoprotection, etc.)
+**Est-ce que cette répartition est le reflet des politiques publiques (annoncées) ?**
+- est-ce que la commune priorise bien le bien commun ?
+- est-ce que la commune à bien pour objectif de réduire les inégalités ?
+- est-ce que la commune prévoit l’adaptation des infrastructures (commerces, services publics, transports) à la croissance de population ?
+- est-ce que la police reçoit de l’argent de la ville ? comment est-il utilisé ? (salaires, vidéoprotection, etc.)
 	
-## Les sources de préoccupations
-• propreté - urbanisme (travaux, réfections), infrastructure (vélo, canalisation). 
-• crèches - écoles
-• restauration scolaire
-• culture - activité culturelle
-• associations (subventions)
+#### Les sources de préoccupations
+- propreté, urbanisme (travaux, réfections), infrastructure (vélo, canalisation). 
+- crèches, écoles
+- restauration scolaire
+- culture, activité culturelle
+- associations (subventions)
 
-## Comment ça fonctionne ?
-• comment sont utilisés les impôts ? (Peut-on voir ce qu’ils représentent dans les recettes mais aussi les dépenses ?)
-• comment sont gérés les marchés publics ? (choix des prestataires, coûts, etc.)
-• comment sont financés les projets prioritaires (pour la mairie) ? Quelles sont les dépenses ? Quels sont les bilans ?
-• comment sont choisis les projets qui bénéficient d’un financement ?
+#### Comment ça fonctionne ?
+- comment sont utilisés les impôts ? (Peut-on voir ce qu’ils représentent dans les recettes mais aussi les dépenses ?)
+- comment sont gérés les marchés publics ? (choix des prestataires, coûts, etc.)
+- comment sont financés les projets prioritaires (pour la mairie) ? Quelles sont les dépenses ? Quels sont les bilans ?
+- comment sont choisis les projets qui bénéficient d’un financement ?
 
 
-## La parole à …
+#### La parole à …
 Les répondants ont aussi exprimé le désir de **proposer des choses** et de **pouvoir comparer** :
-• des quartier entre eux
-• leur commune avec d’autres communes pour “identifier une position de curseur”
-• des dépenses entre elles (ex : police vs culture)
+- des quartier entre eux
+- leur commune avec d’autres communes pour “identifier une position de curseur”
+- des dépenses entre elles (ex : police vs culture)
 
 
 “La part des dépenses destinées à réduire les inégalités face à la part destinée à satisfaire les classes moyennes supérieures et à assurer l’attractivité. En gros rénovation urbaine, dispositif d’insertion et d’accès à l’emploi, éducation populaire face à festival, soutien aux start-ups et à l’innovation. L’idée serait de pouvoir comparer des villes sans a priori partisan et identifier une position de curseur.”
