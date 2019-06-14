@@ -15,7 +15,7 @@
 - 57.1% entre 35 et 49 ans
 - 28.6% entre 50 et 64 ans
 - 14.3% entre 25 et 34 ans
---
+
 
 ### 💡 Les besoins / attentes
 - **Consulter les budgets transversaux**, notamment le budget participatif et les subventions aux associations
@@ -46,7 +46,7 @@
 - 61.9% entre 35 et 49 ans
 - 33.3%% entre 25 et 34 ans
 - 4.8% entre 18 et 24 ans
---
+
 
 ### 💡 Les besoins / attentes
 #### Comment est construit et répartit le budget :
