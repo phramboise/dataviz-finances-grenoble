@@ -1,4 +1,4 @@
-## Documentation
+# Documentation
 
 - 📊 [Recueil des données](https://docs.google.com/spreadsheets/d/1ITRSYGH1Skik5H5YWibwo_o2fQhKGyBzih-3VsJX4RQ/edit#gid=1736760728)
 - ✍️ Résumé des questionnaires en ligne
@@ -36,6 +36,7 @@
 - Créer des bilans à destination par exemple des financeurs ( CAF, CNAV, département, etc.)
 - S’informer à titre personnel
 
+--
 
 ## 👩 👨 Grand public - 21 participants dont 57,1% ont un métier ou une activité en lien avec les chiffres
 #### Tranche d’age
@@ -44,7 +45,7 @@
 - 4.8% entre 18 et 24 ans
 
 ### 💡 Les besoins / attentes
-**Comment est construit et répartit le budget :**
+## Comment est construit et répartit le budget :
 - d’où viennent les recettes ? Et plus particulièrement
 	- quelle est la part de recettes provenant des impôts locaux ?
 	- quelle est la part de recettes provenant de la publicité sur la voie publique ?
@@ -54,7 +55,7 @@
 	- quels sont les frais de fonctionnement des la mairie et des services de la ville ?
 	- quelle est la répartition des dépenses par quartier ?
 
-**Est-ce que cette répartition est le reflet des politiques publiques (annoncées) ?**
+## Est-ce que cette répartition est le reflet des politiques publiques (annoncées) ?
 - est-ce que la commune priorise bien le bien commun ?
 - est-ce que la commune à bien pour objectif de réduire les inégalités ?
 - est-ce que la commune prévoit l’adaptation des infrastructures (commerces, services publics, transports) à la croissance de population ?
