@@ -73,7 +73,7 @@
 - associations (subventions)
 
 ### 💡 Comment ça fonctionne ?
-- comment sont utilisés les impôts ? (Peut-on voir ce qu’ils représentent dans les recettes mais aussi les dépenses ?)
+- comment sont utilisés les impôts ? (peut-on voir ce qu’ils représentent dans les recettes mais aussi les dépenses ?)
 - comment sont gérés les marchés publics ? (choix des prestataires, coûts, etc.)
 - comment sont financés les projets prioritaires (pour la mairie) ? Quelles sont les dépenses ? Quels sont les bilans ?
 - comment sont choisis les projets qui bénéficient d’un financement ?
