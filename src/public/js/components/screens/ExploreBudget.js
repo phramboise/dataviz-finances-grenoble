@@ -187,7 +187,7 @@ export class ExploreBudget extends Component{
             </section>
 
             <section>
-                <h2>Explorer le budget</h2>
+                <h2>Explorer les comptes de la ville</h2>
                 <nav className="rdfi-choice">
                     <ul>
                         <li>

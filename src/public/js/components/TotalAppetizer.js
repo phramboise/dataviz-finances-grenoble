@@ -35,6 +35,6 @@ export default function ({total, year, exploreUrl}) {
         React.createElement(Markdown, {},
             `La Ville a dépensé ${toDisplay.replace('.', ',')} million${total/Math.pow(10, 6) >= 2 ? 's' : ''} d’euros en ${year}. Ce budget est composé de dépenses de fonctionnement, nécessaires aux missions et gestion des services de la collectivité, et de dépenses d’investissement dédiées à des programmes structurants ou stratégiques pour le territoire.`
         ),
-        React.createElement(PrimaryCallToAction, { href: exploreUrl, text: 'Explorer le budget'})
+        React.createElement(PrimaryCallToAction, { href: exploreUrl, text: 'Explorer les comptes de la ville'})
     );
 }
