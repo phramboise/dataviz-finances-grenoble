@@ -9,14 +9,14 @@
 - 👨‍👩‍👧‍👦 Transcripts des interviews guérillas
 
 ---
-## Résumé des questionnaires en ligne
-### 👩‍💼 👨‍💼 Personnel administratif - 8 participants de 8 services différents
+# Résumé des questionnaires en ligne
+## 👩‍💼 👨‍💼 Personnel administratif - 8 participants de 8 services différents
 #### Tranche d’age
 - 57.1% entre 35 et 49 ans
 - 28.6% entre 50 et 64 ans
 - 14.3% entre 25 et 34 ans
 
-#### Les besoins / attentes
+### 💡 Les besoins / attentes
 - **Consulter les budgets transversaux**, notamment le budget participatif et les subventions aux associations
 	- ❓ question : aujourd’hui il n’est pas possible d’isoler l’information du budget participatif : comment faire demain ?
 - **Consulter la répartition du budget** par :
@@ -29,7 +29,7 @@
 	- les directifs
 	- ❓ : est-ce que ces informations sont accessibles ?
 
-#### Pourquoi ces besoins / attentes
+### 💡 Pourquoi ces besoins / attentes
 - Suivre / Vérifier les budgets (ex : est-ce que les subventions aux associations ont bien été budgétées avant de valider une convention d’objectifs et de moyens)
 - Comprendre et analyser les politiques publiques dans lesquelles l’action d’un service se construit pour être plus actif dans la proposition d’améliorations et ajustements
 - Communiquer / Informer les équipes
@@ -37,13 +37,13 @@
 - S’informer à titre personnel
 
 
-### 👩 👨 Grand public - 21 participants dont 57,1% ont un métier ou une activité en lien avec les chiffres
+## 👩 👨 Grand public - 21 participants dont 57,1% ont un métier ou une activité en lien avec les chiffres
 #### Tranche d’age
 - 61.9% entre 35 et 49 ans
 - 33.3%% entre 25 et 34 ans
 - 4.8% entre 18 et 24 ans
 
-#### Les besoins / attentes
+### 💡 Les besoins / attentes
 **Comment est construit et répartit le budget :**
 - d’où viennent les recettes ? Et plus particulièrement
 	- quelle est la part de recettes provenant des impôts locaux ?
@@ -60,21 +60,21 @@
 - est-ce que la commune prévoit l’adaptation des infrastructures (commerces, services publics, transports) à la croissance de population ?
 - est-ce que la police reçoit de l’argent de la ville ? comment est-il utilisé ? (salaires, vidéoprotection, etc.)
 	
-#### Les sources de préoccupations
+### 💡 Les sources de préoccupations
 - propreté, urbanisme (travaux, réfections), infrastructure (vélo, canalisation). 
 - crèches, écoles
 - restauration scolaire
 - culture, activité culturelle
 - associations (subventions)
 
-#### Comment ça fonctionne ?
+### 💡 Comment ça fonctionne ?
 - comment sont utilisés les impôts ? (Peut-on voir ce qu’ils représentent dans les recettes mais aussi les dépenses ?)
 - comment sont gérés les marchés publics ? (choix des prestataires, coûts, etc.)
 - comment sont financés les projets prioritaires (pour la mairie) ? Quelles sont les dépenses ? Quels sont les bilans ?
 - comment sont choisis les projets qui bénéficient d’un financement ?
 
 
-#### La parole à …
+### 🎤 La parole à …
 Les répondants ont aussi exprimé le désir de **proposer des choses** et de **pouvoir comparer** :
 - des quartier entre eux
 - leur commune avec d’autres communes pour “identifier une position de curseur”
@@ -90,7 +90,7 @@ Les répondants ont aussi exprimé le désir de **proposer des choses** et de **
 
 ---
 
-## Résumé des interviews guérillas
+# Résumé des interviews guérillas
 
 - 👨‍👩‍👧‍👦 7 interviewés - entre 20 et +50 ans
 - la plupart n'ont pas l'habitude de travailler avec des chiffres ou de lire des statistiques
