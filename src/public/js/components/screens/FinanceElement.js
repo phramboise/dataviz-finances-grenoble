@@ -174,41 +174,6 @@ export function FinanceElement({contentId, element, explorationYear, aggregation
                 </h2>
             </header>
 
-        {/*React.createElement('section', {},
-            React.createElement('div', {className: 'top-infos'},
-                contextElements ? React.createElement(FinanceElementContext, { contextElements }) : undefined,
-                React.createElement('div', {},
-                    React.createElement('h2', {}, React.createElement(RollingNumber, {amount})),
-                    atemporalText ? React.createElement('div', {className: 'atemporal', dangerouslySetInnerHTML: {__html: atemporalText}}) : undefined
-                )
-            )
-        ),
-
-        React.createElement('section', {},
-            React.createElement(SecundaryTitle, {text: 'Évolution sur ces dernières années'}),
-            React.createElement('div', {className: 'temporal', dangerouslySetInnerHTML: {__html: temporalText}}),
-            React.createElement(StackChart, {
-                WIDTH: screenWidth >= 800 + 80 ?
-                    800 :
-                    (screenWidth - 85 >= 600 ? screenWidth - 85 : (
-                        screenWidth <= 600 ? screenWidth - 10 : 600
-                    )),
-                portrait: screenWidth <= 600,
-                xs: years,
-                ysByX: barchartPartitionByYear.map(partition => partition.map(part => part.partAmount)),
-                selectedX: year,
-                onSelectedXAxisItem: changeExplorationYear,
-                onBrickClicked: !isLeaf ? (year, id) => {
-                    const url = barchartPartitionByYear.get(year).find(e => e.contentId === id).url;
-                    page(url);
-                } : undefined,
-                legendItems: !isLeaf ? legendItems : undefined,
-                uniqueColorClass: isLeaf ? colorClassById.get(contentId) : undefined,
-                yValueDisplay: makeAmountString,
-                contentId,
-            })
-        ),*/}
-
             <section className="raw-data">
                 <SecundaryTitle text={`Détail de cette politique budgétaire pour l'année ${explorationYear}`} />
                 <table>

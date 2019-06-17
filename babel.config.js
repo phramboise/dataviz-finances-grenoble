@@ -7,18 +7,7 @@ module.exports = function (api) {
   ];
   const plugins = [
     "@babel/plugin-proposal-object-rest-spread",
-    [
-      "inline-svg",
-      {
-        "svgo": {
-          "plugins": [
-            {
-              "removeDoctype": true
-            }
-          ]
-        }
-      }
-    ],
+    "babel-plugin-inline-react-svg",
     [
       "transform-inline-environment-variables",
       {
