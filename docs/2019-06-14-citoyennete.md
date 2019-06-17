@@ -32,23 +32,23 @@ Nous présentons le projet à la Citoyenneté, pour mettre en place des tests ut
 ```
 Bonjour,
 
-Nous sommes un collectif citoyen qui travaille avec la direction des finances sur une interface de visualisation de recettes et des dépenses de Montreuil. Elle sera mise en ligne sur montreuil.fr dans l'été. Son code est open source, et les données seront mises en ligne sur le portail open data de Montreuil.
+Nous sommes un collectif citoyen qui travaille avec la direction des finances sur une interface de visualisation de recettes et des dépenses en open data de Montreuil. Elle sera mise en ligne sur le site montreuil.fr en juillet.
 
-Nous aimerions organiser des sessions avec des habitant·es pour tester cette l'interface. Ce sont des sessions individuelles, anonymes et sur rendez-vous d'une durée de 45 minutes. Les participant·es peuvent venir accompagné·es (nourrisons, enfants, parents, aidants, etc.). Nous offrons café, thé et collation ; et nous mettons à disposition un ordinateur sous Windows pour naviguer sur l'interface.
+Nous aimerions organiser des sessions avec des habitant·es pour tester cette l'interface. Ce sont des sessions individuelles, anonymes et sur rendez-vous d'une durée de 45 minutes. Les participant·es peuvent venir accompagné·es (nourrissons, enfants, parents, aidants, etc.). Nous mettons à disposition un ordinateur sous Windows pour la durée de la session, et nous offrons café, thé et collation.
 
-Est-ce qu'il est envisageable de recruter des habitant·es via les conseils de quartier ? La Mairie nous met une salle à disposition mais nous sommes plus qu'enthousiastes à l'idée de les faire en terrasse d'un café ou d'un conseil de quartier.
+Est-ce qu'il est envisageable de recruter des habitant·es via les conseils de quartier ? Voici nos disponibilités :
 
-Voici nos disponibilités :
 - mercredi 26 juin (matin, midi, après-midi)
 - jeudi 27 juin (matin)
 - vendredi 28 juin (matin, midi, après-midi)
 - samedi 29 juin (matin, midi, après-midi)
 
-Chaque demi-journée peut se dérouler dans un lieu différent.
+Votre conseil de quartier peut-il mettre à disposition une salle de réunion, pour un ou plusieurs des créneaux ci-dessus ?
+Nous vous transmettrons un formulaire d'inscription en fonction de ces disponibilités.
 
-À vous lire,
+À disposition pour toute question,
 
-Sofia, David et Thomas
+Sofia et Thomas
 
 PS : la visualisation est consultable sur http://dtc-innovation.github.io/dataviz-finances-montreuil/public/ ; et le code source sur http://github.com/dtc-innovation/dataviz-finances-montreuil.
 ```
