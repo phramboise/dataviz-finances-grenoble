@@ -9,7 +9,7 @@
 
     @each $rd, $palette in $rdfi {
         .rdfi-#{$rd} & {
-            color: map-get($palette, 'F');
+            color: darken(map-get($palette, 'F'), 13%);
         }
     }
 
