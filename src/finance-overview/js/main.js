@@ -217,7 +217,7 @@ const natureToChapitreFIP = Promise.all([
     .then(makeNatureToChapitreFI)
 
 
-fetch(`${SOURCE_FINANCE_DIR}CA/CA 2017.xml`).then(resp => resp.text())
+fetch(`${SOURCE_FINANCE_DIR}CA/CA_2017.xml`).then(resp => resp.text())
     .then(str => {
         return (new DOMParser()).parseFromString(str, "text/xml");
     })
