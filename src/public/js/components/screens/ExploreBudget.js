@@ -33,6 +33,8 @@ import StackChart from '../../../../shared/js/components/StackChart';
 import BubbleChartCluster from "../../../../shared/js/components/BubbleChartCluster.js";
 
 
+const RDFIcon = (rdfi) => rdfi[1] === 'F' ? FonctionnementIcon : InvestissementIcon;
+
 export function ExploreBudget (props) {
     const { explorationYear, totals, aggregationByYear, resources } = props
     const { changeExplorationYear, rdfi } = props;
@@ -134,8 +136,8 @@ export function ExploreBudget (props) {
             </p>
 
             <div className="side-by-side" role="table">
-                <BigNumbers items={revenueItems} label="revenus" />
-                <BigNumbers items={expenditureItems} label="dépenses" />
+                <BigNumbers items={revenueItems} label="revenus" iconFn={RDFIcon} />
+                <BigNumbers items={expenditureItems} label="dépenses" iconFn={RDFIcon} />
             </div>
         </section>
 
@@ -145,14 +147,15 @@ export function ExploreBudget (props) {
             <p className="h3">Sélectionner la catégorie du budget à afficher :</p>
 
             <ul className="tabs tabs--rdfi" role="tablist">
-                {revenueItems.concat(expenditureItems).map(item => (
-                    <li key={item.id} role="presentation">
+                {revenueItems.concat(expenditureItems).map(item => {
+                    const Icon = RDFIcon(item.id);
+                    return (<li key={item.id} role="presentation">
                         <a href={`#!/explorer/${item.id}`} aria-selected={item.id === rdfi} className={item.colorClassName} onClick={() => page(`/explorer/${item.id}`)} role="tab">
-                            <InvestissementIcon className="icon" aria-hidden={true} />
+                            <Icon className="icon" aria-hidden={true} />
                             {item.text}
                         </a>
                     </li>)
-                )}
+                })}
             </ul>
             <div className="tabpanel" role="tabpanel">
                 <p className="h3" aria-hidden={true}>

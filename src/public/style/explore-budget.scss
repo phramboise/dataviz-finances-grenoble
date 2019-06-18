@@ -87,7 +87,8 @@ $RX-L: 60%;
 
                 .icon {
                     display: inline-block;
-                    margin-left: -40px;
+                    margin-left: -(24px + 10px);
+                    margin-right: 10px;
                     vertical-align: middle;
                 }
             }
@@ -123,7 +124,6 @@ $RX-L: 60%;
         }
 
         .icon {
-            @include icon(24px);
             display: block;
             margin-bottom: .75em;
         }
