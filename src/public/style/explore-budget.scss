@@ -100,6 +100,62 @@ $RX-L: 60%;
         }
     }
 
+    .tabs {
+        $padding: 8px;
+
+        background: $discrete-background-color;
+        display: flex;
+        flex-flow: row nowrap;
+        justify-content: flex-start;
+
+        [role="tab"] {
+            border-bottom: $padding solid $table-border-color;
+            color: rgba($copy-color, .7);
+            display: block;
+            flex: 1 1 auto;
+            padding: $padding;
+            text-decoration: none;
+
+            &[aria-selected="true"] {
+                box-shadow: 0 0 5px darken($discrete-grey, 10%);
+                color: $copy-color;
+            }
+        }
+
+        .icon {
+            @include icon(24px);
+            display: block;
+            margin-bottom: .75em;
+        }
+    }
+
+    @each $rd, $pairs in $rdfi {
+        @each $fi, $color in $pairs {
+            .tabs--rdfi [role="tab"].rdfi-#{$rd}.rdfi-#{$fi} {
+                border-color: rgba($color, .7);
+                transition: border .2s ease-in-out;
+
+                &[aria-selected="true"] {
+                    border-color: $color;
+                }
+
+                .icon {
+                    color: $color;
+                }
+            }
+        }
+    }
+
+    .tabpanel {
+        background: $accented-background-color;
+        padding: 1rem;
+
+        .h3 {
+            margin: 0 0 2rem 0;
+            padding-top: 1rem;
+        }
+    }
+
     .stackchart{
         display: flex;
         flex-direction: column;
@@ -110,18 +166,22 @@ $RX-L: 60%;
 
         .legend-list{
             flex: 1;
+            font-size: .9em;
             margin-bottom: 2em;
+        }
+
+        .stackchart-title {
+            font-size: 1em !important;
         }
 
 
         @media screen and (min-width: $stackchart-medium-breakpoint) {
-            align-items: flex-start;
+            align-items: flex-end;
+            justify-content: space-between;
         }
 
         @media screen and (min-width: $stackchart-large-breakpoint) {
             flex-direction: row;
-            justify-content: space-around;
-            align-items: center;
         }
     }
 
@@ -134,6 +194,7 @@ $RX-L: 60%;
     }
 
     .legend-list .color {
+        border: 1px solid #fff;
         border-radius: 100%;
     }
 

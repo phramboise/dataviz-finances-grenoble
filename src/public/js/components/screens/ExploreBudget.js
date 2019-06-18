@@ -24,6 +24,9 @@ import DownloadSection from "../../../../shared/js/components/gironde.fr/Downloa
 
 import {makeAmountString} from "../../../../shared/js/components/MoneyAmount";
 
+import InvestissementIcon from "../../../../../images/icons/rdfi-investissement.svg";
+import FonctionnementIcon from "../../../../../images/icons/rdfi-fonctionnement.svg";
+
 import BigNumbers from "../../../../shared/js/components/BigNumbers.js";
 import StackChart from '../../../../shared/js/components/StackChart';
 import BubbleChartCluster from "../../../../shared/js/components/BubbleChartCluster.js";
@@ -146,47 +149,49 @@ export class ExploreBudget extends Component{
             </section>
 
             <section>
-                <h2>Explorer les comptes de la ville</h2>
-                <nav className="rdfi-choice">
-                    <ul>
-                        <li>
-                            <label>
-                                <input type="radio" name="rd" value="R" onClick={() => this.setState({ RD: 'R' })} defaultChecked={RD === 'R'} /> recettes
-                            </label>
-                        </li>
-                        <li>
-                            <label>
-                                <input type="radio" name="rd" value="D" onClick={() => this.setState({ RD: 'D' })} defaultChecked={RD === 'D'} /> dépenses
-                            </label>
-                        </li>
-                    </ul>
+                <h2>Évolution et répartition du budget</h2>
 
-                    <ul>
-                        <li>
-                            <label>
-                                <input type="radio" name="fi" value="F" onClick={() => this.setState({ FI: 'F' })} defaultChecked={FI === 'F'} /> fonctionnement
-                            </label>
-                        </li>
-                        <li>
-                            <label>
-                                <input type="radio" name="fi" value="I" onClick={() => this.setState({ FI: 'I' })} defaultChecked={FI === 'I'} /> investissement
-                            </label>
-                        </li>
-                    </ul>
-                </nav>
+                <p className="h3">Sélectionner la catégorie du budget à afficher :</p>
 
-                {
-                    currentYearrdfiTree ?
-                        <StackChart
-                            xs={ years }
-                            ysByX={barchartPartitionByYear.map(partition => partition.map(part => part.partAmount))}
-                            selectedX={ explorationYear }
-                            legendItems={ legendItems }
-                            yValueDisplay={makeAmountString}
-                            contentId={currentYearrdfiTree.id}
-                        /> :
-                        undefined
-                }
+                <ul className="tabs tabs--rdfi" role="tablist">
+                    {revenueItems.concat(expenditureItems).map(item => (
+                        <li key={item.id} role="presentation">
+                            <a href={`#!/explorer/${item.id}`} aria-selected={false} className={item.colorClassName} onClick={() => this.setState({ RD: item.id[0], FI: item.id[1] })} role="tab">
+                                <InvestissementIcon className="icon" aria-hidden={true} />
+                                {item.text}
+                            </a>
+                        </li>)
+                    )}
+                </ul>
+                <div className="tabpanel" role="tabpanel">
+                    <p className="h3" aria-hidden={true}>
+                        Afficher
+                        <select onChange={({target}) => this.setState({ RD: target.value[0], FI: target.value[1] })}>
+                            {revenueItems.concat(expenditureItems).map(item => (
+                                <option value={item.id}>{item.text}</option>
+                            ))}
+                        </select>
+                    </p>
+
+                    {
+                        currentYearrdfiTree ?
+                            <StackChart
+                                xs={ years }
+                                ysByX={barchartPartitionByYear.map(partition => partition.map(part => part.partAmount))}
+                                selectedX={ explorationYear }
+                                legendItems={ legendItems }
+                                yValueDisplay={makeAmountString}
+                                contentId={currentYearrdfiTree.id}
+                                WIDTH={500}
+                                HEIGHT={250}
+                                BRICK_SPACING={2}
+                                MIN_BRICK_HEIGHT={1}
+                                BRICK_RADIUS={0}
+                                BRICK_DISPLAY_VALUE={false}
+                            /> :
+                            undefined
+                    }
+                </div>
             </section>
 
             <section>

@@ -170,7 +170,7 @@ csv(assets[AGGREGATED_TEMPORAL])
  */
 
 page('/', () => page.redirect('/explorer'));
-page('/explorer', () => {
+page('/explorer/:rdfi?', () => {
     console.log('in route', '/explorer');
 
     ReactDOM.render(

@@ -1,6 +1,5 @@
 @import 'env-vars';
 @import 'globals';
-@import '../../shared/style/stackchart';
 
 @import 'top-level';
 @import 'color-palette';
@@ -10,6 +9,9 @@
 @import 'finance-element';
 @import 'explore-budget';
 @import 'footer';
+
+@import '../../shared/style/stackchart';
+
 // @import 'focus-solidarity';
 // @import 'focus-investments';
 // @import 'focus-presence';

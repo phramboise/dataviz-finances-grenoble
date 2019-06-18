@@ -20,7 +20,8 @@ export default function ({
     portrait = false,
     WIDTH = 800, HEIGHT = 430,
     Y_AXIS_MARGIN = 80, HEIGHT_PADDING = 40,
-    BRICK_SPACING = 6, MIN_BRICK_HEIGHT = 4,
+    BRICK_SPACING = 6, MIN_BRICK_HEIGHT = 4, BRICK_RADIUS = 5,
+    BRICK_DISPLAY_VALUE = true,
     PORTRAIT_COLUMN_WIDTH = 70,
     // legend
     legendItems, uniqueColorClass,
@@ -63,7 +64,7 @@ export default function ({
     },
     // useless <div> to defend the <svg> in Chrome when using flex: 1 on the legend
     React.createElement('div', {className: 'over-time'},
-        React.createElement('svg', {width: WIDTH, height: HEIGHT},
+        React.createElement('svg', {viewBox: `0 0 ${WIDTH} ${HEIGHT}`},
             // x axis
             React.createElement(D3Axis, {
                 className: 'x',
@@ -185,10 +186,10 @@ export default function ({
                                         y: 0,
                                         width: portrait ? height : columnWidth,
                                         height: portrait ? PORTRAIT_COLUMN_WIDTH - 12 : height,
-                                        rx: 5,
-                                        ry: 5
+                                        rx: BRICK_RADIUS,
+                                        ry: BRICK_RADIUS
                                     }),
-                                    (stack.length >= 2 && (
+                                    (stack.length >= 2 && BRICK_DISPLAY_VALUE && (
                                         (!portrait && height >= 30) ||
                                             (portrait && height >= 60)
                                     )) ? React.createElement('text', {
