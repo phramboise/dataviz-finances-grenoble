@@ -4,7 +4,8 @@ import { markdown as md } from '../../shared/js/components/Markdown';
 import {
     FINANCE_DETAIL_ID_CHANGE, FINANCE_DATA_RECIEVED, CORRECTION_AGGREGATION_RECEIVED,
     ATEMPORAL_TEXTS_RECEIVED, TEMPORAL_TEXTS_RECEIVED,
-    CHANGE_EXPLORATION_YEAR, CHANGE_CURRENT_YEAR
+    CHANGE_EXPLORATION_YEAR, CHANGE_CURRENT_YEAR,
+    FINANCE_TREE_ROOT
 } from './constants/actions';
 
 const FinanceElementTextsRecord = Record({
@@ -39,6 +40,8 @@ export default function reducer(state, action) {
         }
         case FINANCE_DETAIL_ID_CHANGE:
             return state.set('financeDetailId', action.financeDetailId);
+        case FINANCE_TREE_ROOT:
+            return state.set('rdfi', action.rdfi);
         case ATEMPORAL_TEXTS_RECEIVED: {
             let textMap = state.get('textsById');
 

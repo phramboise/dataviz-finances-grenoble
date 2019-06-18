@@ -13,10 +13,10 @@ export default function ({ items, label }) {
         <Donut items={items} padAngle={0.015} donutWidth={40}>
             <MoneyAmount amount={globalAmount} /> de {label}
         </Donut>
-        <dl class="explanatory-legend">
+        <dl className="explanatory-legend">
             {items.map(item => <>
-                <dt class={item.colorClassName}>
-                    <div className="money-amount" aria-value={item.value}>
+                <dt className={item.colorClassName}>
+                    <div className="money-amount" aria-label={item.value}>
                         <QuestionMarkIcon className="icon" aria-hidden={true} />
                         {makeAmountString(item.value)}
                     </div>

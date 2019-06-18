@@ -21,7 +21,8 @@ import { HOME } from './constants/pages';
 import {
     FINANCE_DATA_RECIEVED, CORRECTION_AGGREGATION_RECEIVED,
     ATEMPORAL_TEXTS_RECEIVED, TEMPORAL_TEXTS_RECEIVED,
-    FINANCE_DETAIL_ID_CHANGE, CHANGE_EXPLORATION_YEAR
+    FINANCE_DETAIL_ID_CHANGE, CHANGE_EXPLORATION_YEAR,
+    FINANCE_TREE_ROOT
 } from './constants/actions';
 
 
@@ -58,6 +59,7 @@ const StoreRecord = Record({
     // ImmutableMap<id, FinanceElementTextsRecord>
     textsById: undefined,
     financeDetailId: undefined,
+    rdfi: undefined,
     screenWidth: undefined,
     resources: {
         dataUrl: undefined,
@@ -170,8 +172,12 @@ csv(assets[AGGREGATED_TEMPORAL])
  */
 
 page('/', () => page.redirect('/explorer'));
-page('/explorer/:rdfi?', () => {
-    console.log('in route', '/explorer');
+page('/explorer/:rdfi?', ({params: {rdfi='DF'}}) => {
+
+    store.dispatch({
+        type: FINANCE_TREE_ROOT,
+        rdfi
+    })
 
     ReactDOM.render(
         React.createElement(
