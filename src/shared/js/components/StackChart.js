@@ -154,7 +154,8 @@ export default function ({
                     return React.createElement('g',
                         {
                             transform: portrait ? `translate(0, ${xScale(x) + 6 })` : `translate(${xScale(x)})`,
-                            key: x
+                            key: x,
+                            className: x === selectedX ? 'selected' : ''
                         },
                         React.createElement('g', {},
 

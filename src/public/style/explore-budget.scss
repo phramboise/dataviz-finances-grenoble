@@ -16,6 +16,11 @@ $RX-L: 60%;
         padding: 0;
     }
 
+    .h3 select {
+        font-size: inherit;
+        margin: 0 .5em;
+    }
+
 
     section{
         margin-bottom: 3em;
@@ -159,19 +164,16 @@ $RX-L: 60%;
     .stackchart{
         display: flex;
         flex-direction: column;
+        justify-content: space-between;
 
         .over-time{
-            flex: 2;
+            flex: 1 0 70%;
         }
 
         .legend-list{
-            flex: 1;
+            flex: 1 1 25%;
             font-size: .9em;
-            margin-bottom: 2em;
-        }
-
-        .stackchart-title {
-            font-size: 1em !important;
+            margin-bottom: 2.5em;
         }
 
 

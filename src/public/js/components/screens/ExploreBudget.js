@@ -159,8 +159,8 @@ export function ExploreBudget (props) {
             </ul>
             <div className="tabpanel" role="tabpanel">
                 <p className="h3" aria-hidden={true}>
-                    Afficher
-                    <select value={rdfi} onChange={({target}) => page(`/explorer/${target.value}`)}>
+                    <label htmlFor="select-tree-root">Afficher</label>
+                    <select id="select-tree-root" value={rdfi} onChange={({target}) => page(`/explorer/${target.value}`)}>
                         {revenueItems.concat(expenditureItems).map(item => (
                             <option key={item.id} value={item.id}>{item.text}</option>
                         ))}
@@ -176,6 +176,7 @@ export function ExploreBudget (props) {
                             legendItems={ legendItems }
                             yValueDisplay={makeAmountString}
                             contentId={currentYearrdfiTree.id}
+                            onSelectedXAxisItem={changeExplorationYear}
                             WIDTH={500}
                             HEIGHT={250}
                             BRICK_SPACING={2}
