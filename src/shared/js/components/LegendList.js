@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function({items}){
+export default function LegendList({items}){
     return <ol className="legend-list">
         {items.map(({className, url, text, colorClassName}) => {
             return <li key={colorClassName} className={className}>

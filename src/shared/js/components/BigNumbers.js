@@ -6,7 +6,7 @@ import {makeAmountString, default as MoneyAmount} from './MoneyAmount.js'
 
 import QuestionMarkIcon from '../../../../images/icons/question-mark.svg'
 
-export default function ({ items, label, iconFn }) {
+export default function BigNumbers ({ items, label, iconFn }) {
     const globalAmount = items.reduce((total, {value}) => total+value, 0)
 
     return <div className="side">
