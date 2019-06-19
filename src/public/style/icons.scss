@@ -1,0 +1,9 @@
+@mixin icon($size: 40px) {
+    height: $size;
+    width: $size;
+
+    &#{'--pull'} {
+        position: absolute;
+        left: 0;
+    }
+}

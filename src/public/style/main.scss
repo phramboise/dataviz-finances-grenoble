@@ -4,6 +4,7 @@
 
 @import 'top-level';
 @import 'color-palette';
+@import 'icons';
 @import 'money-amount';
 @import 'home';
 @import 'finance-element';
@@ -54,10 +55,6 @@
 
 .temporal {
     @include placeholder("Texte contextuel basé sur l'année du CA");
-}
-
-.markdown-rendered {
-    @include placeholder("Texte explicatif à écrire");
 }
 
 .btn {

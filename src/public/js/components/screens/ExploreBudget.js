@@ -22,12 +22,9 @@ import { aggregatedDocumentBudgetaireNodeTotal } from '../../../../shared/js/fin
 import PageTitle from "../../../../shared/js/components/gironde.fr/PageTitle";
 import DownloadSection from "../../../../shared/js/components/gironde.fr/DownloadSection";
 
-import Markdown from "../../../../shared/js/components/Markdown";
-import {makeAmountString, default as MoneyAmount} from "../../../../shared/js/components/MoneyAmount";
+import {makeAmountString} from "../../../../shared/js/components/MoneyAmount";
 
-import Donut from "../../../../shared/js/components/Donut.js";
-import LegendList from "../../../../shared/js/components/LegendList.js";
-
+import BigNumbers from "../../../../shared/js/components/BigNumbers.js";
 import StackChart from '../../../../shared/js/components/StackChart';
 import BubbleChartCluster from "../../../../shared/js/components/BubbleChartCluster.js";
 
@@ -63,15 +60,15 @@ export class ExploreBudget extends Component{
         const expenditures = totals.get(EXPENDITURES);
         const revenue = totals.get(REVENUE);
 
-        // Donut data
+        // BigNumbers data
         const expenditureItems = new List([
-            { id: 'DF', colorClassName:'rdfi-D rdfi-F', text: 'Dépenses de fonctionnement', value: totals.get(DF) },
-            { id: 'DI', colorClassName:'rdfi-D rdfi-I', text: 'Dépenses d\'investissement', value: totals.get(DI) },
+            { id: 'DF', text: 'Dépenses de fonctionnement', description: `Regroupe…`, colorClassName:'rdfi-D rdfi-F', value: totals.get(DF) },
+            { id: 'DI', text: 'Dépenses d\'investissement', description: `Regroupe…`, colorClassName:'rdfi-D rdfi-I', value: totals.get(DI) },
         ]);
 
         const revenueItems = new List([
-            { id: 'RF', colorClassName:'rdfi-R rdfi-F', text: 'Recettes de fonctionnement', value: totals.get(RF) },
-            { id: 'RI', colorClassName:'rdfi-R rdfi-I', text: 'Recettes d\'investissement', value: totals.get(RI) },
+            { id: 'RF', text: 'Recettes de fonctionnement', description: `Provient de…`, colorClassName:'rdfi-R rdfi-F', value: totals.get(RF) },
+            { id: 'RI', text: 'Recettes d\'investissement', description: `Provient de…`, colorClassName:'rdfi-R rdfi-I', value: totals.get(RI) },
         ]);
 
 
@@ -130,60 +127,22 @@ export class ExploreBudget extends Component{
 
         return <>
         <article className="explore-budget">
-            <PageTitle text={`Exploration des comptes ${explorationYear || ''}`} />
+            <PageTitle text="Explorer les comptes de la ville" />
 
-            <section>
-                <Markdown>
-    Le contexte financier dans lequel s’est déroulée l’exécution de ce troisième
-    budget de la mandature a été marqué par l’accentuation de la contribution des
-    collectivités locales à la réduction des déficits publics et par une modification
-    des compétences résultant de la mise en œuvre des transferts de compétences avec
-    la Région et Bordeaux Métropole issus des lois MAPTAM de 2014 et NOTRe de 2015.
+            <section className="yearly-budget" aria-label={`Les grands chiffres ${explorationYear}`} aria-describedby="yearly-budget--description">
+                <h2>Les grands chiffres</h2>
 
-    Dans un contexte national où les contraintes financières se sont durcies, l’année
-    2017 confirme le dynamisme des dépenses de solidarité obligatoires et incompressibles et la difficulté d’accentuer encore la maitrise des dépenses de gestion courante.
-
-    Le Département voit également ses recettes de fonctionnement évoluer plus
-    favorablement que prévu grâce aux droits de mutation recette conjoncturelle
-    mais non pérenne liée au fort dynamisme de l’immobilier et à l’attraction du
-    département.
-
-    Ainsi les résultats financiers de la Gironde pour cet exercice se traduisent par :
-
-    -	Une épargne brute qui s’améliore fortement
-    -	Une réduction importante du besoin de financement par l’emprunt</Markdown>
-            </section>
-
-            <section className="yearly-budget">
-                <h2>
-                    Le budget
-                    <select value={explorationYear} onChange={(event) => changeExplorationYear(Number(event.target.value))}>
-                    {years.map(year => <option key={year} value={year}>{year}</option>)}
+                <p class="h3" id="yearly-budget--description">
+                    <label for="select-year">Afficher les recettes et dépenses de</label>
+                    <select id="select-year" value={explorationYear} onChange={(event) => changeExplorationYear(Number(event.target.value))}>
+                    {years.map(year => <option key={year} value={year}>l'année {year}</option>)}
                     </select>
-                </h2>
+                </p>
 
-                <figure className="side-by-side" role="table">
-                    <Donut items={revenueItems} padAngle={0.015}>
-                        <MoneyAmount amount={revenue} />
-                        de recettes
-                    </Donut>
-
-                    <Donut items={expenditureItems} padAngle={0.015}>
-                        <MoneyAmount amount={expenditures} />
-                        de dépenses
-                    </Donut>
-
-                    <Markdown className="todo">
-                        Les chiffres étant issus du compte administratif, la différence entre
-                        le montant des recettes et le montant des dépenses représente l’excédent
-                        de l’exercice.
-                    </Markdown>
-
-                    <LegendList items={new List([
-                        { text: 'Fonctionnement', colorClassName: 'rdfi-F' },
-                        { text: 'Investissement', colorClassName: 'rdfi-I' },
-                    ])} />
-                </figure>
+                <div className="side-by-side" role="table">
+                    <BigNumbers items={revenueItems} label="revenus" />
+                    <BigNumbers items={expenditureItems} label="dépenses" />
+                </div>
             </section>
 
             <section>

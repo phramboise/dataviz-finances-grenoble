@@ -15,13 +15,23 @@
     h3, .h3,
     h4, .h4,
     h5, .h5 {
-        color: #333;
+        color: $copy-color;
         font-family: $font-headline;
         font-weight: normal;
+        text-align: center;
     }
 
-    h2, h3{
+    h1, h2, h3{
+        color: $discrete-copy-color;
         margin: 0.2em 0;
+    }
+
+    h2 {
+        font-size: 2.5em
+    }
+
+    h3 {
+        font-size: 2em;
     }
 
     p{
