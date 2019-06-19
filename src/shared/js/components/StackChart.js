@@ -160,9 +160,7 @@ export default function StackChart ({
                         React.createElement('g', {},
 
                             stack.map( ({value, height, y}, i) => {
-                                const colorClass = stack.length === 1 ?
-                                    uniqueColorClass :
-                                    legendItems && legendItems[i].colorClassName;
+                                const colorClass = legendItems ? legendItems[i].colorClassName : uniqueColorClass;
 
                                 return React.createElement(
                                     'g',
