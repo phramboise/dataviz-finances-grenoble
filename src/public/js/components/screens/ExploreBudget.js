@@ -128,7 +128,7 @@ export function ExploreBudget (props) {
         <section className="yearly-budget" aria-label={`Les grands chiffres ${explorationYear}`} aria-describedby="yearly-budget--description">
             <h2>Les grands chiffres</h2>
 
-            <p className="h3" id="yearly-budget--description">
+            <p className="h4" id="yearly-budget--description">
                 <label htmlFor="select-year">Afficher les recettes et dépenses de</label>
                 <select id="select-year" value={explorationYear} onChange={(event) => changeExplorationYear(Number(event.target.value))}>
                 {years.map(year => <option key={year} value={year}>l'année {year}</option>)}
@@ -144,7 +144,7 @@ export function ExploreBudget (props) {
         <section>
             <h2>Évolution et répartition du budget</h2>
 
-            <p className="h3">Sélectionner la catégorie du budget à afficher :</p>
+            <p className="h4">Sélectionner la catégorie du budget à afficher :</p>
 
             <ul className="tabs tabs--rdfi" role="tablist">
                 {revenueItems.concat(expenditureItems).map(item => {
@@ -158,7 +158,7 @@ export function ExploreBudget (props) {
                 })}
             </ul>
             <div className="tabpanel" role="tabpanel">
-                <p className="h3" aria-hidden={true}>
+                <p className="h4" aria-hidden={true}>
                     <label htmlFor="select-tree-root">Afficher</label>
                     <select id="select-tree-root" value={rdfi} onChange={({target}) => page(`/explorer/${target.value}`)}>
                         {revenueItems.concat(expenditureItems).map(item => (
