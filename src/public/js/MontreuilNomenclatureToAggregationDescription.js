@@ -63,8 +63,6 @@ function getMontreuilNomenclatureRowKeys(MontreuilNomenclatureRow){
         'Sens',
         'Section',
         'Niveau 2 - Catégorie',
-        'Niveau a - Politique',
-        'Niveau b - Sous Politique',
         'Niveau 3 - Type'
     ].map(key => MontreuilNomenclatureRow[key])
 }

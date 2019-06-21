@@ -23,7 +23,22 @@ $RX-L: 60%;
 
 
     section{
-        margin-bottom: 3em;
+        padding-top: 1em;
+
+        &.discrete {
+            background: $discrete-background-color;
+
+            h2, .h2 {
+                color: $copy-color;
+            }
+        }
+
+        .intro,
+        .inline-tabs {
+            max-width: 580px;
+            margin-left: auto;
+            margin-right: auto;
+        }
     }
 
     .rdfi-choice{
@@ -131,6 +146,40 @@ $RX-L: 60%;
         .icon {
             display: block;
             margin-bottom: .75em;
+        }
+    }
+
+    .inline-tabs {
+        display: flex;
+
+        > li {
+            align-self: center;
+
+            &:last-child {
+                flex: 0 1 auto;
+                font-size: .9em;
+            }
+        }
+
+        [role="tab"] {
+            border: none;
+            background: transparent;
+            font-size: inherit;
+            padding: .5em 1em;
+            white-space: nowrap;
+
+            &[aria-selected="true"] {
+                background: $accented-background-color;
+            }
+
+            &:hover,
+            &:focus {
+                text-decoration: underline;
+            }
+        }
+
+        .icon {
+            vertical-align: middle;
         }
     }
 
@@ -261,7 +310,7 @@ $RX-L: 60%;
                 width: 100%;
 
                 span:not(.money-amount) {
-                    font-size: .8em;
+                    font-size: .9em;
                 }
             }
 
@@ -273,16 +322,16 @@ $RX-L: 60%;
         @each $rd, $pairs in $rdfi {
             @each $fi, $color in $pairs {
                 .rdfi-#{$rd}.rdfi-#{$fi} {
-                    stroke: darken($color, 8%);
-                    stroke-width: 2px;
                     fill: $color;
+                    // stroke: darken($color, 8%);
+                    // stroke-width: 2px;
                 }
 
                 /* makes it clear for keyboard navigation */
                 a:focus .rdfi-#{$rd}.rdfi-#{$fi},
                 a:hover .rdfi-#{$rd}.rdfi-#{$fi} {
                     fill: lighten($color, 10%);
-                    stroke: darken($color, 15%);
+                    // stroke: darken($color, 15%);
                 }
             }
         }

@@ -33,10 +33,11 @@ export default function BubbleChartCluster({tree}){
                 total: aggregatedDocumentBudgetaireNodeTotal(node1),
                 rdfi: rdfi(node1),
                 children: node1.children.map(node2 => {
+                    console.log(node2)
                     return {
                         id: node2.id,
                         label: node2.label,
-                        total: aggregatedDocumentBudgetaireNodeTotal(node2),
+                        // total: aggregatedDocumentBudgetaireNodeTotal(node2),
                         rdfi: rdfi(node2)
                     }
                 })

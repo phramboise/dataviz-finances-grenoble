@@ -4,7 +4,7 @@ import makeLigneBudgetFilterFromFormula from './DocumentBudgetaireQueryLanguage/
 export default function makeAggregateFunction(aggregationDescription){
 
     function aggregationDescriptionNodeToAggregatedDocumentBudgetaireNode(aggregationDescriptionNode, documentBudgetaire){
-        const {id, label, children, formula} = aggregationDescriptionNode;
+        const {id, label, children, formula, tags} = aggregationDescriptionNode;
         return AggregatedDocumentBudgetaire(Object.assign(
             {
                 id,
@@ -14,7 +14,8 @@ export default function makeAggregateFunction(aggregationDescription){
             formula ?
                 // leaf
                 {
-                    elements: documentBudgetaire.rows.filter(makeLigneBudgetFilterFromFormula(formula))
+                    elements: documentBudgetaire.rows.filter(makeLigneBudgetFilterFromFormula(formula)),
+                    tags,
                 } : // non-leaf, has .children
                 {
                     children: children.map(n => aggregationDescriptionNodeToAggregatedDocumentBudgetaireNode(n, documentBudgetaire))

@@ -27,6 +27,8 @@ import {makeAmountString} from "../../../../shared/js/components/MoneyAmount";
 
 import InvestissementIcon from "../../../../../images/icons/rdfi-investissement.svg";
 import FonctionnementIcon from "../../../../../images/icons/rdfi-fonctionnement.svg";
+import AggregatedViewIcon from "../../../../../images/icons/aggregation.svg";
+import DetailedViewIcon from "../../../../../images/icons/details.svg";
 
 import BigNumbers from "../../../../shared/js/components/BigNumbers.js";
 import StackChart from '../../../../shared/js/components/StackChart';
@@ -72,9 +74,7 @@ export function ExploreBudget (props) {
     const currentYearrdfiTree = rdfiTreeByYear.get(explorationYear);
 
     // For DF, dig to a specific level
-    let bubbleTreeData = (currentYearrdfiTree && RD === 'D' && FI === 'F') ?
-        currentYearrdfiTree.children.find(c => c.id.includes('Gestion courante'))
-        : currentYearrdfiTree
+    let bubbleTreeData = currentYearrdfiTree
 
 
     // Build stackachart data from rdfiTree
@@ -125,7 +125,7 @@ export function ExploreBudget (props) {
     <article className="explore-budget">
         <PageTitle text="Explorer les comptes de la ville" />
 
-        <section className="yearly-budget" aria-label={`Les grands chiffres ${explorationYear}`} aria-describedby="yearly-budget--description">
+        <section id="summary" className="yearly-budget" aria-label={`Les grands chiffres ${explorationYear}`} aria-describedby="yearly-budget--description">
             <h2>Les grands chiffres</h2>
 
             <p className="h4" id="yearly-budget--description">
@@ -141,7 +141,7 @@ export function ExploreBudget (props) {
             </div>
         </section>
 
-        <section>
+        <section id="evolution">
             <h2>Évolution et répartition du budget</h2>
 
             <p className="h4">Sélectionner la catégorie du budget à afficher :</p>
@@ -201,10 +201,36 @@ export function ExploreBudget (props) {
             </div>
         </section>
 
-        <section>
-            <h2>Répartition par politique</h2>
+        <section className="discrete" id="politiques">
+            <h2>Répartition par politique publique</h2>
 
-            <BubbleChartCluster tree={bubbleTreeData} />
+            <p className="intro">
+                Qu’est-ce que c’est les politiques et sous-politiques publique ?
+                Le Lorem Ipsum est simplement du faux texte employé dans la composition
+                et la mise en page avant impression.
+            </p>
+
+            <ul className="inline-tabs" role="tablist">
+                <li role="presentation">
+                    <button aria-selected={true} className="link" role="tab">
+                        <AggregatedViewIcon className="icon icon--small" />
+                        vue agrégée
+                    </button>
+                </li>
+                <li role="presentation">
+                    <button aria-selected={false} className="link" role="tab">
+                        <DetailedViewIcon className="icon icon--small" />
+                        vue détaillée
+                    </button>
+                </li>
+                <li role="presentation">
+                    <input type="checkbox" checked={false} id="hr-checkbox" />
+                    <label htmlFor="hr-checkbox">voir la part des ressources humaines</label>
+                </li>
+            </ul>
+            <div className="tabpanel" role="tabpanel">
+                <BubbleChartCluster tree={bubbleTreeData} />
+            </div>
         </section>
     </article>
     <DownloadSection {...resources} />
