@@ -5,6 +5,6 @@ import React from 'react';
     It uses conventions from the production website
 */
 
-export default function({text}){
-    return React.createElement('h1', { className: 'title--page title--bold'}, text)
+export default function PageTitle ({text}){
+    return <h1 className="title--page title--bold">{text}</h1>
 }

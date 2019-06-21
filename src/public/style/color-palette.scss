@@ -51,6 +51,11 @@ $rdfi: (
     }
 }
 
+.color[class*="area-color-"] {
+    background-color: #000;
+    fill: #000;
+}
+
 @for $i from 0 to length($area-colors) {
     .area-color-#{$i}.rdfi-D,
     .area-color-#{$i}[class*="M52-DF"],

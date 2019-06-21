@@ -74,7 +74,7 @@ function makeAmount(amount, {scale}){
     }
 }
 
-export default ({amount}) => {
+export default function MoneyAmount({amount}) {
     if (Number.isFinite(amount) === false) {
         return null
     }

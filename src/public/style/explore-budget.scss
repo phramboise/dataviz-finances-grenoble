@@ -173,17 +173,39 @@ $RX-L: 60%;
         .legend-list{
             flex: 1 1 25%;
             font-size: .9em;
+            padding-left: 1em;
             margin-bottom: 2.5em;
         }
 
 
-        @media screen and (min-width: $stackchart-medium-breakpoint) {
-            align-items: flex-end;
+        @media screen and (min-width: $stackchart-small-breakpoint) {
             justify-content: space-between;
+
+            .legend-list {
+                display: flex;
+                flex-flow: row wrap;
+                align-items: flex-start;
+
+                > li {
+                    margin: 0 .5em .5em 0;
+                    flex: 1;
+                    white-space: nowrap;
+                }
+            }
         }
 
         @media screen and (min-width: $stackchart-large-breakpoint) {
+            align-items: flex-end;
             flex-direction: row;
+
+            .legend-list {
+                display: block;
+
+                > li {
+                    margin: 0 0 .25em 0;
+                    white-space: normal;
+                }
+            }
         }
     }
 

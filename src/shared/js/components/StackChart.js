@@ -13,7 +13,7 @@ import D3Axis from './D3Axis';
     It is the caller's responsibility to make sure ys (from ysByX) are sorted in a order
     that is consistent with the legendItems order
 */
-export default function ({
+export default function StackChart ({
     // data
     xs, ysByX, contentId,
     // aestetics
@@ -160,9 +160,7 @@ export default function ({
                         React.createElement('g', {},
 
                             stack.map( ({value, height, y}, i) => {
-                                const colorClass = stack.length === 1 ?
-                                    uniqueColorClass :
-                                    legendItems && legendItems[i].colorClassName;
+                                const colorClass = legendItems ? legendItems[i].colorClassName : uniqueColorClass;
 
                                 return React.createElement(
                                     'g',
