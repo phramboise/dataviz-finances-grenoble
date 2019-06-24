@@ -14,7 +14,6 @@ import csvStringToCorrections from '../../shared/js/finance/csvStringToCorrectio
 import {childToParent, elementById} from '../../shared/js/finance/flatHierarchicalById.js';
 
 import Breadcrumb from '../../shared/js/components/Breadcrumb';
-import FinanceElement from './components/screens/FinanceElement';
 import ExploreBudget from './components/screens/ExploreBudget';
 
 import { HOME } from './constants/pages';
@@ -194,55 +193,59 @@ page('/explorer/:financeDetailId?', ({params: {financeDetailId='DEPENSE FONCTION
     );
 
 
-    const breadcrumb = DEFAULT_BREADCRUMB.push({text: 'Recettes et dépenses open data'});
-    ReactDOM.render( React.createElement(Breadcrumb, { items: breadcrumb }), BREADCRUMB_CONTAINER );
+    const breadcrumb = DEFAULT_BREADCRUMB.push({
+        text: 'Recettes et dépenses open data',
+        url: '#!/explorer'
+    });
+
+    ReactDOM.render(<Breadcrumb items={breadcrumb} />, BREADCRUMB_CONTAINER );
 });
 
-
-page('/finance-details/:contentId', ({params: {contentId}}) => {
-    console.log('in route', '/finance-details', contentId)
-    scrollTo(0, 0);
-
-    store.dispatch({
-        type: FINANCE_DETAIL_ID_CHANGE,
-        financeDetailId: contentId
-    })
-
-    ReactDOM.render(
-        React.createElement(
-            Provider,
-            { store },
-            React.createElement(FinanceElement)
-        ),
-        CONTAINER_ELEMENT
-    );
-
-    /*const breadcrumbData = [];
-
-    let currentContentId = contentId.startsWith('M52-') ?
-        contentId.slice(7) :
-        contentId;
-
-    while(currentContentId){
-        if(currentContentId !== 'Total'){
-            breadcrumbData.push({
-                text: elementById.get(currentContentId).label,
-                url: `#!/finance-details/${currentContentId}`
-            })
-        }
-        currentContentId = childToParent.get(currentContentId);
-    }
-
-    breadcrumbData.push({
-        text: 'Explorer',
-        url: `#!/explorer`
-    })
-
-    const breadcrumb = DEFAULT_BREADCRUMB.concat(breadcrumbData.reverse());
-
-    ReactDOM.render( React.createElement(Breadcrumb, { items: breadcrumb }), BREADCRUMB_CONTAINER );*/
-
-});
+//
+// page('/finance-details/:contentId', ({params: {contentId}}) => {
+//     console.log('in route', '/finance-details', contentId)
+//     scrollTo(0, 0);
+//
+//     store.dispatch({
+//         type: FINANCE_DETAIL_ID_CHANGE,
+//         financeDetailId: contentId
+//     })
+//
+//     ReactDOM.render(
+//         React.createElement(
+//             Provider,
+//             { store },
+//             React.createElement(FinanceElement)
+//         ),
+//         CONTAINER_ELEMENT
+//     );
+//
+//     /*const breadcrumbData = [];
+//
+//     let currentContentId = contentId.startsWith('M52-') ?
+//         contentId.slice(7) :
+//         contentId;
+//
+//     while(currentContentId){
+//         if(currentContentId !== 'Total'){
+//             breadcrumbData.push({
+//                 text: elementById.get(currentContentId).label,
+//                 url: `#!/finance-details/${currentContentId}`
+//             })
+//         }
+//         currentContentId = childToParent.get(currentContentId);
+//     }
+//
+//     breadcrumbData.push({
+//         text: 'Explorer',
+//         url: `#!/explorer`
+//     })
+//
+//     const breadcrumb = DEFAULT_BREADCRUMB.concat(breadcrumbData.reverse());
+//
+//     ReactDOM.render( React.createElement(Breadcrumb, { items: breadcrumb }), BREADCRUMB_CONTAINER );*/
+//
+// });
 
 page('*', (ctx) => {
     console.error('Page introuvable %o', ctx);
