@@ -1,7 +1,8 @@
 import { Record, Set as ImmutableSet } from 'immutable';
-import { sum } from 'd3-array';
 
 import memoize from 'fast-memoize'
+
+const sumReducer = (total, value) => total + value
 
 /*
 
@@ -74,7 +75,9 @@ export const aggregatedDocumentBudgetaireNodeElements = memoize(rawAggregatedDoc
 
 
 function rawAggregatedDocumentBudgetaireNodeTotal(node){
-    return sum(aggregatedDocumentBudgetaireNodeElements(node).toJS().map(row => row['MtReal']))
+    return aggregatedDocumentBudgetaireNodeElements(node)
+        .map(row => row['MtReal'])
+        .reduce(sumReducer, 0)
 }
 
 export const aggregatedDocumentBudgetaireNodeTotal = memoize(rawAggregatedDocumentBudgetaireNodeTotal)
