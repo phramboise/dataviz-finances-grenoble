@@ -22,6 +22,7 @@ import {
     FINANCE_DATA_RECIEVED, CORRECTION_AGGREGATION_RECEIVED,
     ATEMPORAL_TEXTS_RECEIVED, TEMPORAL_TEXTS_RECEIVED,
     FINANCE_DETAIL_ID_CHANGE, CHANGE_EXPLORATION_YEAR,
+    CHANGE_POLITIQUE_VIEW,
 } from './constants/actions';
 
 
@@ -66,6 +67,7 @@ const StoreRecord = Record({
     // ImmutableMap<id, FinanceElementTextsRecord>
     textsById: undefined,
     financeDetailId: undefined,
+    politiqueView: undefined,
     screenWidth: undefined,
     resources: {
         dataUrl: undefined,
@@ -81,6 +83,7 @@ const store = createStore(
         explorationYear: undefined,
         financeDetailId: undefined,
         textsById: ImmutableMap([[HOME, {label: 'Accueil'}]]),
+        politiqueView: 'aggregated',
         screenWidth: window.innerWidth,
         resources: {
             dataUrl: 'https://montreuil.opendatasoft.com/explore/dataset/comptes-administratifs/',

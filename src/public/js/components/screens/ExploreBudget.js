@@ -14,10 +14,11 @@ import {
     EXPENDITURES,
     REVENUE
 } from "../../../../shared/js/finance/constants";
-import { CHANGE_EXPLORATION_YEAR } from "../../constants/actions.js";
+import { CHANGE_EXPLORATION_YEAR, CHANGE_POLITIQUE_VIEW } from "../../constants/actions.js";
 
 import { hierarchicalByFunction } from "../../../../shared/js/finance/memoized";
 import { aggregatedDocumentBudgetaireNodeTotal } from '../../../../shared/js/finance/AggregationDataStructures'
+import { getElementById } from '../../../../shared/js/finance/visitHierarchical.js';
 
 
 import PageTitle from "../../../../shared/js/components/gironde.fr/PageTitle";
@@ -33,13 +34,15 @@ import DetailedViewIcon from "../../../../../images/icons/details.svg";
 import BigNumbers from "../../../../shared/js/components/BigNumbers.js";
 import StackChart from '../../../../shared/js/components/StackChart';
 import BubbleChartCluster from "../../../../shared/js/components/BubbleChartCluster.js";
+import DetailsTable from "../../../../shared/js/components/DetailsTable.js";
 
 
 const RDFIcon = (rdfi) => rdfi.includes('FONCTIONNEMENT') ? FonctionnementIcon : InvestissementIcon;
 
 export function ExploreBudget (props) {
     const { explorationYear, totals, aggregationByYear, resources } = props
-    const { changeExplorationYear, financeDetailId, rdfi } = props;
+    const { changeExplorationYear, financeDetailId, contentElement, rdfi } = props;
+    const { changePolitiqueView, FinanceUserView, politiqueView } = props;
     const [RD, FI] = [ rdfi[0], rdfi[1] ];
 
     const rdfiTreeByYear = aggregationByYear.map(aggregationTree => {
@@ -212,13 +215,13 @@ export function ExploreBudget (props) {
 
             <ul className="inline-tabs" role="tablist">
                 <li role="presentation">
-                    <button aria-selected={true} className="link" role="tab">
+                    <button aria-selected={politiqueView === 'aggregated'} className="link" role="tab" onClick={() => changePolitiqueView('aggregated')}>
                         <AggregatedViewIcon className="icon icon--small" />
                         vue agrégée
                     </button>
                 </li>
                 <li role="presentation">
-                    <button aria-selected={false} className="link" role="tab">
+                    <button aria-selected={politiqueView === 'tabular'} className="link" role="tab" onClick={() => changePolitiqueView('tabular')}>
                         <DetailedViewIcon className="icon icon--small" />
                         vue détaillée
                     </button>
@@ -229,7 +232,7 @@ export function ExploreBudget (props) {
                 </li>
             </ul>
             <div className="tabpanel" role="tabpanel">
-                <BubbleChartCluster tree={bubbleTreeData} />
+                <FinanceUserView tree={bubbleTreeData} element={contentElement} />
             </div>
         </section>
     </article>
@@ -244,11 +247,16 @@ export default connect(
             aggregationByYear,
             financeDetailId,
             explorationYear,
+            politiqueView,
             resources,
         } = state;
 
         const documentBudgetaire = docBudgByYear.get(explorationYear);
+        const aggregationTree = aggregationByYear.get(explorationYear)
         const rdfi = financeDetailId.replace(/^Budget Montreuil /, '').split(' ').map(id => id[0]).slice(0, 2);
+
+        const FinanceUserView = politiqueView === 'aggregated' ? BubbleChartCluster : DetailsTable;
+        const contentElement = aggregationTree && getElementById(aggregationTree, 'Budget Montreuil ' + financeDetailId);
 
         let totals = new ImmutableMap();
         if (documentBudgetaire) {
@@ -264,19 +272,22 @@ export default connect(
 
         return {
             explorationYear,
+            contentElement,
             totals,
             aggregationByYear,
             financeDetailId,
+            FinanceUserView,
+            politiqueView,
             rdfi,
             resources,
         };
     },
     (dispatch) => ({
         changeExplorationYear(year){
-            dispatch({
-                type: CHANGE_EXPLORATION_YEAR,
-                year
-            })
+            dispatch({ type: CHANGE_EXPLORATION_YEAR, year })
+        },
+        changePolitiqueView(view){
+            dispatch({ type: CHANGE_POLITIQUE_VIEW, view })
         },
     })
 )(ExploreBudget);
