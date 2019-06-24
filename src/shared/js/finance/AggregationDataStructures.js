@@ -43,14 +43,14 @@ const AggregationNodeFields = {
 
 export const AggregationLeaf = Record(
     Object.assign(
-        {formula: undefined},
+        {formula: undefined, tags: undefined},
         AggregationNodeFields
     )
 )
 
 export const AggregationDescription = Record(
     Object.assign(
-        {children: undefined},
+        {children: undefined, tags: undefined},
         AggregationNodeFields
     )
 )
@@ -59,7 +59,8 @@ export const AggregatedDocumentBudgetaire = Record({
     id: undefined,
     label: undefined,
     elements: undefined,
-    children: undefined
+    children: undefined,
+    tags: undefined
 })
 
 

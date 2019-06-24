@@ -1,4 +1,4 @@
-import { Set as ImmutableSet, Map as ImmutableMap } from 'immutable';
+import { Set as ImmutableSet, Map as ImmutableMap, List } from 'immutable';
 
 import { AggregationLeaf, AggregationDescription } from '../../shared/js/finance/AggregationDataStructures.js'
 
@@ -58,6 +58,19 @@ function makeFormulaFromMontreuilRows(rows){
 
 }
 
+function makeTagsFromMontreuilRows (rows) {
+    let tags = new ImmutableMap();
+
+    rows.forEach(row => {
+        const [Politique, SousPolitique] = [row['Niveau a - Politique'], row['Niveau b - Sous Politique']]
+        const [Fonction, Nature] = [row["Fonction - Code"], row['Nature - Code']];
+
+        tags = tags.updateIn([Politique, SousPolitique], (val=List()) => val.push(makeFonctionNatureCombo(Fonction, Nature)))
+    });
+
+    return tags.toJS();
+}
+
 function getMontreuilNomenclatureRowKeys(MontreuilNomenclatureRow){
     return [
         'Sens',
@@ -83,7 +96,8 @@ function nomenclatureNodeToAggregationNode(node, label, id){
         return new AggregationLeaf({
             id,
             label,
-            formula: makeFormulaFromMontreuilRows(node)
+            formula: makeFormulaFromMontreuilRows(node),
+            tags: makeTagsFromMontreuilRows(node),
         })
     }
 }

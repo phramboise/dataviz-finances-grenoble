@@ -16,7 +16,7 @@ import {
 } from "../../../../shared/js/finance/constants";
 import { CHANGE_EXPLORATION_YEAR, CHANGE_POLITIQUE_VIEW } from "../../constants/actions.js";
 
-import { hierarchicalByFunction } from "../../../../shared/js/finance/memoized";
+import { hierarchicalByFunction, hierarchicalByPolitique } from "../../../../shared/js/finance/memoized";
 import { aggregatedDocumentBudgetaireNodeTotal } from '../../../../shared/js/finance/AggregationDataStructures'
 import { getElementById } from '../../../../shared/js/finance/visitHierarchical.js';
 
@@ -74,10 +74,7 @@ export function ExploreBudget (props) {
 
 
     // Bubble data
-    const currentYearrdfiTree = rdfiTreeByYear.get(explorationYear);
-
-    // For DF, dig to a specific level
-    let bubbleTreeData = currentYearrdfiTree
+    let bubbleTreeData = hierarchicalByPolitique(contentElement)
 
 
     // Build stackachart data from rdfiTree
@@ -256,7 +253,7 @@ export default connect(
         const rdfi = financeDetailId.replace(/^Budget Montreuil /, '').split(' ').map(id => id[0]).slice(0, 2);
 
         const FinanceUserView = politiqueView === 'aggregated' ? BubbleChartCluster : DetailsTable;
-        const contentElement = aggregationTree && getElementById(aggregationTree, 'Budget Montreuil ' + financeDetailId);
+        const contentElement = getElementById(aggregationTree, 'Budget Montreuil ' + financeDetailId);
 
         let totals = new ImmutableMap();
         if (documentBudgetaire) {
