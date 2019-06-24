@@ -43,9 +43,17 @@ const BREADCRUMB_CONTAINER = document.body.querySelector('.breadcrumb-container'
 
 const DEFAULT_BREADCRUMB = List([
     {
-        text: 'Explorer les comptes',
-        url: '#'
-    }
+        text: 'Accueil',
+        url: '/'
+    },
+    {
+        text: 'Vie citoyenne',
+        url: '/vie-citoyenne/la-municipalite/'
+    },
+    {
+        text: 'Finances et marchés publics',
+        url: '/vie-citoyenne/finances-et-marches-publics/'
+    },
 ]);
 
 const logError = (error) => console.error(error.message, error.trace);
@@ -183,7 +191,7 @@ page('/explorer/:financeDetailId?', ({params: {financeDetailId='DEPENSE FONCTION
     );
 
 
-    const breadcrumb = DEFAULT_BREADCRUMB.push({text: 'Explorer'});
+    const breadcrumb = DEFAULT_BREADCRUMB.push({text: 'Recettes et dépenses open data'});
     ReactDOM.render( React.createElement(Breadcrumb, { items: breadcrumb }), BREADCRUMB_CONTAINER );
 });
 
