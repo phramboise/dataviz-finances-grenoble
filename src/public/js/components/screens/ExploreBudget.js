@@ -56,7 +56,7 @@ export function ExploreBudget (props) {
             rdTree.children.find(c => c.id.includes('FONCTIONNEMENT'))
         );
     })
-
+    const currentYearrdfiTree = rdfiTreeByYear.get(explorationYear);
 
     const expenditures = totals.get(EXPENDITURES);
     const revenue = totals.get(REVENUE);
@@ -149,7 +149,7 @@ export function ExploreBudget (props) {
                 {revenueItems.concat(expenditureItems).map(item => {
                     const Icon = RDFIcon(item.id);
                     return (<li key={item.id} role="presentation">
-                        <a href={`#!/explorer/${item.id}`} aria-selected={financeDetailId.indexOf(item.id) === 0} className={item.colorClassName} onClick={() => page(`/explorer/${item.id}`)} role="tab">
+                        <a href={`#!/explorer/${item.id}`} aria-selected={financeDetailId.includes(item.id)} className={item.colorClassName} onClick={() => page(`/explorer/${item.id}`)} role="tab">
                             <Icon className="icon" aria-hidden={true} />
                             {item.text}
                         </a>
@@ -228,7 +228,9 @@ export function ExploreBudget (props) {
                 </li>
             </ul>
             <div className="tabpanel" role="tabpanel">
-                <FinanceUserView tree={bubbleTreeData} element={contentElement} />
+                <FinanceUserView families={bubbleTreeData}
+                                 element={contentElement}
+                                 onNodeClick={(family, node) => changePolitiqueView('tabular')}/>
             </div>
         </section>
     </article>
@@ -252,7 +254,7 @@ export default connect(
         const rdfi = financeDetailId.replace(/^Budget Montreuil /, '').split(' ').map(id => id[0]).slice(0, 2);
 
         const FinanceUserView = politiqueView === 'aggregated' ? BubbleChartCluster : DetailsTable;
-        const contentElement = getElementById(aggregationTree, 'Budget Montreuil ' + financeDetailId);
+        const contentElement = documentBudgetaire && getElementById(aggregationTree, 'Budget Montreuil ' + financeDetailId);
 
         let totals = new ImmutableMap();
         if (documentBudgetaire) {

@@ -274,7 +274,7 @@ $RX-L: 60%;
     .bubble-chart-cluster {
         display: flex;
         flex-flow: row wrap;
-        justify-content: space-between;
+        justify-content: start;
 
         nav {
             flex: 1 1 100%;
