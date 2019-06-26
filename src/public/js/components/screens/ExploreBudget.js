@@ -74,8 +74,7 @@ export function ExploreBudget (props) {
 
 
     // Bubble data
-    let bubbleTreeData = hierarchicalByPolitique(contentElement)
-
+    const bubbleTreeData = contentElement && hierarchicalByPolitique(contentElement)
 
     // Build stackachart data from rdfiTree
     const years = aggregationByYear.keySeq().toArray();
