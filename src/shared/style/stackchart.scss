@@ -32,6 +32,12 @@
                 fill: white;
             }
         }
+
+        &.with-focus .brick:not(.focused) {
+            rect, circle, path {
+                fill: $discrete-grey !important;
+            }
+        }
     }
 
     .d3-axis{

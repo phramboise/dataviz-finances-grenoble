@@ -225,6 +225,7 @@ $RX-L: 60%;
 
         .legend-list{
             flex: 1 1 25%;
+            flex-direction: row reverse;
             font-size: .9em;
             padding-left: 1em;
             margin-bottom: 2.5em;
@@ -252,9 +253,8 @@ $RX-L: 60%;
             flex-direction: row;
 
             .legend-list {
-                display: block;
-
                 > li {
+                    flex: 1 0 100%;
                     margin: 0 0 .25em 0;
                     white-space: normal;
                 }
