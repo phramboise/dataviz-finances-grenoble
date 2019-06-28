@@ -246,11 +246,19 @@ $RX-L: 60%;
 
         .bubble-chart {
             margin: 1.5em 0;
+            position: relative;
             width: 25%;
 
             figcaption {
                 display: block;
+                padding: 0 .5em;
+                position: absolute;
                 text-align: center;
+                text-shadow: -1px 0px white,
+                             1px 0 white,
+                             0 -1px white,
+                             0 1px white;
+                width: 100%;
 
                 span:not(.money-amount) {
                     font-size: .8em;

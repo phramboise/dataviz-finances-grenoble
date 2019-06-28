@@ -18,7 +18,7 @@ export default class BubbleChartNode extends React.Component {
         const {total, label, children} = node;
         const RorD = node.rdfi[0];
         const WIDTH = 250;
-        const HEIGHT = 200;
+        const HEIGHT = 250;
         const radius = scaleLinear().domain([0, maxNodeValue]).range([3, 80]);
 
         const nodes = hierarchy({name: label, children})
