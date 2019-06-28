@@ -187,7 +187,7 @@ export function ExploreBudget (props) {
                             contentId={currentYearrdfiTree.id}
                             onSelectedXAxisItem={changeExplorationYear}
                             WIDTH={500}
-                            HEIGHT={250}
+                            HEIGHT={250 * Math.max(legendItems.length / 10, 1)}
                             BRICK_SPACING={2}
                             MIN_BRICK_HEIGHT={1}
                             BRICK_RADIUS={0}

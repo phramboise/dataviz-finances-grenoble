@@ -25,6 +25,7 @@ ol.legend-list{
 
     a[href] {
         color: $copy-color;
+        display: block;
         text-decoration: underline;
 
         &:hover,
