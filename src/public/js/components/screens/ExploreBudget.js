@@ -14,10 +14,11 @@ import {
     EXPENDITURES,
     REVENUE
 } from "../../../../shared/js/finance/constants";
-import { CHANGE_EXPLORATION_YEAR } from "../../constants/actions.js";
+import { CHANGE_EXPLORATION_YEAR, CHANGE_POLITIQUE_VIEW } from "../../constants/actions.js";
 
-import { hierarchicalByFunction } from "../../../../shared/js/finance/memoized";
+import { hierarchicalByFunction, hierarchicalByPolitique } from "../../../../shared/js/finance/memoized";
 import { aggregatedDocumentBudgetaireNodeTotal } from '../../../../shared/js/finance/AggregationDataStructures'
+import { getElementById } from '../../../../shared/js/finance/visitHierarchical.js';
 
 
 import PageTitle from "../../../../shared/js/components/gironde.fr/PageTitle";
@@ -27,17 +28,21 @@ import {makeAmountString} from "../../../../shared/js/components/MoneyAmount";
 
 import InvestissementIcon from "../../../../../images/icons/rdfi-investissement.svg";
 import FonctionnementIcon from "../../../../../images/icons/rdfi-fonctionnement.svg";
+import AggregatedViewIcon from "../../../../../images/icons/aggregation.svg";
+import DetailedViewIcon from "../../../../../images/icons/details.svg";
 
 import BigNumbers from "../../../../shared/js/components/BigNumbers.js";
 import StackChart from '../../../../shared/js/components/StackChart';
 import BubbleChartCluster from "../../../../shared/js/components/BubbleChartCluster.js";
+import DetailsTable from "../../../../shared/js/components/DetailsTable.js";
 
 
 const RDFIcon = (rdfi) => rdfi.includes('FONCTIONNEMENT') ? FonctionnementIcon : InvestissementIcon;
 
 export function ExploreBudget (props) {
     const { explorationYear, totals, aggregationByYear, resources } = props
-    const { changeExplorationYear, financeDetailId, rdfi } = props;
+    const { changeExplorationYear, financeDetailId, contentElement, rdfi } = props;
+    const { changePolitiqueView, FinanceUserView, politiqueView } = props;
     const [RD, FI] = [ rdfi[0], rdfi[1] ];
 
     const rdfiTreeByYear = aggregationByYear.map(aggregationTree => {
@@ -51,7 +56,7 @@ export function ExploreBudget (props) {
             rdTree.children.find(c => c.id.includes('FONCTIONNEMENT'))
         );
     })
-
+    const currentYearrdfiTree = rdfiTreeByYear.get(explorationYear);
 
     const expenditures = totals.get(EXPENDITURES);
     const revenue = totals.get(REVENUE);
@@ -69,13 +74,7 @@ export function ExploreBudget (props) {
 
 
     // Bubble data
-    const currentYearrdfiTree = rdfiTreeByYear.get(explorationYear);
-
-    // For DF, dig to a specific level
-    let bubbleTreeData = (currentYearrdfiTree && RD === 'D' && FI === 'F') ?
-        currentYearrdfiTree.children.find(c => c.id.includes('Gestion courante'))
-        : currentYearrdfiTree
-
+    const bubbleTreeData = contentElement && hierarchicalByPolitique(contentElement)
 
     // Build stackachart data from rdfiTree
     const years = aggregationByYear.keySeq().toArray();
@@ -125,7 +124,7 @@ export function ExploreBudget (props) {
     <article className="explore-budget">
         <PageTitle text="Explorer les comptes de la ville" />
 
-        <section className="yearly-budget" aria-label={`Les grands chiffres ${explorationYear}`} aria-describedby="yearly-budget--description">
+        <section id="summary" className="yearly-budget" aria-label={`Les grands chiffres ${explorationYear}`} aria-describedby="yearly-budget--description">
             <h2>Les grands chiffres</h2>
 
             <p className="h4" id="yearly-budget--description">
@@ -141,7 +140,7 @@ export function ExploreBudget (props) {
             </div>
         </section>
 
-        <section>
+        <section id="evolution">
             <h2>Évolution et répartition du budget</h2>
 
             <p className="h4">Sélectionner la catégorie du budget à afficher :</p>
@@ -150,7 +149,7 @@ export function ExploreBudget (props) {
                 {revenueItems.concat(expenditureItems).map(item => {
                     const Icon = RDFIcon(item.id);
                     return (<li key={item.id} role="presentation">
-                        <a href={`#!/explorer/${item.id}`} aria-selected={financeDetailId.indexOf(item.id) === 0} className={item.colorClassName} onClick={() => page(`/explorer/${item.id}`)} role="tab">
+                        <a href={`#!/explorer/${item.id}`} aria-selected={financeDetailId.includes(item.id)} className={item.colorClassName} onClick={() => page(`/explorer/${item.id}`)} role="tab">
                             <Icon className="icon" aria-hidden={true} />
                             {item.text}
                         </a>
@@ -164,12 +163,10 @@ export function ExploreBudget (props) {
                         {revenueItems.concat(expenditureItems).map(item => {
                             if (currentYearrdfiTree && financeDetailId.includes(item.id)) {
                                 return (<>
-                                    <option key={item.id} value={item.id} className="selected">Toutes les {item.text.toLocaleLowerCase()}</option>
-                                    <optgroup label={`Certaines ${item.text.toLocaleLowerCase()}`}>
-                                        {currentYearrdfiTree.children.map(node => (
-                                            <option key={node.id.replace(/^Budget Montreuil /, '')} value={`${node.id.replace(/^Budget Montreuil /, '')}`}>{node.label}</option>
-                                        ))}
-                                    </optgroup>
+                                    <option key={item.id} value={item.id} className="selected">{item.text}</option>
+                                    {currentYearrdfiTree.children.map(node => (
+                                        <option key={node.id.replace(/^Budget Montreuil /, '')} value={`${node.id.replace(/^Budget Montreuil /, '')}`}>{'\u2003'}{node.label}</option>
+                                    ))}
                                 </>);
                             }
                             else {
@@ -190,7 +187,7 @@ export function ExploreBudget (props) {
                             contentId={currentYearrdfiTree.id}
                             onSelectedXAxisItem={changeExplorationYear}
                             WIDTH={500}
-                            HEIGHT={250}
+                            HEIGHT={250 * Math.max(legendItems.length / 10, 1)}
                             BRICK_SPACING={2}
                             MIN_BRICK_HEIGHT={1}
                             BRICK_RADIUS={0}
@@ -201,10 +198,38 @@ export function ExploreBudget (props) {
             </div>
         </section>
 
-        <section>
-            <h2>Répartition par politique</h2>
+        <section className="discrete" id="politiques">
+            <h2>Répartition par politique publique</h2>
 
-            <BubbleChartCluster tree={bubbleTreeData} />
+            <p className="intro">
+                Qu’est-ce que c’est les politiques et sous-politiques publique ?
+                Le Lorem Ipsum est simplement du faux texte employé dans la composition
+                et la mise en page avant impression.
+            </p>
+
+            <ul className="inline-tabs" role="tablist">
+                <li role="presentation">
+                    <button aria-selected={politiqueView === 'aggregated'} className="link" role="tab" onClick={() => changePolitiqueView('aggregated')}>
+                        <AggregatedViewIcon className="icon icon--small" />
+                        vue d'ensemble
+                    </button>
+                </li>
+                <li role="presentation">
+                    <button aria-selected={politiqueView === 'tabular'} className="link" role="tab" onClick={() => changePolitiqueView('tabular')}>
+                        <DetailedViewIcon className="icon icon--small" />
+                        vue détaillée
+                    </button>
+                </li>
+                {/*<li role="presentation">
+                    <input type="checkbox" checked={false} id="hr-checkbox" />
+                    <label htmlFor="hr-checkbox">voir la part des ressources humaines</label>
+                 </li>*/}
+            </ul>
+            <div className="tabpanel" role="tabpanel">
+                <FinanceUserView families={bubbleTreeData}
+                                 element={contentElement}
+                                 onNodeClick={(family, node) => changePolitiqueView('tabular')}/>
+            </div>
         </section>
     </article>
     <DownloadSection {...resources} />
@@ -218,11 +243,16 @@ export default connect(
             aggregationByYear,
             financeDetailId,
             explorationYear,
+            politiqueView,
             resources,
         } = state;
 
         const documentBudgetaire = docBudgByYear.get(explorationYear);
+        const aggregationTree = aggregationByYear.get(explorationYear)
         const rdfi = financeDetailId.replace(/^Budget Montreuil /, '').split(' ').map(id => id[0]).slice(0, 2);
+
+        const FinanceUserView = politiqueView === 'aggregated' ? BubbleChartCluster : DetailsTable;
+        const contentElement = documentBudgetaire && getElementById(aggregationTree, 'Budget Montreuil ' + financeDetailId);
 
         let totals = new ImmutableMap();
         if (documentBudgetaire) {
@@ -238,19 +268,22 @@ export default connect(
 
         return {
             explorationYear,
+            contentElement,
             totals,
             aggregationByYear,
             financeDetailId,
+            FinanceUserView,
+            politiqueView,
             rdfi,
             resources,
         };
     },
     (dispatch) => ({
         changeExplorationYear(year){
-            dispatch({
-                type: CHANGE_EXPLORATION_YEAR,
-                year
-            })
+            dispatch({ type: CHANGE_EXPLORATION_YEAR, year })
+        },
+        changePolitiqueView(view){
+            dispatch({ type: CHANGE_POLITIQUE_VIEW, view })
         },
     })
 )(ExploreBudget);

@@ -19,11 +19,30 @@ $RX-L: 60%;
     .h4 select {
         font-size: inherit;
         margin: 0 .5em;
+
+        .selected {
+            font-weight: bold;
+        }
     }
 
 
     section{
-        margin-bottom: 3em;
+        padding-top: 1em;
+
+        &.discrete {
+            background: $discrete-background-color;
+
+            h2, .h2 {
+                color: $copy-color;
+            }
+        }
+
+        .intro,
+        .inline-tabs {
+            max-width: 580px;
+            margin-left: auto;
+            margin-right: auto;
+        }
     }
 
     .rdfi-choice{
@@ -134,6 +153,42 @@ $RX-L: 60%;
         }
     }
 
+    .inline-tabs {
+        display: flex;
+
+        > li {
+            align-self: center;
+
+            &:last-child {
+                flex: 0 1 auto;
+                font-size: .9em;
+            }
+        }
+
+        [role="tab"] {
+            border: none;
+            background: transparent;
+            font-size: inherit;
+            padding: .5em 1em;
+            text-decoration: underline;
+            white-space: nowrap;
+
+            &[aria-selected="true"] {
+                background: $accented-background-color;
+                text-decoration: none;
+            }
+
+            &:hover,
+            &:focus {
+                text-decoration: none;
+            }
+        }
+
+        .icon {
+            vertical-align: middle;
+        }
+    }
+
     @each $rd, $pairs in $rdfi {
         @each $fi, $color in $pairs {
             .tabs--rdfi [role="tab"].rdfi-#{$rd}.rdfi-#{$fi} {
@@ -172,6 +227,7 @@ $RX-L: 60%;
 
         .legend-list{
             flex: 1 1 25%;
+            flex-direction: row reverse;
             font-size: .9em;
             padding-left: 1em;
             margin-bottom: 2.5em;
@@ -199,9 +255,8 @@ $RX-L: 60%;
             flex-direction: row;
 
             .legend-list {
-                display: block;
-
                 > li {
+                    flex: 1 0 100%;
                     margin: 0 0 .25em 0;
                     white-space: normal;
                 }
@@ -225,7 +280,7 @@ $RX-L: 60%;
     .bubble-chart-cluster {
         display: flex;
         flex-flow: row wrap;
-        justify-content: space-between;
+        justify-content: start;
 
         nav {
             flex: 1 1 100%;
@@ -251,6 +306,7 @@ $RX-L: 60%;
 
             figcaption {
                 display: block;
+                line-height: 1;
                 padding: 0 .5em;
                 position: absolute;
                 text-align: center;
@@ -260,8 +316,12 @@ $RX-L: 60%;
                              0 1px white;
                 width: 100%;
 
+                .money-amount {
+                    margin-bottom: .2em;
+                }
+
                 span:not(.money-amount) {
-                    font-size: .8em;
+                    font-size: .9em;
                 }
             }
 
@@ -273,16 +333,16 @@ $RX-L: 60%;
         @each $rd, $pairs in $rdfi {
             @each $fi, $color in $pairs {
                 .rdfi-#{$rd}.rdfi-#{$fi} {
-                    stroke: darken($color, 8%);
-                    stroke-width: 2px;
                     fill: $color;
+                    // stroke: darken($color, 8%);
+                    // stroke-width: 2px;
                 }
 
                 /* makes it clear for keyboard navigation */
                 a:focus .rdfi-#{$rd}.rdfi-#{$fi},
                 a:hover .rdfi-#{$rd}.rdfi-#{$fi} {
                     fill: lighten($color, 10%);
-                    stroke: darken($color, 15%);
+                    // stroke: darken($color, 15%);
                 }
             }
         }

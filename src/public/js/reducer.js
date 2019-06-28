@@ -5,6 +5,7 @@ import {
     FINANCE_DETAIL_ID_CHANGE, FINANCE_DATA_RECIEVED, CORRECTION_AGGREGATION_RECEIVED,
     ATEMPORAL_TEXTS_RECEIVED, TEMPORAL_TEXTS_RECEIVED,
     CHANGE_EXPLORATION_YEAR, CHANGE_CURRENT_YEAR,
+    CHANGE_POLITIQUE_VIEW,
 } from './constants/actions';
 
 const FinanceElementTextsRecord = Record({
@@ -70,6 +71,11 @@ export default function reducer(state, action) {
 
             return state.set('textsById', textMap);
         }
+
+        case CHANGE_POLITIQUE_VIEW: {
+            return state.set('politiqueView', action.view);
+        }
+
         case CHANGE_EXPLORATION_YEAR: {
             const {year} = action;
             return state.set('explorationYear', year);

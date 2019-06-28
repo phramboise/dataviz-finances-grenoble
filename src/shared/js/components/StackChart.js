@@ -1,7 +1,7 @@
 import { scaleLinear } from 'd3-scale';
 import { min, max, sum } from 'd3-array';
 
-import React from 'react';
+import React, {useState} from 'react';
 
 import LegendList from './LegendList';
 import D3Axis from './D3Axis';
@@ -24,7 +24,7 @@ export default function StackChart ({
     BRICK_DISPLAY_VALUE = true,
     PORTRAIT_COLUMN_WIDTH = 70,
     // legend
-    legendItems, uniqueColorClass,
+    legendItems = [], uniqueColorClass,
     // other
     selectedX, yValueDisplay = x => String(x),
     // events
@@ -33,6 +33,8 @@ export default function StackChart ({
     const columnAndMarginWidth = (WIDTH - Y_AXIS_MARGIN)/(xs.length)
     const columnMargin = columnAndMarginWidth/4;
     const columnWidth = columnAndMarginWidth - columnMargin;
+
+    const [focusedItem, setFocusedItem] = useState(undefined);
 
     const xScale = scaleLinear()
         .domain([min(xs), max(xs)])
@@ -112,7 +114,7 @@ export default function StackChart ({
                 }
             })}),
             // content
-            React.createElement('g', {className: 'content'},
+            React.createElement('g', {className: `content ${focusedItem !== undefined ? ' with-focus' : ''}`},
                 ysByX.entrySeq().toJS().map(([x, ys]) => {
 
                     const total = sum(ys);
@@ -160,7 +162,8 @@ export default function StackChart ({
                         React.createElement('g', {},
 
                             stack.map( ({value, height, y}, i) => {
-                                const colorClass = legendItems ? legendItems[i].colorClassName : uniqueColorClass;
+                                const legendItem = legendItems[i] || {}
+                                const colorClass = legendItem.colorClassName || uniqueColorClass;
 
                                 return React.createElement(
                                     'g',
@@ -170,7 +173,8 @@ export default function StackChart ({
                                             'brick',
                                             onBrickClicked ? 'actionable' : '',
                                             colorClass,
-                                            legendItems ? legendItems[i].id : contentId
+                                            legendItems.length ? legendItems[i].id : contentId,
+                                            focusedItem === i ? 'focused' : ''
                                         ].join(' '),
                                         key: i,
                                         onClick: onBrickClicked ? () => {
@@ -178,7 +182,11 @@ export default function StackChart ({
                                                 x,
                                                 legendItems ? legendItems[i].id : y
                                             )
-                                        } : undefined
+                                        } : undefined,
+                                        onMouseOver: () => setFocusedItem(i),
+                                        onFocus: () => setFocusedItem(i),
+                                        onMouseOut: () => setFocusedItem(undefined),
+                                        onBlur: () => setFocusedItem(undefined),
                                     },
                                     React.createElement('rect', {
                                         x: portrait ? 0 : -columnWidth/2,
@@ -217,10 +225,13 @@ export default function StackChart ({
         )
     ),
     legendItems ? React.createElement(LegendList, {
-        items: legendItems.map((li, i) => (Object.assign(
+        items: legendItems.map((li, i) => Object.assign(
             {colorClassName: `area-color-${i+1}`},
-            li
-        ))).reverse() // to have a order consistent with the stacks
+            {ariaCurrent: focusedItem === i},
+            li,
+            {className: `${li.className} ${focusedItem === i ? 'focused': ''}`},
+        )),
+        onElementFocus: (i) => setFocusedItem(i),
     }) : undefined
     )
 }

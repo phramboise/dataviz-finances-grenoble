@@ -14,7 +14,6 @@ import csvStringToCorrections from '../../shared/js/finance/csvStringToCorrectio
 import {childToParent, elementById} from '../../shared/js/finance/flatHierarchicalById.js';
 
 import Breadcrumb from '../../shared/js/components/Breadcrumb';
-import FinanceElement from './components/screens/FinanceElement';
 import ExploreBudget from './components/screens/ExploreBudget';
 
 import { HOME } from './constants/pages';
@@ -22,6 +21,7 @@ import {
     FINANCE_DATA_RECIEVED, CORRECTION_AGGREGATION_RECEIVED,
     ATEMPORAL_TEXTS_RECEIVED, TEMPORAL_TEXTS_RECEIVED,
     FINANCE_DETAIL_ID_CHANGE, CHANGE_EXPLORATION_YEAR,
+    CHANGE_POLITIQUE_VIEW,
 } from './constants/actions';
 
 
@@ -43,9 +43,17 @@ const BREADCRUMB_CONTAINER = document.body.querySelector('.breadcrumb-container'
 
 const DEFAULT_BREADCRUMB = List([
     {
-        text: 'Explorer les comptes',
-        url: '#'
-    }
+        text: 'Accueil',
+        url: '/'
+    },
+    {
+        text: 'Vie citoyenne',
+        url: '/vie-citoyenne/la-municipalite/'
+    },
+    {
+        text: 'Finances et marchés publics',
+        url: '/vie-citoyenne/finances-et-marches-publics/'
+    },
 ]);
 
 const logError = (error) => console.error(error.message, error.trace);
@@ -58,6 +66,7 @@ const StoreRecord = Record({
     // ImmutableMap<id, FinanceElementTextsRecord>
     textsById: undefined,
     financeDetailId: undefined,
+    politiqueView: undefined,
     screenWidth: undefined,
     resources: {
         dataUrl: undefined,
@@ -73,6 +82,7 @@ const store = createStore(
         explorationYear: undefined,
         financeDetailId: undefined,
         textsById: ImmutableMap([[HOME, {label: 'Accueil'}]]),
+        politiqueView: 'aggregated',
         screenWidth: window.innerWidth,
         resources: {
             dataUrl: 'https://montreuil.opendatasoft.com/explore/dataset/comptes-administratifs/',
@@ -183,55 +193,59 @@ page('/explorer/:financeDetailId?', ({params: {financeDetailId='DEPENSE FONCTION
     );
 
 
-    const breadcrumb = DEFAULT_BREADCRUMB.push({text: 'Explorer'});
-    ReactDOM.render( React.createElement(Breadcrumb, { items: breadcrumb }), BREADCRUMB_CONTAINER );
+    const breadcrumb = DEFAULT_BREADCRUMB.push({
+        text: 'Recettes et dépenses open data',
+        url: '#!/explorer'
+    });
+
+    ReactDOM.render(<Breadcrumb items={breadcrumb} />, BREADCRUMB_CONTAINER );
 });
 
-
-page('/finance-details/:contentId', ({params: {contentId}}) => {
-    console.log('in route', '/finance-details', contentId)
-    scrollTo(0, 0);
-
-    store.dispatch({
-        type: FINANCE_DETAIL_ID_CHANGE,
-        financeDetailId: contentId
-    })
-
-    ReactDOM.render(
-        React.createElement(
-            Provider,
-            { store },
-            React.createElement(FinanceElement)
-        ),
-        CONTAINER_ELEMENT
-    );
-
-    /*const breadcrumbData = [];
-
-    let currentContentId = contentId.startsWith('M52-') ?
-        contentId.slice(7) :
-        contentId;
-
-    while(currentContentId){
-        if(currentContentId !== 'Total'){
-            breadcrumbData.push({
-                text: elementById.get(currentContentId).label,
-                url: `#!/finance-details/${currentContentId}`
-            })
-        }
-        currentContentId = childToParent.get(currentContentId);
-    }
-
-    breadcrumbData.push({
-        text: 'Explorer',
-        url: `#!/explorer`
-    })
-
-    const breadcrumb = DEFAULT_BREADCRUMB.concat(breadcrumbData.reverse());
-
-    ReactDOM.render( React.createElement(Breadcrumb, { items: breadcrumb }), BREADCRUMB_CONTAINER );*/
-
-});
+//
+// page('/finance-details/:contentId', ({params: {contentId}}) => {
+//     console.log('in route', '/finance-details', contentId)
+//     scrollTo(0, 0);
+//
+//     store.dispatch({
+//         type: FINANCE_DETAIL_ID_CHANGE,
+//         financeDetailId: contentId
+//     })
+//
+//     ReactDOM.render(
+//         React.createElement(
+//             Provider,
+//             { store },
+//             React.createElement(FinanceElement)
+//         ),
+//         CONTAINER_ELEMENT
+//     );
+//
+//     /*const breadcrumbData = [];
+//
+//     let currentContentId = contentId.startsWith('M52-') ?
+//         contentId.slice(7) :
+//         contentId;
+//
+//     while(currentContentId){
+//         if(currentContentId !== 'Total'){
+//             breadcrumbData.push({
+//                 text: elementById.get(currentContentId).label,
+//                 url: `#!/finance-details/${currentContentId}`
+//             })
+//         }
+//         currentContentId = childToParent.get(currentContentId);
+//     }
+//
+//     breadcrumbData.push({
+//         text: 'Explorer',
+//         url: `#!/explorer`
+//     })
+//
+//     const breadcrumb = DEFAULT_BREADCRUMB.concat(breadcrumbData.reverse());
+//
+//     ReactDOM.render( React.createElement(Breadcrumb, { items: breadcrumb }), BREADCRUMB_CONTAINER );*/
+//
+// });
 
 page('*', (ctx) => {
     console.error('Page introuvable %o', ctx);

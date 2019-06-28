@@ -19,13 +19,30 @@ ol.legend-list{
         vertical-align: sub;
     }
 
+    a {
+        display: block;
+    }
+
     a[href] {
         color: $copy-color;
+        display: block;
         text-decoration: underline;
 
         &:hover,
         &:focus {
             color: black;
+            text-decoration: none;
+        }
+    }
+
+    .focused {
+        &:before {
+            content: "▶ ";
+            margin-left: -1em;
+            position: absolute;
+        }
+
+        a {
             text-decoration: none;
         }
     }

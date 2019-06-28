@@ -10,7 +10,7 @@ import { max } from 'd3-array';
 
 import {makeLigneBudgetId}  from 'document-budgetaire/Records.js';
 import {hierarchicalByFunction}  from '../../../../shared/js/finance/memoized';
-import {default as visit, flattenTree} from '../../../../shared/js/finance/visitHierarchical.js';
+import {default as visit, flattenTree, getElementById} from '../../../../shared/js/finance/visitHierarchical.js';
 import {aggregatedDocumentBudgetaireNodeTotal, aggregatedDocumentBudgetaireNodeElements} from '../../../../shared/js/finance/AggregationDataStructures.js';
 
 
@@ -239,8 +239,6 @@ export function makePartition(element, totalById, textsById, possibleChildrenIds
 }
 
 
-
-const getElementById = (tree, id) => flattenTree(tree).find(node => node.id === id)
 
 /**
  *
