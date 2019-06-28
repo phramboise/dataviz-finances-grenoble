@@ -19,6 +19,10 @@ $RX-L: 60%;
     .h4 select {
         font-size: inherit;
         margin: 0 .5em;
+
+        .selected {
+            font-weight: bold;
+        }
     }
 
 

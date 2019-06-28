@@ -163,12 +163,10 @@ export function ExploreBudget (props) {
                         {revenueItems.concat(expenditureItems).map(item => {
                             if (currentYearrdfiTree && financeDetailId.includes(item.id)) {
                                 return (<>
-                                    <option key={item.id} value={item.id} className="selected">Toutes les {item.text.toLocaleLowerCase()}</option>
-                                    <optgroup label={`Certaines ${item.text.toLocaleLowerCase()}`}>
-                                        {currentYearrdfiTree.children.map(node => (
-                                            <option key={node.id.replace(/^Budget Montreuil /, '')} value={`${node.id.replace(/^Budget Montreuil /, '')}`}>{node.label}</option>
-                                        ))}
-                                    </optgroup>
+                                    <option key={item.id} value={item.id} className="selected">{item.text}</option>
+                                    {currentYearrdfiTree.children.map(node => (
+                                        <option key={node.id.replace(/^Budget Montreuil /, '')} value={`${node.id.replace(/^Budget Montreuil /, '')}`}>{'\u2003'}{node.label}</option>
+                                    ))}
                                 </>);
                             }
                             else {
