@@ -22,7 +22,7 @@ export default function BubbleChartNode (props) {
     const RorD = rdfi(node)[0];
     const WIDTH = 250;
     const HEIGHT = 250;
-    const radius = scaleLinear().domain([0, maxNodeValue]).range([3, 80]);
+    const radius = scaleLinear().domain([0, maxNodeValue]).range([1, 80]);
 
     const nodes = hierarchy({name: label, children})
         .sum(d => d.total)
