@@ -211,7 +211,7 @@ export function ExploreBudget (props) {
                 <li role="presentation">
                     <button aria-selected={politiqueView === 'aggregated'} className="link" role="tab" onClick={() => changePolitiqueView('aggregated')}>
                         <AggregatedViewIcon className="icon icon--small" />
-                        vue agrégée
+                        vue d'ensemble
                     </button>
                 </li>
                 <li role="presentation">
@@ -220,10 +220,10 @@ export function ExploreBudget (props) {
                         vue détaillée
                     </button>
                 </li>
-                <li role="presentation">
+                {/*<li role="presentation">
                     <input type="checkbox" checked={false} id="hr-checkbox" />
                     <label htmlFor="hr-checkbox">voir la part des ressources humaines</label>
-                </li>
+                 </li>*/}
             </ul>
             <div className="tabpanel" role="tabpanel">
                 <FinanceUserView families={bubbleTreeData}
