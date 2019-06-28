@@ -16,7 +16,7 @@ export default function DetailsTable({element}) {
                 <th>Nature</th>
                 <th>Montant</th>
                 <th>Fonction</th>
-                <th>Identifiant</th>
+                {/*<th>Identifiant</th>*/}
             </tr>
         </thead>
         <tbody>
@@ -29,9 +29,9 @@ export default function DetailsTable({element}) {
                     <ReactTooltip className="money-amount tooltip" effect="solid" place="left" delayShow={10} />
                 </td>
                 <td data-id={'F'+ligne['Fonction']}>{fonctionLabels[ligne['Fonction']]}</td>
-                <th scope="row">
+                {/*<th scope="row">
                     <code>N{ligne['Nature']}F{ligne['Fonction']}</code>
-                </th>
+                </th>*/}
             </tr>
         )}
         </tbody>

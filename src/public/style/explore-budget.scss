@@ -170,15 +170,17 @@ $RX-L: 60%;
             background: transparent;
             font-size: inherit;
             padding: .5em 1em;
+            text-decoration: underline;
             white-space: nowrap;
 
             &[aria-selected="true"] {
                 background: $accented-background-color;
+                text-decoration: none;
             }
 
             &:hover,
             &:focus {
-                text-decoration: underline;
+                text-decoration: none;
             }
         }
 
