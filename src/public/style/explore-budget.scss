@@ -304,6 +304,7 @@ $RX-L: 60%;
 
             figcaption {
                 display: block;
+                line-height: 1;
                 padding: 0 .5em;
                 position: absolute;
                 text-align: center;
@@ -312,6 +313,10 @@ $RX-L: 60%;
                              0 -1px white,
                              0 1px white;
                 width: 100%;
+
+                .money-amount {
+                    margin-bottom: .2em;
+                }
 
                 span:not(.money-amount) {
                     font-size: .9em;
