@@ -158,11 +158,6 @@ $RX-L: 60%;
 
         > li {
             align-self: center;
-
-            &:last-child {
-                flex: 0 1 auto;
-                font-size: .9em;
-            }
         }
 
         [role="tab"] {
