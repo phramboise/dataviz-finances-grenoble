@@ -82,14 +82,14 @@ export default function MoneyAmount({amount}) {
     return <span className="money-amount">{makeAmountString(amount)}</span>
 };
 
-export function ScaledAmount ({amount, scale:scaleId='K'}) {
+export function ScaledAmount ({amount, scale:scaleId='K', ...props}) {
     if (Number.isFinite(amount) === false) {
         return null
     }
 
     const scale = getScale(scaleId)
     const {string, parts} = makeAmount(amount, {scale})
-    return <span className="money-amount money-amount--scaled" data-scale={scale.suffix} aria-label={string}>
+    return <span className="money-amount money-amount--scaled" data-scale={scale.suffix} aria-label={string} {...props}>
         {parts.map(({string, className}) => <span key={className} className={className}>{string}</span>)}
     </span>
 };

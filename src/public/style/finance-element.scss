@@ -29,10 +29,11 @@
         td.digits {
             text-align: right;
         }
+    }
 
-        .money-amount {
-            font-family: monospace;
-        }
+    .raw-data .money-amount,
+    .money-amount.tooltip {
+        font-family: monospace;
     }
 
 }
