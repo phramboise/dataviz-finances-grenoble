@@ -2,7 +2,7 @@
 
 ## Brief
 
-**☝️Qui est engagé dans ce projet ? Et quelles sont les personnes associées aux étapes de validation ?**
+### ☝️ Qui est engagé dans ce projet ? Et quelles sont les personnes associées aux étapes de validation ?
 
 - thomas : développeur, facilitateur projet
 - david : développeur, facilitateur projet
@@ -18,10 +18,11 @@
 - christian levesque : directeur de la DS2IN (direction des systèmes d'information et de l'innovation numérique)
 
 
-**🤔 Quel problème tente-t-on de résoudre ? Pourquoi ? Quel est le bénéfice pour les utilisateurs ?**
+### 🤔 Quel problème tente-t-on de résoudre ? Pourquoi ? Quel est le bénéfice pour les utilisateurs ?
+
 Transparence des données publiques
 
-**Objectifs :**
+### Objectifs
 - rendre les comptes lisibles et intelligibles
 - donner des clés de compréhension
 
@@ -30,33 +31,37 @@ Transparence des données publiques
 - territoire, collectivité(s) et état
 - fonctionnement (qui vote, comment c'est voté, responsabilité)
 
-**Bénéfice ?**
+### Bénéfice ?
 - Rapport de confiance
 - Est ce que la ville fait son travail ? (service rendu ?)
 - Impact de la dette sur les habitants ?
 - Impact des dépenses publiques sur les habitants et leur territoire
 
 
-**👨‍👩‍👧‍👦 Qui sont les utilisateurs ? et leur contexte d’usage ?**
+### 👨‍👩‍👧‍👦 Qui sont les utilisateurs ? et leur contexte d’usage ?
 Personnel administratif "votre outil va nous aider à avoir plus de cohérence"
-Grand public
-> interview en cours cf User Research
+Grand public.
 
-**⛳️ Quels résultats essayent-ils d’atteindre ? En suivant quel scénario ?**
+📖 [résultats dans le document UserResearch_Synthese.md](./UserResearch_Synthese.md)
+
+### ⛳️ Quels résultats essayent-ils d’atteindre ? En suivant quel scénario ?
+
 Personnel administratif
-    consulter les données avec plus d'aisance (outil interactif vs tableau comptables) notemmant pour entrer en granularité dans les données
+
+- consulter les données avec plus d'aisance (outil interactif vs tableau comptables) notemmant pour entrer en granularité dans les données
     avec différents points de vue (chapitre, nature, fonction)
 
 Grand public
-> interview en cours cf User Research
+
+- 📖 [résultats dans le document UserResearch_Synthese.md](./UserResearch_Synthese.md)
 
 
-**🔲 Quel est le scope ? Le budget ? Et les contraintes ?**
+### 🔲 Quel est le scope ? Le budget ? Et les contraintes ?
 
 "Visualisation des comptes administratifs de la ville de Montreuil" dans un budget maximal de 19800€ hors taxe. Bon de commande `BC2019/19-D1000-001111` en date du 4 février 2019.
 
 
-**🚀 Quel est l’environnement technique du projet ?**
+### 🚀 Quel est l’environnement technique du projet ?
 
 - Code versionné sur GitHub
 - Hébergement du code de démonstration sur GitHub Pages
@@ -65,15 +70,15 @@ Grand public
 - Déploiement continu (TravisCI)
 - Espace de discussion (Slack)
 
-**📈 Quelles sont les métriques de succès ? et de risques ?**
+### 📈 Quelles sont les métriques de succès ? et de risques ?
 
 identifié par Olivier - ne pas bien connecter les 3 feuilles (données brutes, navigation dans les graphiques, éditorialisation)
 
-**⏱Quel est le planning prévisionnel ? Priorité relative vs. autres sujets ?**
+### ⏱ Quel est le planning prévisionnel ? Priorité relative vs. autres sujets ?
 
 Vote du budget le 27 mars - une démo fonctionnelle est prête à cette date
 
-**Autres informations**
+### Autres informations
 
 *Mandataire : activité, spécificités, métiers, …*
 
