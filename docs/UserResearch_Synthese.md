@@ -254,4 +254,4 @@ Observations : 💭
 
 ## Transcripts des entretiens semi-dirigés
 
-Tous les entretiens sont transcrits et illustrés dans le répertoire [`docs/entretiens`](./docs/entretiens).
+Tous les entretiens sont transcrits et illustrés dans le répertoire [`docs/entretiens`](./entretiens).
