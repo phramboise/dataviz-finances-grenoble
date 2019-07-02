@@ -85,7 +85,7 @@ const store = createStore(
         politiqueView: 'aggregated',
         screenWidth: window.innerWidth,
         resources: {
-            dataUrl: 'https://montreuil.opendatasoft.com/explore/dataset/comptes-administratifs/',
+            dataUrl: 'http://data.montreuil.fr/explore/dataset/comptes-administratifs/',
             sourceCodeUrl: 'https://github.com/dtc-innovation/dataviz-finances-montreuil/',
         }
     })
