@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {Fragment} from 'react'
 
 import Donut from './Donut.js'
 import Markdown from './Markdown.js'
@@ -16,7 +16,7 @@ export default function BigNumbers ({ items, label, iconFn }) {
         <dl className="explanatory-legend">
             {items.map(item => {
                 const Icon = iconFn(item.id)
-                return <>
+                return <Fragment key={item.id}>
                     <dt className={item.colorClassName}>
                         <div className="money-amount" aria-label={item.value}>
                             <Icon className="icon" aria-hidden={true} />
@@ -26,7 +26,7 @@ export default function BigNumbers ({ items, label, iconFn }) {
                         {item.text}
                     </dt>
                     <dd><Markdown>{item.description}</Markdown></dd>
-                </>
+                </Fragment>
             })}
         </dl>
     </div>;

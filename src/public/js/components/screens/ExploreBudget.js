@@ -1,6 +1,6 @@
 import { Map as ImmutableMap, List } from "immutable";
 
-import React, {Component} from "react";
+import React, {Fragment} from "react";
 import { connect } from "react-redux";
 
 import { sum } from "d3-array";
@@ -164,12 +164,12 @@ export function ExploreBudget (props) {
                     <select id="select-tree-root" value={financeDetailId} onChange={({target}) => page(`/explorer/${target.value}`)}>
                         {revenueItems.concat(expenditureItems).map(item => {
                             if (currentYearrdfiTree && financeDetailId.includes(item.id)) {
-                                return (<>
-                                    <option key={item.id} value={item.id} className="selected">{item.text}</option>
+                                return (<Fragment key={item.id}>
+                                    <option value={item.id} className="selected">{item.text}</option>
                                     {currentYearrdfiTree.children.map(node => (
                                         <option key={node.id.replace(/^Budget Montreuil /, '')} value={`${node.id.replace(/^Budget Montreuil /, '')}`}>{'\u2003'}{node.label}</option>
                                     ))}
-                                </>);
+                                </Fragment>);
                             }
                             else {
                                 return (<option key={item.id} value={item.id}>{item.text}</option>);
