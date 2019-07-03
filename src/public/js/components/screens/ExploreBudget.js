@@ -188,6 +188,10 @@ export function ExploreBudget (props) {
                             yValueDisplay={makeAmountString}
                             contentId={currentYearrdfiTree.id}
                             onSelectedXAxisItem={changeExplorationYear}
+                            onBrickClicked={(year, itemId) => {
+                                page(`/explorer/${itemId.replace(/^Budget Montreuil /, '')}`);
+                                changeExplorationYear(year);
+                            }}
                             WIDTH={500}
                             HEIGHT={250 * Math.max(legendItems.length / 10, 1)}
                             BRICK_SPACING={2}

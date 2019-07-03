@@ -5,13 +5,23 @@ ol.legend-list{
 
     font-size: 1em;
 
+    $active-color: rgba(0, 0, 0, 0.3);
+
     > li {
+        border-radius: .25em;
+        display: flex;
         margin-bottom: .25em;
+
+        &.focused {
+            box-shadow: 0 0 0 3px $active-color;
+        }
     }
 
     .color{
         border-radius: 3px;
         display: inline-block;
+        flex: 0 0 auto;
+        align-self: first baseline;
         height: 1em;
         width: 1em;
         margin-right: .3em;
@@ -38,7 +48,8 @@ ol.legend-list{
     .focused {
         &:before {
             content: "▶ ";
-            margin-left: -1em;
+            color: $active-color;
+            margin-left: -1.3em;
             position: absolute;
         }
 
