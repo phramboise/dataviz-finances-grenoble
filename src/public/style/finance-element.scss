@@ -12,8 +12,16 @@
         }
 
         thead, tbody{
-            tr > :nth-child(3){
+            td.money-amount{
                 text-align: right;
+            }
+        }
+
+        .colgroup {
+            text-align: left;
+
+            td, th {
+                padding-top: 1em;
             }
         }
 
@@ -26,8 +34,16 @@
             padding: .4em .2em;
         }
 
-        td.digits {
+        td.digits,
+        th.digits {
             text-align: right;
+        }
+
+        .raw-record:hover,
+        .raw-record:focus {
+            background-color: #fff;
+            color: $copy-color;
+            border-bottom-color: $copy-color;
         }
     }
 
