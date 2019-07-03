@@ -72,6 +72,8 @@ export function ExploreBudget (props) {
         { id: 'RECETTE INVESTISSEMENT', text: 'Recettes d\'investissement', description: `Provient de…`, colorClassName:'rdfi-R rdfi-I', value: totals.get(RI) },
     ]);
 
+    const topLevelElement = contentElement && revenueItems.concat(expenditureItems).find(d => contentElement.id.includes(d.id))
+
 
     // Bubble data
     const bubbleTreeData = contentElement && hierarchicalByPolitique(contentElement)
@@ -141,7 +143,7 @@ export function ExploreBudget (props) {
         </section>
 
         <section id="evolution">
-            <h2>Évolution et répartition du budget</h2>
+            <h2>Évolution et répartition du budget<br />de {years[0]} à {years[ years.length - 1]}</h2>
 
             <p className="h4">Sélectionner la catégorie du budget à afficher :</p>
 
@@ -199,12 +201,9 @@ export function ExploreBudget (props) {
         </section>
 
         <section className="discrete" id="politiques">
-            <h2>Répartition par politique publique</h2>
+            <h2>{topLevelElement && ('Budget Montreuil '+topLevelElement.id !== contentElement.id ? `${topLevelElement.text} (${contentElement.label})` : topLevelElement.text)} réparties par politique publique en {explorationYear}</h2>
 
             <p className="intro">
-                Qu’est-ce que c’est les politiques et sous-politiques publique ?
-                Le Lorem Ipsum est simplement du faux texte employé dans la composition
-                et la mise en page avant impression.
             </p>
 
             <ul className="inline-tabs" role="tablist">
