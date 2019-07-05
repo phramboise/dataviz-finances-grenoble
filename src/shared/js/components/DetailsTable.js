@@ -1,5 +1,4 @@
-import React from 'react';
-import ReactTooltip from 'react-tooltip'
+import React, {Fragment} from 'react';
 
 import {makeLigneBudgetId}  from 'document-budgetaire/Records.js';
 
@@ -8,37 +7,37 @@ import {fonctionLabels, natureLabels} from '../../../../build/finances/finance-s
 
 import {currencyFormat, ScaledAmount, default as MoneyAmount} from './MoneyAmount';
 
+const byAmount = (r1, r2) => r2['MtReal'] - r1['MtReal'];
+
 export default function DetailsTable({element}) {
     const lignesBudget = element && aggregatedDocumentBudgetaireNodeElements(element)
-    return <>
-        <table className="raw-data">
-            <thead>
-                <tr>
-                    <th>Nature</th>
-                    <th>Montant</th>
-                    <th>Fonction</th>
-                    {/*<th>Identifiant</th>*/}
-                </tr>
-            </thead>
-            <tbody>
-            {lignesBudget && lignesBudget
-                .sort((r1, r2) => r2['MtReal'] - r1['MtReal'])
-                .map(ligne => <tr key={makeLigneBudgetId(ligne)}>
-                    <td>{natureLabels[ ligne['Nature'] ]}</td>
-                    <td className="digits">
-                        <ScaledAmount  data-tip={currencyFormat(ligne['MtReal'])} data-for="money-amount-tooltip" amount={ligne['MtReal']} />
-                    </td>
-                    <td>{fonctionLabels[ ligne['Fonction'] ]}</td>
-                    {/*<th scope="row">
-                        <code>N{ligne['Nature']}F{ligne['Fonction']}</code>
-                    </th>*/}
-                </tr>
-            )}
-            </tbody>
-        </table>
-        <ReactTooltip id="money-amount-tooltip"
-                      className="money-amount tooltip"
-                      effect="solid"
-                      place="left" delayShow={10} />
-    </>
+
+    return <table className="raw-data">
+        <thead>
+            <tr>
+                <th id="raw-col-nature" scope="col">Nature</th>
+                <th id="raw-col-montant" scope="col" className="digits">Montant</th>
+            </tr>
+        </thead>
+        <tbody>
+        {lignesBudget && lignesBudget
+            .groupBy(ligne => ligne['Fonction'])
+            .entrySeq().map(([Fonction, rows]) => {
+                const groupId = `raw-data-group-${Fonction}`
+                return (<Fragment key={groupId}>
+                    <tr className="colgroup">
+                        <th id={groupId} colSpan="2" scope="colgroup">{fonctionLabels[ Fonction ]}</th>
+                    </tr>
+                    {rows.sort(byAmount).map(ligne => (
+                        <tr key={makeLigneBudgetId(ligne)} className="raw-record" tabIndex="0">
+                            <td headers={`${groupId} raw-col-nature`}>{natureLabels[ ligne['Nature'] ]}</td>
+                            <td headers={`${groupId} raw-col-montant`} className="money-amount">
+                                {currencyFormat(ligne['MtReal'])}
+                            </td>
+                        </tr>
+                    ))}
+                </Fragment>)
+            })}
+        </tbody>
+    </table>
 }
