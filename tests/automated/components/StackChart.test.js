@@ -67,7 +67,7 @@ test("StackChart with 2 equal values takes all the height with BRICK_SPACING", (
 });
 
 
-test("StackChart with a value of 0 (or below 1px in size) is represented with 0px height rect", () => {
+test("StackChart with a value of 0 (or below 1px in size) is represented with a minimum height rect", () => {
     const HEIGHT = 540, HEIGHT_PADDING = 20, MIN_BRICK_HEIGHT = 10;
     const stackchart = React.createElement(StackChart, {
         HEIGHT, HEIGHT_PADDING, MIN_BRICK_HEIGHT,
@@ -89,7 +89,7 @@ test("StackChart with a value of 0 (or below 1px in size) is represented with 0p
         expect(el.prop('height')).toBeGreaterThan(MIN_BRICK_HEIGHT+1);
     });
 
-    expect(d.prop('height')).toBe(0);
-    expect(f.prop('height')).toBe(0);
+    expect(d.prop('height')).toBe(MIN_BRICK_HEIGHT);
+    expect(f.prop('height')).toBe(MIN_BRICK_HEIGHT);
 
 });

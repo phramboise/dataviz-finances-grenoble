@@ -31,6 +31,10 @@
             text{
                 fill: white;
             }
+
+            &.focused {
+                outline: 2px solid rgba(0, 0, 255, .3);
+            }
         }
 
         &.with-focus .brick:not(.focused) {

@@ -101,6 +101,22 @@ export default function StackChart ({
         }
     })
 
+    useEffect(() => {
+        if (focusedItem !== undefined) {
+            xs.forEach(year => {
+                Tooltip.show(document.getElementById(`brick-${year}-${focusedItem}`))
+            })
+
+            return () => Tooltip.hide();
+        }
+    })
+
+    function getTooltipContent (data) {
+        if (data) {
+            return data.split(',')
+        }
+    }
+
     return (<div className={['stackchart', portrait ? 'portrait' : ''].filter(e => e).join(' ')}>
         {/* useless <div> to defend the <svg> in Chrome when using flex: 1 on the legend */}
         <div className="over-time">
@@ -121,9 +137,7 @@ export default function StackChart ({
                             .map((y, i) => {
                                 const baseHeight = yValueScale(y);
 
-                                const height = baseHeight >= 1 ?
-                                    Math.max(baseHeight - BRICK_SPACING, MIN_BRICK_HEIGHT) :
-                                    0;
+                                const height = Math.max(baseHeight - BRICK_SPACING, MIN_BRICK_HEIGHT);
 
                                 const baseY = portrait ?
                                     +BRICK_SPACING/2 :
