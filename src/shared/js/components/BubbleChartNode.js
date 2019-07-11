@@ -64,13 +64,14 @@ export default function BubbleChartNode (props) {
             })}
         </svg>
         <ReactTooltip
-            className='react-tooltip'
+            className="react-tooltip"
             key={`tooltip-${node.id}-${RorD}`}
             id={`tooltip-${node.id}`}
             delayHide={500}
-            place='right'
+            place="top"
+            type="light"
             clickable={true}
-            effect='solid'
+            effect="solid"
             getContent={(nodeId) => {
                 if (!nodeId) return null;
 

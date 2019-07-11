@@ -1,10 +1,12 @@
 import { scaleLinear } from 'd3-scale';
 import { min, max, sum } from 'd3-array';
 
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
+import Tooltip from 'react-tooltip';
 
-import LegendList from './LegendList';
-import D3Axis from './D3Axis';
+import LegendList from './LegendList.js';
+import MoneyAmount from './MoneyAmount.js';
+import D3Axis from './D3Axis.js';
 
 /*
     This component displays a stackchart and a legend if there is a legend.
@@ -111,12 +113,6 @@ export default function StackChart ({
         }
     })
 
-    function getTooltipContent (data) {
-        if (data) {
-            return data.split(',')
-        }
-    }
-
     return (<div className={['stackchart', portrait ? 'portrait' : ''].filter(e => e).join(' ')}>
         {/* useless <div> to defend the <svg> in Chrome when using flex: 1 on the legend */}
         <div className="over-time">
@@ -164,7 +160,9 @@ export default function StackChart ({
                                 const legendItem = legendItems[i] || {}
                                 const colorClass = legendItem.colorClassName || uniqueColorClass;
 
-                                return (<g key={i}
+                                return (<g key={i} id={`brick-${x}-${i}`}
+                                            data-tip={`${value}|${total}`}
+                                            data-for={focusedItem === i ? `brick-${x}` : ''}
                                             transform={portrait ? `translate(${y})` : `translate(0, ${y})`}
                                             className={[
                                                 'brick',
@@ -183,16 +181,13 @@ export default function StackChart ({
                                             onFocus={() => setFocusedItem(i)}
                                             onMouseOut={() => setFocusedItem(undefined)}
                                             onBlur={() => setFocusedItem(undefined)}
+                                            aria-value={value}
                                     >
                                         <rect y={0} x={portrait ? 0 : -columnWidth/2}
                                             width={portrait ? height : columnWidth}
                                             height={portrait ? PORTRAIT_COLUMN_WIDTH - 12 : height}
                                             rx={BRICK_RADIUS}
                                             ry={BRICK_RADIUS}>
-                                            <text transform={portrait ? `translate(2, 20)` : `translate(-${columnWidth/2 - 10}, 20)`}
-                                                    hidden={!(stack.length >= 2 && BRICK_DISPLAY_VALUE && ((!portrait && height >= 30) || (portrait && height >= 60)))}>
-                                                {yValueDisplay(value)}
-                                            </text>
                                         </rect>
                                     </g>)
                             })}
@@ -210,6 +205,17 @@ export default function StackChart ({
                 </g>
             </svg>
         </div>
+        {xs.map(year => <Tooltip key={'tooltip-brick-' + year} type="light" id={'brick-' + year} effect="solid" place="top" className="react-tooltip" getContent={(tipAttribute) => {
+            if (!tipAttribute) return;
+
+            const [value, total] = tipAttribute.split('|');
+            const percentage = value / total * 100;
+
+            return (focusedItem !== undefined && <div className={legendItems[focusedItem].colorClassName} style={{width: columnWidth - (BRICK_SPACING*2)}}>
+                {selectedX === year && <p className="label">{legendItems[focusedItem].text}</p>}
+                <p><span className="money-amount">{yValueDisplay(value)}</span> {!Number.isNaN(percentage) && <span>({Math.round(percentage)}%)</span>}</p>
+            </div>)
+        }} />)}
         {legendItems && <LegendList onElementFocus={(i) => setFocusedItem(i)}
             items={legendItems.map((li, i) => Object.assign(
                 {colorClassName: `area-color-${i+1}`},

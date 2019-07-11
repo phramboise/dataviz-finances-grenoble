@@ -28,12 +28,10 @@
         }
 
         .brick{
-            text{
-                fill: white;
-            }
-
             &.focused {
-                outline: 2px solid rgba(0, 0, 255, .3);
+                stroke: white;
+                stroke-width: 1px;
+                filter: drop-shadow(0 0 2px rgb(0, 0, 255));
             }
         }
 
