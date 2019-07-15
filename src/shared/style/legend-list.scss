@@ -5,16 +5,13 @@ ol.legend-list{
 
     font-size: 1em;
 
-    $active-color: rgba(0, 0, 0, 0.3);
+    $active-color: $copy-color;
 
     > li {
         border-radius: .25em;
+        cursor: help;
         display: flex;
         margin-bottom: .25em;
-
-        &.focused {
-            box-shadow: 0 0 0 3px $active-color;
-        }
     }
 
     .color{

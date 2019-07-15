@@ -1,0 +1,29 @@
+.react-tooltip {
+    box-sizing: border-box;
+    box-shadow: 1px 1px 1px darken($discrete-grey, 10%);
+    padding: 0.8em;
+    color: $copy-color;
+    background-color: white;
+    opacity: 1;
+    border: 1px solid $chart-border-color;
+    border-radius: 1px;
+
+    &.show {
+        opacity: 1 !important;
+    }
+
+    .label {
+        font-weight: bold;
+    }
+
+    p:first-child { margin-top: 0em; }
+    p:last-child { margin-bottom: 0em; }
+
+    a {
+        color: black;
+    }
+
+    .react-tooltip-type-aggregation {
+        color: $discrete-copy-color;
+    }
+}

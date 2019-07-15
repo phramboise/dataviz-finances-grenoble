@@ -11,53 +11,7 @@
 @import 'footer';
 
 @import '../../shared/style/stackchart';
-
-// @import 'focus-solidarity';
-// @import 'focus-investments';
-// @import 'focus-presence';
-
-/** Temporaire **/
-@mixin placeholder ($text) {
-    min-height: 10em;
-    position: relative;
-
-    &:before {
-        $line-height: .75em;
-        $bg-color: rgb(196, 196, 196);
-
-        content: "";
-        display: block;
-        background-color: white;
-        background-image: linear-gradient($bg-color $line-height, transparent 0),
-                          linear-gradient($bg-color $line-height, transparent 0),
-                          linear-gradient($bg-color $line-height, transparent 0),
-                          linear-gradient($bg-color $line-height, transparent 0),
-                          linear-gradient($bg-color $line-height, transparent 0),
-                          linear-gradient($bg-color $line-height, transparent 0),
-                          linear-gradient($bg-color $line-height, transparent 0);
-        background-position: 0 0,
-                             0 (($line-height + 0.5em) * 1),
-                             0 (($line-height + 0.5em) * 2),
-                             0 (($line-height + 0.5em) * 3),
-                             0 (($line-height + 0.5em) * 4),
-                             0 (($line-height + 0.5em) * 5),
-                             0 (($line-height + 0.5em) * 6),
-                             0 (($line-height + 0.5em) * 7);
-        position: absolute;
-        top: 0;
-        height: 100%;
-        width: 100%;
-    }
-}
-
-
-.atemporal {
-    @include placeholder("Texte descriptif de la Fonction");
-}
-
-.temporal {
-    @include placeholder("Texte contextuel basé sur l'année du CA");
-}
+@import '../../shared/style/tooltip';
 
 .btn {
 	display: inline-block;
