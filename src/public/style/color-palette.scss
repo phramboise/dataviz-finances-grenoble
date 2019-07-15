@@ -64,7 +64,8 @@ $rdfi: (
 }
 
 @for $i from 0 to length($area-colors) {
-    .area-color-#{$i}.rdfi-D,
+    svg .area-color-#{$i}.rdfi-D,
+    span.area-color-#{$i}.rdfi-D,
     .area-color-#{$i}[class*="M52-DF"],
     .area-color-#{$i}[class*="M52-DI"],
     [class*="M52-DF"] .color.area-color-#{$i},
@@ -73,7 +74,8 @@ $rdfi: (
         @include apply-area-color($color);
     }
 
-    .area-color-#{$i}.rdfi-R,
+    svg .area-color-#{$i}.rdfi-R,
+    span.area-color-#{$i}.rdfi-R,
     .area-color-#{$i}[class*="M52-RF"],
     .area-color-#{$i}[class*="M52-RI"],
     [class*="M52-RF"] .color.area-color-#{$i},

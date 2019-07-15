@@ -113,27 +113,6 @@
             padding: initial;
             margin: 1em;
         }
-
-    }
-
-    .react-tooltip {
-        padding: 0.8em;
-        color: black;
-        background-color: white !important;
-        opacity: 1;
-        border: 1px solid grey;
-
-        &:after { display: none; }
-        p:first-child { margin-top: 0em; }
-        p:last-child { margin-bottom: 0em; }
-
-        a {
-            color: black;
-        }
-
-        .react-tooltip-type-aggregation {
-            color: grey;
-        }
     }
 }
 

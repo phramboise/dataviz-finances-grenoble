@@ -195,7 +195,7 @@ export function ExploreBudget (props) {
                             WIDTH={500}
                             HEIGHT={250 * Math.max(legendItems.length / 10, 1)}
                             BRICK_SPACING={2}
-                            MIN_BRICK_HEIGHT={1}
+                            MIN_BRICK_HEIGHT={0.1}
                             BRICK_RADIUS={0}
                             BRICK_DISPLAY_VALUE={false}
                         /> :
