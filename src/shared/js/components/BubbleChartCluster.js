@@ -5,7 +5,7 @@ import {aggregatedDocumentBudgetaireNodeTotal} from "../finance/AggregationDataS
 import {max, sum} from "d3-array";
 
 import MoneyAmount from "./MoneyAmount.js";
-import BubbleChartNode from "./BubbleChartNode.js";
+import DISPLAY_MODE_ROOT, {default as BubbleChartNode} from "./BubbleChartNode.js";
 
 export default function BubbleChartCluster(props){
     const {families, onNodeClick} = props
@@ -29,6 +29,7 @@ export default function BubbleChartCluster(props){
                                              node={family}
                                              maxNodeValue={maxNodeValue}
                                              onClick={onNodeClick}
+                                             DISPLAY_MODE={DISPLAY_MODE_ROOT}
                                              getNodeUrl={getNodeUrl} />))}
     </div>)
 }

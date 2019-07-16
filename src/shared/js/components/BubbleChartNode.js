@@ -7,6 +7,9 @@ import ReactTooltip from 'react-tooltip'
 
 import MoneyAmount from "./MoneyAmount.js";
 
+export const DISPLAY_MODE_NODES = 'NODES';
+export const DISPLAY_MODE_ROOT = 'ROOT';
+
 const rdfi = (node) => {
     let rdfi = '';
 
@@ -19,12 +22,13 @@ const rdfi = (node) => {
 export default function BubbleChartNode (props) {
     const {node, maxNodeValue, getNodeUrl, onClick} = props;
     const {total, label, children} = node;
+    const {DISPLAY_MODE=DISPLAY_MODE_NODES} = props;
     const RorD = rdfi(node)[0];
     const WIDTH = 250;
     const HEIGHT = 250;
     const radius = scaleLinear().domain([0, maxNodeValue]).range([1, 80]);
 
-    const nodes = hierarchy({name: label, children})
+    const nodes = hierarchy({...node, name: label})
         .sum(d => d.total)
         .sort((a, b) => b.total - a.total);
 
@@ -33,7 +37,9 @@ export default function BubbleChartNode (props) {
         .padding(3)
         .radius(d => radius(d.data.total))
 
-    const listMapNodes = bubbles(nodes).children;
+    const listMapNodes = DISPLAY_MODE === DISPLAY_MODE_NODES
+        ? bubbles(nodes).children
+        : [ bubbles(nodes) ];
 
     return (<figure className={`bubble-chart rdfi-${RorD}`}>
         <figcaption>
