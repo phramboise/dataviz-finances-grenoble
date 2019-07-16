@@ -229,7 +229,7 @@ export function ExploreBudget (props) {
                  </li>*/}
             </ul>
             <div className="tabpanel" role="tabpanel">
-                <FinanceUserView families={bubbleTreeData} element={contentElement}/>
+                <FinanceUserView families={bubbleTreeData} />
             </div>
         </section>}
     </article>
