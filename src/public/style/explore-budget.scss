@@ -37,8 +37,7 @@ $RX-L: 60%;
             }
         }
 
-        .intro,
-        .inline-tabs {
+        .intro {
             max-width: 580px;
             margin-left: auto;
             margin-right: auto;
@@ -155,15 +154,25 @@ $RX-L: 60%;
     }
 
     .inline-tabs {
+        border-bottom: 1px solid $table-border-color;
         display: flex;
+        padding: 0 3rem;
 
         > li {
             align-self: center;
+            margin-bottom: -1px;    // to overlap the tabs border
         }
 
-        [role="tab"] {
-            border: none;
+        a[role="tab"] {
+            color: $copy-color;
+            display: block;
+        }
+
+        a[role="tab"],
+        button[role="tab"] {
             background: transparent;
+            border: none;
+            border-top: 3px solid transparent !important;
             font-size: inherit;
             padding: .5em 1em;
             text-decoration: underline;
@@ -171,6 +180,9 @@ $RX-L: 60%;
 
             &[aria-selected="true"] {
                 background: $accented-background-color;
+                border-left: 1px solid $table-border-color !important;
+                border-right: 1px solid $table-border-color !important;
+                border-bottom: none;
                 text-decoration: none;
             }
 
@@ -189,10 +201,12 @@ $RX-L: 60%;
         @each $fi, $color in $pairs {
             .tabs--rdfi [role="tab"].rdfi-#{$rd}.rdfi-#{$fi} {
                 border-color: rgba($color, .7);
-                transition: border .2s ease-in-out;
+                transition: border-color .2s ease-in-out;
 
                 &[aria-selected="true"] {
                     border-color: $color;
+                    border-bottom-color: $color !important;
+                    border-top-color: $color !important;
                 }
 
                 .icon {

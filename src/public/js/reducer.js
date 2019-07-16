@@ -72,6 +72,7 @@ export default function reducer(state, action) {
             return state.set('textsById', textMap);
         }
 
+        // action.view should be either 'tabular' or 'aggregated'
         case CHANGE_POLITIQUE_VIEW: {
             return state.set('politiqueView', action.view);
         }

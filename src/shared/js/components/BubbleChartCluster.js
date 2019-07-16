@@ -3,18 +3,22 @@ import React from 'react';
 import {aggregatedDocumentBudgetaireNodeTotal} from "../finance/AggregationDataStructures.js"
 
 import {max, sum} from "d3-array";
+import page from "page";
 
 import MoneyAmount from "./MoneyAmount.js";
 import DISPLAY_MODE_ROOT, {default as BubbleChartNode} from "./BubbleChartNode.js";
 
 export default function BubbleChartCluster(props){
-    const {families, onNodeClick} = props
+    const {families} = props
 
     if (!families) {
         return null;
     }
 
-    const getNodeUrl = (node) => `#!/explorer/${node.id}`
+    const getNodeUrl = (node) => {
+        const [nodeId, politiqueId] = node.id.replace(/^Budget Montreuil /, '').split('.');
+        return `/explorer/${nodeId}/details/${politiqueId}`
+    }
 
     const maxNodeValue = max([].concat(...families.map(f => f.children)), f => f.total);
     const total = sum(families, f => f.total);
@@ -28,7 +32,7 @@ export default function BubbleChartCluster(props){
             .map(family => (<BubbleChartNode key={`rd-CH${family.id}`}
                                              node={family}
                                              maxNodeValue={maxNodeValue}
-                                             onClick={onNodeClick}
+                                             onClick={(family, node) => page(getNodeUrl(node))}
                                              DISPLAY_MODE={DISPLAY_MODE_ROOT}
                                              getNodeUrl={getNodeUrl} />))}
     </div>)

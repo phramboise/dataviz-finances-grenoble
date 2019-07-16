@@ -204,24 +204,24 @@ export function ExploreBudget (props) {
             </div>
         </section>
 
-        <section className="discrete" id="politiques">
+        {currentYearrdfiTree && <section className="discrete" id="politiques">
             <h2>{topLevelElement && ('Budget Montreuil '+topLevelElement.id !== contentElement.id ? `${topLevelElement.text} (${contentElement.label})` : topLevelElement.text)} réparties par politique publique en {explorationYear}</h2>
 
             <p className="intro">
             </p>
 
-            <ul className="inline-tabs" role="tablist">
+            <ul className="inline-tabs tabs--rdfi" role="tablist">
                 <li role="presentation">
-                    <button aria-selected={politiqueView === 'aggregated'} className="link" role="tab" onClick={() => changePolitiqueView('aggregated')}>
+                    <a aria-selected={politiqueView === 'aggregated'} className={`link rdfi-${RD} rdfi-${FI}`} role="tab" href={politiqueView !== 'aggregated' && `#!/explorer/${contentElement.id.replace(/^Budget Montreuil /, '')}`}>
                         <AggregatedViewIcon className="icon icon--small" />
                         vue d'ensemble
-                    </button>
+                    </a>
                 </li>
                 <li role="presentation">
-                    <button aria-selected={politiqueView === 'tabular'} className="link" role="tab" onClick={() => changePolitiqueView('tabular')}>
+                    <a aria-selected={politiqueView === 'tabular'} className={`link rdfi-${RD} rdfi-${FI}`} role="tab" href={politiqueView !== 'tabular' && `#!/explorer/${contentElement.id.replace(/^Budget Montreuil /, '')}/details`}>
                         <DetailedViewIcon className="icon icon--small" />
                         vue détaillée
-                    </button>
+                    </a>
                 </li>
                 {/*<li role="presentation">
                     <input type="checkbox" checked={false} id="hr-checkbox" />
@@ -229,11 +229,9 @@ export function ExploreBudget (props) {
                  </li>*/}
             </ul>
             <div className="tabpanel" role="tabpanel">
-                <FinanceUserView families={bubbleTreeData}
-                                 element={contentElement}
-                                 onNodeClick={(family, node) => changePolitiqueView('tabular')}/>
+                <FinanceUserView families={bubbleTreeData} element={contentElement}/>
             </div>
-        </section>
+        </section>}
     </article>
     <DownloadSection {...resources} />
     </>);

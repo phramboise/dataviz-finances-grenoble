@@ -1,5 +1,4 @@
 import React from 'react';
-import page from 'page'
 import {pack, hierarchy} from 'd3-hierarchy';
 import {scaleLinear} from 'd3-scale';
 
@@ -20,7 +19,7 @@ const rdfi = (node) => {
 }
 
 export default function BubbleChartNode (props) {
-    const {node, maxNodeValue, getNodeUrl, onClick} = props;
+    const {node, maxNodeValue, onClick} = props;
     const {total, label, children} = node;
     const {DISPLAY_MODE=DISPLAY_MODE_NODES} = props;
     const RorD = rdfi(node)[0];
@@ -52,7 +51,6 @@ export default function BubbleChartNode (props) {
                 const RDFI = rdfi(data)
                 return <g key={data.id} transform={`translate(${x}, ${y})`}>
                     <a
-                        // href={`#!/finance-details/${data.id}`}
                         onClick={e => onClick(node, data)}
                         onKeyPress={e => e.key === 'Enter' && onClick(node, data)}
                         className="clickable"
@@ -90,7 +88,6 @@ export default function BubbleChartNode (props) {
                         {RDFI[1] === 'F'? ' de fonctionnement': ' d’investissement'}
                     </p>
                     <p>{data.label}<MoneyAmount amount={data.total} /></p>
-                    <p><a href={getNodeUrl(data)}>Voir le détail</a></p>
                 </div>);
             }}/>
     </figure>);

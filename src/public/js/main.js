@@ -179,74 +179,32 @@ csv(assets[AGGREGATED_TEMPORAL])
  *
  */
 
-page('/', () => page.redirect('/explorer'));
-page('/explorer/:financeDetailId?', ({params: {financeDetailId='DEPENSE FONCTIONNEMENT'}}) => {
-    store.dispatch({ type: FINANCE_DETAIL_ID_CHANGE, financeDetailId })
+const exploreView = ({params}) => {
+    const {financeDetailId, politiqueId} = params
+    store.dispatch({ type: FINANCE_DETAIL_ID_CHANGE, financeDetailId, politiqueId })
 
     ReactDOM.render(
-        React.createElement(
-            Provider,
-            { store },
-            React.createElement(ExploreBudget)
-        ),
+        <Provider store={store}><ExploreBudget /></Provider>,
         CONTAINER_ELEMENT
     );
 
-
     const breadcrumb = DEFAULT_BREADCRUMB.push({
         text: 'Recettes et dépenses open data',
-        url: '#!/explorer'
+        url: '#!/explorer/DEPENSE FONCTIONNEMENT'
     });
 
     ReactDOM.render(<Breadcrumb items={breadcrumb} />, BREADCRUMB_CONTAINER );
+}
+
+page('/', () => page.redirect('/explorer/DEPENSE FONCTIONNEMENT'));
+page('/explorer/:financeDetailId', (event) => {
+    store.dispatch({ type: CHANGE_POLITIQUE_VIEW, view:'aggregated' })
+    exploreView(event)
 });
-
-//
-// page('/finance-details/:contentId', ({params: {contentId}}) => {
-//     console.log('in route', '/finance-details', contentId)
-//     scrollTo(0, 0);
-//
-//     store.dispatch({
-//         type: FINANCE_DETAIL_ID_CHANGE,
-//         financeDetailId: contentId
-//     })
-//
-//     ReactDOM.render(
-//         React.createElement(
-//             Provider,
-//             { store },
-//             React.createElement(FinanceElement)
-//         ),
-//         CONTAINER_ELEMENT
-//     );
-//
-//     /*const breadcrumbData = [];
-//
-//     let currentContentId = contentId.startsWith('M52-') ?
-//         contentId.slice(7) :
-//         contentId;
-//
-//     while(currentContentId){
-//         if(currentContentId !== 'Total'){
-//             breadcrumbData.push({
-//                 text: elementById.get(currentContentId).label,
-//                 url: `#!/finance-details/${currentContentId}`
-//             })
-//         }
-//         currentContentId = childToParent.get(currentContentId);
-//     }
-//
-//     breadcrumbData.push({
-//         text: 'Explorer',
-//         url: `#!/explorer`
-//     })
-//
-//     const breadcrumb = DEFAULT_BREADCRUMB.concat(breadcrumbData.reverse());
-//
-//     ReactDOM.render( React.createElement(Breadcrumb, { items: breadcrumb }), BREADCRUMB_CONTAINER );*/
-//
-// });
-
+page('/explorer/:financeDetailId/details/:politiqueId?', (event) => {
+    store.dispatch({ type: CHANGE_POLITIQUE_VIEW, view:'tabular' })
+    exploreView(event)
+});
 page('*', (ctx) => {
     console.error('Page introuvable %o', ctx);
 });
