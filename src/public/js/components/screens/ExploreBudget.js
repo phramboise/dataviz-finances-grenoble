@@ -18,7 +18,7 @@ import { CHANGE_EXPLORATION_YEAR, CHANGE_POLITIQUE_VIEW } from "../../constants/
 
 import { hierarchicalByFunction, hierarchicalByPolitique } from "../../../../shared/js/finance/memoized";
 import { aggregatedDocumentBudgetaireNodeTotal } from '../../../../shared/js/finance/AggregationDataStructures'
-import { getElementById } from '../../../../shared/js/finance/visitHierarchical.js';
+import { getElementById, flattenTree } from '../../../../shared/js/finance/visitHierarchical.js';
 
 
 import PageTitle from "../../../../shared/js/components/gironde.fr/PageTitle";
@@ -82,8 +82,9 @@ export function ExploreBudget (props) {
     const years = aggregationByYear.keySeq().toArray();
 
     const barchartPartitionByYear = rdfiTreeByYear.map(rdfiTree => {
+        const rootNode = flattenTree(rdfiTree).find(({id}) => id.includes(financeDetailId))
         // Create "level 2" data as a list
-        return (rdfiTree.id.includes(financeDetailId) ? rdfiTree : rdfiTree.children.find(({id}) => id.includes(financeDetailId))).children.map(c => {
+        return (rootNode.children || [rootNode]).map(c => {
             return {
                 contentId: c.id,
                 partAmount: aggregatedDocumentBudgetaireNodeTotal(c),
@@ -188,10 +189,10 @@ export function ExploreBudget (props) {
                             yValueDisplay={makeAmountString}
                             contentId={currentYearrdfiTree.id}
                             onSelectedXAxisItem={changeExplorationYear}
-                            onBrickClicked={(year, itemId) => {
+                            onBrickClicked={Array.isArray(contentElement.children) ? (year, itemId) => {
                                 page(`/explorer/${itemId.replace(/^Budget Montreuil /, '')}`);
                                 changeExplorationYear(year);
-                            }}
+                            } : undefined}
                             WIDTH={500}
                             HEIGHT={250 * Math.max(legendItems.length / 10, 1)}
                             BRICK_SPACING={2}
