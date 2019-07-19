@@ -101,8 +101,13 @@ export function ExploreBudget (props) {
             colorClassById.set(contentId, `rdfi-${RD} rdfi-${FI} area-color-${i+1}`)
         })
 
-        legendItemIds = new Set(barchartPartitionByYear
-            .map(partition => partition.map(part => part.contentId)).valueSeq().toArray().flat())
+        legendItemIds = new Set(
+            barchartPartitionByYear
+                .map(partition => partition.map(part => part.contentId))
+                .valueSeq()
+                .toArray()
+                .flat()
+        )
     }
 
     const legendItems = [...legendItemIds].map(id => {
@@ -183,7 +188,7 @@ export function ExploreBudget (props) {
                     currentYearrdfiTree ?
                         <StackChart
                             xs={ years }
-                            ysByX={barchartPartitionByYear.map(partition => partition.map(part => part.partAmount))}
+                            ysByX={barchartPartitionByYear.map(partition => partition.map(part => [part.contentId, part.partAmount]))}
                             selectedX={ explorationYear }
                             legendItems={ legendItems }
                             yValueDisplay={makeAmountString}

@@ -8,6 +8,9 @@ import LegendList from './LegendList.js';
 import MoneyAmount from './MoneyAmount.js';
 import D3Axis from './D3Axis.js';
 
+const mapAccessor = ([contentId, value]) => value;
+const yAscSort = ([aId, a], [bId, b]) => b - a;
+
 /*
     This component displays a stackchart and a legend if there is a legend.
     Colors are attributed by this component via the use of `area-color-${i+1}` classes
@@ -45,7 +48,7 @@ export default function StackChart ({
             [Y_AXIS_MARGIN+columnAndMarginWidth/2, WIDTH-columnAndMarginWidth/2]
         );
 
-    const maxAmount = max(ysByX.valueSeq().toJS().map(ys =>  sum(ys)));
+    const maxAmount = max(ysByX.valueSeq().toJS().map(ysMap => sum(ysMap, mapAccessor)));
 
     const yScale = scaleLinear()
         .domain([0, maxAmount])
@@ -120,17 +123,20 @@ export default function StackChart ({
                 <D3Axis className="x" tickData={xAxisTickData} onSelectedAxisItem={onSelectedXAxisItem} />
                 <D3Axis className="y" tickData={yAxisTickData} />
                 <g className={`content ${focusedItem !== undefined ? ' with-focus' : ''}`}>
-                    {ysByX.entrySeq().toJS().map(([x, ys]) => {
-                        const total = sum(ys);
+                    {ysByX.entrySeq().toJS().map(([x, ysMap]) => {
+                        const total = sum(ysMap, mapAccessor);
 
                         // .map + .slice is an 0(n²) algorithm. Fine here because n is never higher than 20
-                        const stackYs = ys
-                            .map( (amount, i, arr) => sum(arr.slice(0, i)) )
+                        const stackYs = ysMap
+                            .sort(yAscSort)
+                            .map(mapAccessor)
+                            .map((amount, i, arr) => sum(arr.slice(0, i)) )
                             .map(yValueScale)
                             .map(height => height < 1 ? 0 : height);
 
-                        const stack = ys
-                            .map((y, i) => {
+                        const stack = ysMap
+                            .sort(yAscSort)
+                            .map(([contentId, y], i) => {
                                 const baseHeight = yValueScale(y);
 
                                 const height = Math.max(baseHeight - BRICK_SPACING, MIN_BRICK_HEIGHT);
@@ -141,6 +147,7 @@ export default function StackChart ({
 
                                 return {
                                     value: y,
+                                    contentId,
                                     height,
                                     y: i === 0 ?
                                         baseY :
@@ -156,32 +163,33 @@ export default function StackChart ({
                         const totalY = HEIGHT - HEIGHT_PADDING - totalHeight;
 
                         return (<g key={x} className={x === selectedX ? 'selected' : ''} transform={portrait ? `translate(0, ${xScale(x) + 6 })` : `translate(${xScale(x)})`}>
-                            <g>{stack.map( ({value, height, y}, i) => {
-                                const legendItem = legendItems[i] || {}
+                            <g>{stack.map( ({value, contentId, height, y}) => {
+                                const legendItem = legendItems.find(item => item.id === contentId) || {}
                                 const colorClass = legendItem.colorClassName || uniqueColorClass;
 
-                                return (<g key={i} id={`brick-${x}-${i}`}
+                                return (<g key={x+contentId} id={`brick-${x}-${contentId}`}
                                             data-tip={`${value}|${total}`}
-                                            data-for={focusedItem === i ? `brick-${x}` : ''}
+                                            data-for={focusedItem === contentId ? `brick-${x}` : ''}
                                             transform={portrait ? `translate(${y})` : `translate(0, ${y})`}
                                             className={[
                                                 'brick',
                                                 onBrickClicked ? 'actionable' : '',
                                                 colorClass,
-                                                legendItems.length ? legendItems[i].id : contentId,
-                                                focusedItem === i ? 'focused' : ''
+                                                legendItem.id ? legendItem.id : contentId,
+                                                focusedItem === contentId ? 'focused' : ''
                                             ].join(' ')}
                                             onClick={onBrickClicked ? () => {
+                                                setFocusedItem(undefined)
                                                 onBrickClicked(
                                                     x,
-                                                    legendItems ? legendItems[i].id : y
+                                                    legendItem ? legendItem.id : y
                                                 )
                                             } : undefined}
-                                            onMouseOver={() => setFocusedItem(i)}
-                                            onFocus={() => setFocusedItem(i)}
+                                            onMouseOver={() => setFocusedItem(contentId)}
+                                            onFocus={() => setFocusedItem(contentId)}
                                             onMouseOut={() => setFocusedItem(undefined)}
                                             onBlur={() => setFocusedItem(undefined)}
-                                            aria-value={value}
+                                            aria-valuetext={value}
                                     >
                                         <rect y={0} x={portrait ? 0 : -columnWidth/2}
                                             width={portrait ? height : columnWidth}
@@ -206,22 +214,23 @@ export default function StackChart ({
             </svg>
         </div>
         {xs.map(year => <Tooltip key={'tooltip-brick-' + year} type="light" id={'brick-' + year} effect="solid" place="top" className="react-tooltip" getContent={(tipAttribute) => {
-            if (!tipAttribute) return;
+            if (!tipAttribute || focusedItem === undefined) return;
 
             const [value, total] = tipAttribute.split('|');
             const percentage = value / total * 100;
+            const legendItem = legendItems.find(item => focusedItem === item.id)
 
-            return (focusedItem !== undefined && <div className={legendItems[focusedItem].colorClassName} style={{width: columnWidth - (BRICK_SPACING*2)}}>
-                {selectedX === year && <p className="label">{legendItems[focusedItem].text}</p>}
+            return (<div className={legendItem.colorClassName} style={{width: columnWidth - (BRICK_SPACING*2)}}>
+                {selectedX === year && <p className="label">{legendItem.text}</p>}
                 <p><span className="money-amount">{yValueDisplay(value)}</span> {!Number.isNaN(percentage) && <span>({Math.round(percentage)}%)</span>}</p>
             </div>)
         }} />)}
-        {legendItems && <LegendList onElementFocus={(i) => setFocusedItem(i)}
+        {legendItems && <LegendList onElementFocus={(id) => setFocusedItem(id)}
             items={legendItems.map((li, i) => Object.assign(
                 {colorClassName: `area-color-${i+1}`},
-                {ariaCurrent: focusedItem === i},
+                {ariaCurrent: focusedItem === li.id},
                 li,
-                {className: `${li.className} ${focusedItem === i ? 'focused': ''}`},
+                {className: `${li.className} ${focusedItem === li.id ? 'focused': ''}`},
             ))} />}
     </div>);
 }

@@ -13,7 +13,7 @@ test("Simplest StackChart", () => {
     const stackchart = React.createElement(StackChart, {
         xs: [2016],
         ysByX: new Map({
-            2016 : new List([25])
+            2016 : new List([['id1', 25]])
         })
     })
 
@@ -32,7 +32,7 @@ test("StackChart with one value takes all the available height", () => {
         HEIGHT, HEIGHT_PADDING, BRICK_SPACING,
         xs: [2016],
         ysByX: new Map({
-            2016 : new List([25])
+            2016 : new List([['id1', 25]])
         })
     })
 
@@ -48,7 +48,7 @@ test("StackChart with 2 equal values takes all the height with BRICK_SPACING", (
         HEIGHT, HEIGHT_PADDING, BRICK_SPACING,
         xs: [2016],
         ysByX: new Map({
-            2016 : new List([25, 25])
+            2016 : new List([['id1', 25], ['id2', 25]])
         })
     })
 
@@ -73,9 +73,9 @@ test("StackChart with a value of 0 (or below 1px in size) is represented with a 
         HEIGHT, HEIGHT_PADDING, MIN_BRICK_HEIGHT,
         xs: [2015, 2016, 2017],
         ysByX: new Map({
-            2015 : new List([250, 250]),
-            2016 : new List([400, 0]),
-            2017 : new List([300, 0.5])
+            2015 : new List([['id1', 250], ['id2', 250]]),
+            2016 : new List([['id1', 400], ['id2', 0]]),
+            2017 : new List([['id1', 300], ['id2', 0.5]])
         })
     })
 
