@@ -190,19 +190,23 @@ const exploreView = ({params}) => {
 
     const breadcrumb = DEFAULT_BREADCRUMB.push({
         text: 'Recettes et dépenses open data',
-        url: '#!/explorer/DEPENSE FONCTIONNEMENT'
+        url: '#!/explorer/DEPENSE/FONCTIONNEMENT'
     });
 
     ReactDOM.render(<Breadcrumb items={breadcrumb} />, BREADCRUMB_CONTAINER );
 }
 
-page('/', () => page.redirect('/explorer/DEPENSE FONCTIONNEMENT'));
-page('/explorer/:financeDetailId', (event) => {
-    store.dispatch({ type: CHANGE_POLITIQUE_VIEW, view:'aggregated' })
+page('/', () => page.redirect('/explorer/DEPENSE/FONCTIONNEMENT'));
+page('/explorer/:financeDetailId(.*)/details', (event) => {
+    store.dispatch({ type: CHANGE_POLITIQUE_VIEW, view:'tabular' })
     exploreView(event)
 });
-page('/explorer/:financeDetailId/details/:politiqueId?', (event) => {
+page('/explorer/:financeDetailId(.*)/details/:politiqueId(.*)', (event) => {
     store.dispatch({ type: CHANGE_POLITIQUE_VIEW, view:'tabular' })
+    exploreView(event)
+});
+page('/explorer/:financeDetailId(.*)', (event) => {
+    store.dispatch({ type: CHANGE_POLITIQUE_VIEW, view:'aggregated' })
     exploreView(event)
 });
 page('*', (ctx) => {

@@ -27,6 +27,10 @@ function fixLabels(row) {
     )
 }
 
+function escapeId(id) {
+    return id.replace(/[\?#\/]/g, '').replace(/[ ]+/g, ' ')
+}
+
 function makeFormulaFromMontreuilRows(rows){
     const rowsByRDFI = new Map()
 
@@ -88,7 +92,7 @@ function nomenclatureNodeToAggregationNode(node, label, id){
             label,
             children: new ImmutableSet(
                 node.entrySeq()
-                    .map(([childName, childNode]) => nomenclatureNodeToAggregationNode(childNode, childName, id+' '+childName)))
+                    .map(([childName, childNode]) => nomenclatureNodeToAggregationNode(childNode, childName, id.replace(/^Budget Montreuil\//, '')+'/'+escapeId(childName))))
         })
     }
     else{

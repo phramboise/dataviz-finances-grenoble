@@ -33,7 +33,7 @@ export default function DetailsTable({families}) {
                     <th id="raw-col-montant" scope="col" className="digits">Montant</th>
                 </tr>
                 {SousPolitique.elements.sort(byAmount).map(ligne => (
-                    <tr key={makeLigneBudgetId(ligne)} className="raw-record" tabIndex="0">
+                    <tr key={makeLigneBudgetId(ligne)} data-fonction-nature={makeLigneBudgetId(ligne)} className="raw-record" tabIndex="0">
                         <td headers={`${id(Politique.id)} ${id(SousPolitique.id)} raw-col-nature`}>
                             {natureLabels[ ligne['Nature'] ]}
                         </td>

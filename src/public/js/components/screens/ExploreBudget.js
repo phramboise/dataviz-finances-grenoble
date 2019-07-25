@@ -63,13 +63,13 @@ export function ExploreBudget (props) {
 
     // BigNumbers data
     const expenditureItems = new List([
-        { id: 'DEPENSE FONCTIONNEMENT', text: 'Dépenses de fonctionnement', description: `Regroupe…`, colorClassName:'rdfi-D rdfi-F', value: totals.get(DF) },
-        { id: 'DEPENSE INVESTISSEMENT', text: 'Dépenses d\'investissement', description: `Regroupe…`, colorClassName:'rdfi-D rdfi-I', value: totals.get(DI) },
+        { id: 'DEPENSE/FONCTIONNEMENT', text: 'Dépenses de fonctionnement', description: `Regroupe…`, colorClassName:'rdfi-D rdfi-F', value: totals.get(DF) },
+        { id: 'DEPENSE/INVESTISSEMENT', text: 'Dépenses d\'investissement', description: `Regroupe…`, colorClassName:'rdfi-D rdfi-I', value: totals.get(DI) },
     ]);
 
     const revenueItems = new List([
-        { id: 'RECETTE FONCTIONNEMENT', text: 'Recettes de fonctionnement', description: `Provient de…`, colorClassName:'rdfi-R rdfi-F', value: totals.get(RF) },
-        { id: 'RECETTE INVESTISSEMENT', text: 'Recettes d\'investissement', description: `Provient de…`, colorClassName:'rdfi-R rdfi-I', value: totals.get(RI) },
+        { id: 'RECETTE/FONCTIONNEMENT', text: 'Recettes de fonctionnement', description: `Provient de…`, colorClassName:'rdfi-R rdfi-F', value: totals.get(RF) },
+        { id: 'RECETTE/INVESTISSEMENT', text: 'Recettes d\'investissement', description: `Provient de…`, colorClassName:'rdfi-R rdfi-I', value: totals.get(RI) },
     ]);
 
     const topLevelElement = contentElement && revenueItems.concat(expenditureItems).find(d => contentElement.id.includes(d.id))
@@ -89,7 +89,7 @@ export function ExploreBudget (props) {
                 contentId: c.id,
                 partAmount: aggregatedDocumentBudgetaireNodeTotal(c),
                 label: c.label,
-                url: `#!/explorer/${c.id.replace(/^Budget Montreuil /, '')}`
+                url: `#!/explorer/${c.id}`
             }
         })
     })
@@ -121,7 +121,7 @@ export function ExploreBudget (props) {
         return {
             id: foundPart.contentId,
             className: foundPart.contentId,
-            url: currentYearrdfiTree.id.includes(financeDetailId) ? `#!/explorer/${foundPart.contentId.replace(/^Budget Montreuil /, '')}` : undefined,
+            url: currentYearrdfiTree.id.includes(financeDetailId) ? `#!/explorer/${foundPart.contentId}` : undefined,
             text: foundPart.label,
             colorClassName: colorClassById.get(foundPart.contentId)
         }
@@ -173,7 +173,7 @@ export function ExploreBudget (props) {
                                 return (<Fragment key={item.id}>
                                     <option value={item.id} className="selected">{item.text}</option>
                                     {currentYearrdfiTree.children.map(node => (
-                                        <option key={node.id.replace(/^Budget Montreuil /, '')} value={`${node.id.replace(/^Budget Montreuil /, '')}`}>{'\u2003'}{node.label}</option>
+                                        <option key={node.id} value={node.id}>{'\u2003'}{node.label}</option>
                                     ))}
                                 </Fragment>);
                             }
@@ -195,7 +195,7 @@ export function ExploreBudget (props) {
                             contentId={currentYearrdfiTree.id}
                             onSelectedXAxisItem={changeExplorationYear}
                             onBrickClicked={Array.isArray(contentElement.children) ? (year, itemId) => {
-                                page(`/explorer/${itemId.replace(/^Budget Montreuil /, '')}`);
+                                page(`/explorer/${itemId}`);
                                 changeExplorationYear(year);
                             } : undefined}
                             WIDTH={500}
@@ -211,20 +211,20 @@ export function ExploreBudget (props) {
         </section>
 
         {currentYearrdfiTree && <section className="discrete" id="politiques">
-            <h2>{topLevelElement && ('Budget Montreuil '+topLevelElement.id !== contentElement.id ? `${topLevelElement.text} (${contentElement.label})` : topLevelElement.text)} réparties par politique publique en {explorationYear}</h2>
+            <h2>{topLevelElement && (topLevelElement.id !== contentElement.id ? `${topLevelElement.text} (${contentElement.label})` : topLevelElement.text)} réparties par politique publique en {explorationYear}</h2>
 
             <p className="intro">
             </p>
 
             <ul className="inline-tabs tabs--rdfi" role="tablist">
                 <li role="presentation">
-                    <a aria-selected={politiqueView === 'aggregated'} className={`link rdfi-${RD} rdfi-${FI}`} role="tab" href={politiqueView !== 'aggregated' && `#!/explorer/${contentElement.id.replace(/^Budget Montreuil /, '')}`}>
+                    <a aria-selected={politiqueView === 'aggregated'} className={`link rdfi-${RD} rdfi-${FI}`} role="tab" href={politiqueView !== 'aggregated' && `#!/explorer/${contentElement.id}`}>
                         <AggregatedViewIcon className="icon icon--small" />
                         vue d'ensemble
                     </a>
                 </li>
                 <li role="presentation">
-                    <a aria-selected={politiqueView === 'tabular'} className={`link rdfi-${RD} rdfi-${FI}`} role="tab" href={politiqueView !== 'tabular' && `#!/explorer/${contentElement.id.replace(/^Budget Montreuil /, '')}/details`}>
+                    <a aria-selected={politiqueView === 'tabular'} className={`link rdfi-${RD} rdfi-${FI}`} role="tab" href={politiqueView !== 'tabular' && `#!/explorer/${contentElement.id}/details`}>
                         <DetailedViewIcon className="icon icon--small" />
                         vue détaillée
                     </a>
@@ -256,10 +256,10 @@ export default connect(
 
         const documentBudgetaire = docBudgByYear.get(explorationYear);
         const aggregationTree = aggregationByYear.get(explorationYear)
-        const rdfi = financeDetailId.replace(/^Budget Montreuil /, '').split(' ').map(id => id[0]).slice(0, 2);
+        const rdfi = financeDetailId.split('/').map(id => id[0]).slice(0, 2);
 
         const FinanceUserView = politiqueView === 'aggregated' ? BubbleChartCluster : DetailsTable;
-        const contentElement = documentBudgetaire && getElementById(aggregationTree, 'Budget Montreuil ' + financeDetailId);
+        const contentElement = documentBudgetaire && getElementById(aggregationTree, financeDetailId);
 
         let totals = new ImmutableMap();
         if (documentBudgetaire) {
