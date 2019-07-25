@@ -235,8 +235,8 @@ export function ExploreBudget (props) {
                  </li>*/}
             </ul>
             <div className="tabpanel" role="tabpanel">
-                <FinanceUserView families={bubbleTreeData} InnerTooltip={(({RDFI, node}) => (
-                    <div className={`rdfi-${RDFI[0]} rdfi-${RDFI[1]}`}>
+                <FinanceUserView families={bubbleTreeData} InnerTooltip={(({node}) => (
+                    <div className={`rdfi-${RD} rdfi-${FI}`}>
                         <p className='react-tooltip-type-aggregation'>
                             {topLevelElement.text}
                         </p>

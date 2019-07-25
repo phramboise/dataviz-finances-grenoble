@@ -327,6 +327,12 @@ $RX-L: 60%;
             }
         }
 
+        .react-tooltip {
+            .money-amount {
+                display: block;
+            }
+        }
+
         .bubble-chart {
             margin: 1.5em 0;
             position: relative;
@@ -345,6 +351,7 @@ $RX-L: 60%;
                 width: 100%;
 
                 .money-amount {
+                    display: block;
                     margin-bottom: .2em;
                 }
 
@@ -366,7 +373,6 @@ $RX-L: 60%;
         }
 
         @each $rd, $pairs in $rdfi {
-
             @each $fi, $color in $pairs {
                 .rdfi-#{$rd}.rdfi-#{$fi} {
                     fill: $color;
