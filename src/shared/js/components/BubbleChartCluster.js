@@ -9,7 +9,7 @@ import MoneyAmount from "./MoneyAmount.js";
 import DISPLAY_MODE_ROOT, {default as BubbleChartNode} from "./BubbleChartNode.js";
 
 export default function BubbleChartCluster(props){
-    const {families} = props
+    const {families, InnerTooltip} = props
 
     if (!families) {
         return null;
@@ -34,6 +34,7 @@ export default function BubbleChartCluster(props){
                                              maxNodeValue={maxNodeValue}
                                              onClick={(family, node) => page(getNodeUrl(node))}
                                              DISPLAY_MODE={DISPLAY_MODE_ROOT}
-                                             getNodeUrl={getNodeUrl} />))}
+                                             getNodeUrl={getNodeUrl}
+                                             InnerTooltip={InnerTooltip} />))}
     </div>)
 }

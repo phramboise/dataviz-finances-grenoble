@@ -20,6 +20,7 @@ const rdfi = (node) => {
 
 export default function BubbleChartNode (props) {
     const {node, maxNodeValue, onClick} = props;
+    const {InnerTooltip} = props;
     const {total, label, children} = node;
     const {DISPLAY_MODE=DISPLAY_MODE_NODES} = props;
     const RorD = rdfi(node)[0];
@@ -82,13 +83,7 @@ export default function BubbleChartNode (props) {
                 const {data} = listMapNodes.find(d => d.data.id === nodeId);
                 const RDFI = rdfi(data)
 
-                return (<div className={`rdfi-${RDFI[0]} rdfi-${RDFI[1]}`}>
-                    <p className='react-tooltip-type-aggregation'>
-                        {RDFI[0] === 'R'? 'Recette': 'Dépense'}
-                        {RDFI[1] === 'F'? ' de fonctionnement': ' d’investissement'}
-                    </p>
-                    <p>{data.label}<MoneyAmount amount={data.total} /></p>
-                </div>);
+                return <InnerTooltip RDFI={RDFI} node={data} />;
             }}/>
     </figure>);
 }

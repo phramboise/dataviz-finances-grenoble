@@ -7,11 +7,9 @@
         font-weight: normal;
     }
 
-    @each $rd, $pairs in $rdfi {
-        @each $fi, $color in $pairs {
-            .rdfi-#{$rd}.rdfi-#{$fi} & {
-                color: $color;
-            }
+    @each $rd, $color in $rdfi-text {
+        .rdfi-#{$rd} & {
+            color: $color;
         }
     }
 
@@ -19,9 +17,5 @@
     .thousands,
     .hundreds {
         padding-right: 2px;
-    }
-
-    &[data-scale="K"] .hundreds {
-        color: lighten($copy-color, 25%);
     }
 }

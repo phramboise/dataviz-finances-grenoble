@@ -356,9 +356,17 @@ $RX-L: 60%;
             .money-amount {
                 display: block;
             }
+
+            @each $rd, $color in $rdfi-text {
+                &.rdfi-#{$rd} .money-amount {
+                    color: $color; /* test */
+                }
+            }
+
         }
 
         @each $rd, $pairs in $rdfi {
+
             @each $fi, $color in $pairs {
                 .rdfi-#{$rd}.rdfi-#{$fi} {
                     fill: $color;
