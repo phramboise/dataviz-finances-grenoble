@@ -255,6 +255,10 @@ $RX-L: 60%;
             margin-bottom: 2.5em;
         }
 
+        .money-amount + small {
+            display: block;
+        }
+
 
         @media screen and (min-width: $stackchart-small-breakpoint) {
             justify-content: space-between;

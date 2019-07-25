@@ -5,7 +5,7 @@ import React, {useState, useEffect} from 'react';
 import Tooltip from 'react-tooltip';
 
 import LegendList from './LegendList.js';
-import MoneyAmount from './MoneyAmount.js';
+import MoneyAmount, {percentage} from './MoneyAmount.js';
 import D3Axis from './D3Axis.js';
 
 const mapAccessor = ([contentId, value]) => value;
@@ -217,12 +217,15 @@ export default function StackChart ({
             if (!tipAttribute || focusedItem === undefined) return;
 
             const [value, total] = tipAttribute.split('|');
-            const percentage = value / total * 100;
+            const partAmount = percentage(value, total, {suffix: ''});
             const legendItem = legendItems.find(item => focusedItem === item.id)
 
             return (<div className={legendItem.colorClassName} style={{width: columnWidth - (BRICK_SPACING*2)}}>
                 {selectedX === year && <p className="label">{legendItem.text}</p>}
-                <p><span className="money-amount">{yValueDisplay(value)}</span> {!Number.isNaN(percentage) && <span>({Math.round(percentage)}%)</span>}</p>
+                <p>
+                    <span className="money-amount">{yValueDisplay(value)}</span>
+                    <small>soit {partAmount}% en {year}</small>
+                </p>
             </div>)
         }} />)}
         {legendItems && <LegendList onElementFocus={(id) => setFocusedItem(id)}
