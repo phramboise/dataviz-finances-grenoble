@@ -143,8 +143,8 @@ export function ExploreBudget (props) {
             </p>
 
             <div className="side-by-side" role="table">
-                <BigNumbers items={revenueItems} label="revenus" iconFn={RDFIcon} />
-                <BigNumbers items={expenditureItems} label="dépenses" iconFn={RDFIcon} />
+                <BigNumbers items={revenueItems} label="revenus" iconFn={RDFIcon} year={explorationYear} />
+                <BigNumbers items={expenditureItems} label="dépenses" iconFn={RDFIcon} year={explorationYear} />
             </div>
         </section>
 

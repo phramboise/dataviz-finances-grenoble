@@ -35,6 +35,12 @@ export function currencyFormat(amount) {
     return currency.format(amount) + '€';
 }
 
+export function percentage(partAmount, globalAmount, options={suffix:'%'}) {
+    const {suffix} = options
+    const p = partAmount / globalAmount * 100
+    return (Number.isNaN(p) ? '' : Math.round(p)) + suffix
+}
+
 export function makeAmountString(amount){
     const {suffix, divideBy, threshold} = getScale('M')
 
