@@ -7,9 +7,11 @@
         font-weight: normal;
     }
 
-    @each $rd, $palette in $rdfi {
-        .rdfi-#{$rd} & {
-            color: darken(map-get($palette, 'F'), 13%);
+    @each $rd, $pairs in $rdfi {
+        @each $fi, $color in $pairs {
+            .rdfi-#{$rd}.rdfi-#{$fi} & {
+                color: $color;
+            }
         }
     }
 
