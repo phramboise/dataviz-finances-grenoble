@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactTooltip from 'react-tooltip';
+import Tooltip from 'react-tooltip';
 
 import {aggregatedDocumentBudgetaireNodeTotal} from "../finance/AggregationDataStructures.js"
 import {flattenTree} from "../finance/visitHierarchical.js"
@@ -37,7 +37,7 @@ export default function BubbleChartCluster(props){
                                              onClick={(family, node) => page(getNodeUrl(node))}
                                              DISPLAY_MODE={DISPLAY_MODE_ROOT}
                                              getNodeUrl={getNodeUrl} />))}
-         <ReactTooltip
+         <Tooltip
              className="react-tooltip"
              id={`tooltip-bubblechart`}
              delayHide={500}

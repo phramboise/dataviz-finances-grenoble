@@ -53,6 +53,15 @@ $RX-L: 60%;
         @include icon();
     }
 
+    span.money-amount {
+        display: block;
+        font-size: 1.1em;
+
+        .suffix, .prefix {
+            font-weight: normal;
+        }
+    }
+
     .side-by-side {
         border-bottom: 2px solid $discrete-grey;
         margin: 1.5em 0;
@@ -81,6 +90,7 @@ $RX-L: 60%;
         figcaption {
             font-size: 1.1em;
             margin-top: -1em;
+            z-index: -1;    /* text does not hide any hover-able path underneath */
 
             .money-amount {
                 font-size: 1.3em;
@@ -118,15 +128,6 @@ $RX-L: 60%;
                 margin-left: -(24px + 10px);
                 margin-right: 10px;
                 vertical-align: middle;
-            }
-
-            .money-amount {
-                display: block;
-                font-size: 1.1em;
-
-                .suffix, .prefix {
-                    font-weight: normal;
-                }
             }
 
             .markdown-rendered p {
@@ -327,12 +328,6 @@ $RX-L: 60%;
             }
         }
 
-        .react-tooltip {
-            .money-amount {
-                display: block;
-            }
-        }
-
         .bubble-chart {
             margin: 1.5em 0;
             position: relative;
@@ -471,5 +466,20 @@ $RX-L: 60%;
                 }
             }
         }
+    }
+
+    // interactive elements
+    .actionable{
+        cursor: pointer;
+    }
+
+    .with-focus .brick:not(.focused) {
+        rect, circle, path {
+            fill: $discrete-grey !important;
+        }
+    }
+
+    .with-focus g.actionable:not(.focused) {
+        fill: $discrete-grey !important;
     }
 }

@@ -1,7 +1,8 @@
 import { Map as ImmutableMap, List } from "immutable";
 
-import React, {Fragment} from "react";
+import React, {Fragment, useState, useEffect, useRef} from "react";
 import { connect } from "react-redux";
+import Tooltip from "react-tooltip";
 
 import { sum } from "d3-array";
 import page from "page";
@@ -38,6 +39,9 @@ import DetailsTable from "../../../../shared/js/components/DetailsTable.js";
 
 
 const RDFIcon = (rdfi) => rdfi.includes('FONCTIONNEMENT') ? FonctionnementIcon : InvestissementIcon;
+const scrollTo = (ref) => window.scrollTo({top: ref.current.offsetTop, behavior: 'smooth'});
+
+
 
 export function ExploreBudget (props) {
     const { explorationYear, totals, aggregationByYear, resources } = props
@@ -60,6 +64,13 @@ export function ExploreBudget (props) {
 
     const expenditures = totals.get(EXPENDITURES);
     const revenue = totals.get(REVENUE);
+
+    // active Big Numbers
+    const bigNumbersRef = useRef()
+    const evolutionRef = useRef()
+    const byPolitiqueRef = useRef()
+
+    const [activeBigNumber, setActiveBigNumber] = useState(null);
 
     // BigNumbers data
     const expenditureItems = new List([
@@ -132,7 +143,7 @@ export function ExploreBudget (props) {
     <article className="explore-budget">
         <PageTitle text="Explorer les comptes de la ville" />
 
-        <section id="summary" className="yearly-budget" aria-label={`Les grands chiffres ${explorationYear}`} aria-describedby="yearly-budget--description">
+        <section ref={bigNumbersRef} id="summary" className="yearly-budget" aria-label={`Les grands chiffres ${explorationYear}`} aria-describedby="yearly-budget--description">
             <h2>Les grands chiffres</h2>
 
             <p className="h4" id="yearly-budget--description">
@@ -143,12 +154,35 @@ export function ExploreBudget (props) {
             </p>
 
             <div className="side-by-side" role="table">
-                <BigNumbers items={revenueItems} label="revenus" iconFn={RDFIcon} year={explorationYear} />
-                <BigNumbers items={expenditureItems} label="dépenses" iconFn={RDFIcon} year={explorationYear} />
+                <BigNumbers items={revenueItems} label="revenus" iconFn={RDFIcon} year={explorationYear} setActive={setActiveBigNumber} activeBigNumber={activeBigNumber} onClick={(item) => {scrollTo(evolutionRef); page(`/explorer/${item.id}`)}} />
+                <BigNumbers items={expenditureItems} label="dépenses" iconFn={RDFIcon} year={explorationYear} setActive={setActiveBigNumber} activeBigNumber={activeBigNumber} onClick={(item) => {scrollTo(evolutionRef); page(`/explorer/${item.id}`)}} />
+                <Tooltip
+                    className="react-tooltip"
+                    id="tooltip-bignumbers"
+                    place="top"
+                    type="light"
+                    effect="solid"
+                    getContent={(itemId) => {
+                        if (!itemId) return null;
+                        const allItems = revenueItems.concat(expenditureItems);
+                        const sameCategoryTotal = sum(allItems.filter(el => el.id.split('/')[0] === itemId.split('/')[0]).map(el => el.value).toArray());
+                        const item = allItems.find(d => d.id === itemId);
+
+                        return <div className={item.colorClassName}>
+                            <p className='react-tooltip-type-aggregation'>
+                                {item.text}
+                            </p>
+
+                            <p>
+                                <MoneyAmount amount={item.value} />
+                                <small>soit {percentage(item.value, sameCategoryTotal)} en {explorationYear}</small>
+                            </p>
+                        </div>
+                    }}/>
             </div>
         </section>
 
-        <section id="evolution">
+        <section ref={evolutionRef} id="evolution">
             <h2>Évolution et répartition du budget<br />de {years[0]} à {years[ years.length - 1]}</h2>
 
             <p className="h4">Sélectionner la catégorie du budget à afficher :</p>
@@ -210,7 +244,7 @@ export function ExploreBudget (props) {
             </div>
         </section>
 
-        {currentYearrdfiTree && <section className="discrete" id="politiques">
+        {currentYearrdfiTree && <section ref={byPolitiqueRef} className="discrete" id="politiques">
             <h2>{topLevelElement && (topLevelElement.id !== contentElement.id ? `${topLevelElement.text} (${contentElement.label})` : topLevelElement.text)} réparties par politique publique en {explorationYear}</h2>
 
             <p className="intro">
