@@ -39,7 +39,10 @@ export default function reducer(state, action) {
             return state.set('corrections', corrections);
         }
         case FINANCE_DETAIL_ID_CHANGE:
-            return state.set('financeDetailId', action.financeDetailId);
+            return state.merge({
+                financeDetailId: action.financeDetailId,
+                politiqueId: action.politiqueId
+            });
         case ATEMPORAL_TEXTS_RECEIVED: {
             let textMap = state.get('textsById');
 

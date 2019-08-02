@@ -66,6 +66,7 @@ const StoreRecord = Record({
     // ImmutableMap<id, FinanceElementTextsRecord>
     textsById: undefined,
     financeDetailId: undefined,
+    politiqueId: undefined,
     politiqueView: undefined,
     screenWidth: undefined,
     resources: {
@@ -81,6 +82,7 @@ const store = createStore(
         aggregationByYear: new ImmutableMap(),
         explorationYear: undefined,
         financeDetailId: undefined,
+        politiqueId: undefined,
         textsById: ImmutableMap([[HOME, {label: 'Accueil'}]]),
         politiqueView: 'aggregated',
         screenWidth: window.innerWidth,

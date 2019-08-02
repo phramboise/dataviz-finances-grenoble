@@ -10,13 +10,17 @@ const SPACE_REGEX = new RegExp(' ', 'g');
 const DOT_REGEX = new RegExp('\\.', 'g');
 const PRE_DOT = new RegExp('^(.+)\\.');
 
+const byPolitique = (politiqueId) => (politiqueId
+    ? function filteredRows(r){ return r.id.includes('.' + politiqueId) }
+    : function allRows () { return true }
+);
 const byAmount = (r1, r2) => r2['MtReal'] - r1['MtReal'];
 const id = (string) => string.replace(PRE_DOT, '').replace(SPACE_REGEX, '-').replace(DOT_REGEX, '--');
 
-export default function DetailsTable({families}) {
+export default function DetailsTable({families, politiqueId}) {
     return <table className="raw-data">
         <tbody>
-        {families.map(Politique => {
+        {families.filter(byPolitique(politiqueId)).map(Politique => {
             return <Fragment key={Politique.id}>
             <tr className="colgroup colgroup--group">
                 <th id={id(Politique.id)} colSpan="2" scope="colgroup">{Politique.label}</th>

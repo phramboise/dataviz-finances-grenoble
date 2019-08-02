@@ -41,7 +41,7 @@ const RDFIcon = (rdfi) => rdfi.includes('FONCTIONNEMENT') ? FonctionnementIcon :
 
 export function ExploreBudget (props) {
     const { explorationYear, totals, aggregationByYear, resources } = props
-    const { changeExplorationYear, financeDetailId, contentElement, rdfi } = props;
+    const { changeExplorationYear, financeDetailId, politiqueId, contentElement, rdfi } = props;
     const { changePolitiqueView, FinanceUserView, politiqueView } = props;
     const [RD, FI] = [ rdfi[0], rdfi[1] ];
 
@@ -235,7 +235,7 @@ export function ExploreBudget (props) {
                  </li>*/}
             </ul>
             <div className="tabpanel" role="tabpanel">
-                <FinanceUserView families={bubbleTreeData} InnerTooltip={(({node}) => (
+                <FinanceUserView families={bubbleTreeData} politiqueId={politiqueId} InnerTooltip={(({node}) => (
                     <div className={`rdfi-${RD} rdfi-${FI}`}>
                         <p className='react-tooltip-type-aggregation'>
                             {topLevelElement.text}
@@ -260,6 +260,7 @@ export default connect(
             docBudgByYear,
             aggregationByYear,
             financeDetailId,
+            politiqueId,
             explorationYear,
             politiqueView,
             resources,
@@ -290,6 +291,7 @@ export default connect(
             totals,
             aggregationByYear,
             financeDetailId,
+            politiqueId,
             FinanceUserView,
             politiqueView,
             rdfi,
