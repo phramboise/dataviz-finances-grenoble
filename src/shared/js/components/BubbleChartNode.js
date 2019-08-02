@@ -2,8 +2,6 @@ import React from 'react';
 import {pack, hierarchy} from 'd3-hierarchy';
 import {scaleLinear} from 'd3-scale';
 
-import ReactTooltip from 'react-tooltip'
-
 import MoneyAmount from "./MoneyAmount.js";
 
 export const DISPLAY_MODE_NODES = 'NODES';
@@ -57,7 +55,7 @@ export default function BubbleChartNode (props) {
                         onFocus={e => ReactTooltip.show(e.target)}
                         onBlur={e => ReactTooltip.hide(e.target)}
                         data-tip={data.id}
-                        data-for={`tooltip-${node.id}`}
+                        data-for={`tooltip-bubblechart`}
                         tabIndex="0"
                     >
                         <circle r={r}
@@ -67,28 +65,5 @@ export default function BubbleChartNode (props) {
                 </g>
             })}
         </svg>
-        <ReactTooltip
-            className="react-tooltip"
-            key={`tooltip-${node.id}-${RorD}`}
-            id={`tooltip-${node.id}`}
-            delayHide={500}
-            place="top"
-            type="light"
-            clickable={true}
-            effect="solid"
-            getContent={(nodeId) => {
-                if (!nodeId) return null;
-
-                const {data} = listMapNodes.find(d => d.data.id === nodeId);
-                const RDFI = rdfi(data)
-
-                return (<div className={`rdfi-${RDFI[0]} rdfi-${RDFI[1]}`}>
-                    <p className='react-tooltip-type-aggregation'>
-                        {RDFI[0] === 'R'? 'Recette': 'Dépense'}
-                        {RDFI[1] === 'F'? ' de fonctionnement': ' d’investissement'}
-                    </p>
-                    <p>{data.label}<MoneyAmount amount={data.total} /></p>
-                </div>);
-            }}/>
     </figure>);
 }

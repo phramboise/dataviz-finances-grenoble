@@ -37,6 +37,8 @@ $rdfi: (
     R: (F: #556AB5, I: #7D91D5),
     D: (F: #FB7800, I: #FFA655),
 );
+$rdfi-text: ('D': #AA2200, 'R': #3C4B81);
+
 
 @mixin apply-color($color){
     background-color: $color;

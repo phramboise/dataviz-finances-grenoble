@@ -105,15 +105,27 @@ $RX-L: 60%;
                 margin-bottom: 1.5em;
             }
 
+            @each $rd, $pairs in $rdfi {
+                @each $fi, $color in $pairs {
+                    .rdfi-#{$rd}.rdfi-#{$fi} .icon path {
+                        fill: $color;
+                    }
+                }
+            }
+
+            .icon {
+                display: inline-block;
+                margin-left: -(24px + 10px);
+                margin-right: 10px;
+                vertical-align: middle;
+            }
+
             .money-amount {
                 display: block;
                 font-size: 1.1em;
 
-                .icon {
-                    display: inline-block;
-                    margin-left: -(24px + 10px);
-                    margin-right: 10px;
-                    vertical-align: middle;
+                .suffix, .prefix {
+                    font-weight: normal;
                 }
             }
 
@@ -243,6 +255,10 @@ $RX-L: 60%;
             margin-bottom: 2.5em;
         }
 
+        .money-amount + small {
+            display: block;
+        }
+
 
         @media screen and (min-width: $stackchart-small-breakpoint) {
             justify-content: space-between;
@@ -311,6 +327,12 @@ $RX-L: 60%;
             }
         }
 
+        .react-tooltip {
+            .money-amount {
+                display: block;
+            }
+        }
+
         .bubble-chart {
             margin: 1.5em 0;
             position: relative;
@@ -329,6 +351,7 @@ $RX-L: 60%;
                 width: 100%;
 
                 .money-amount {
+                    display: block;
                     margin-bottom: .2em;
                 }
 
@@ -340,6 +363,13 @@ $RX-L: 60%;
             .money-amount {
                 display: block;
             }
+
+            @each $rd, $color in $rdfi-text {
+                &.rdfi-#{$rd} .money-amount {
+                    color: $color; /* test */
+                }
+            }
+
         }
 
         @each $rd, $pairs in $rdfi {

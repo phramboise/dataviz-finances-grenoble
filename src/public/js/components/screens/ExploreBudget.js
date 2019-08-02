@@ -24,7 +24,7 @@ import { getElementById, flattenTree } from '../../../../shared/js/finance/visit
 import PageTitle from "../../../../shared/js/components/gironde.fr/PageTitle";
 import DownloadSection from "../../../../shared/js/components/gironde.fr/DownloadSection";
 
-import {makeAmountString} from "../../../../shared/js/components/MoneyAmount";
+import MoneyAmount, {makeAmountString, percentage} from "../../../../shared/js/components/MoneyAmount";
 
 import InvestissementIcon from "../../../../../images/icons/rdfi-investissement.svg";
 import FonctionnementIcon from "../../../../../images/icons/rdfi-fonctionnement.svg";
@@ -143,8 +143,8 @@ export function ExploreBudget (props) {
             </p>
 
             <div className="side-by-side" role="table">
-                <BigNumbers items={revenueItems} label="revenus" iconFn={RDFIcon} />
-                <BigNumbers items={expenditureItems} label="dépenses" iconFn={RDFIcon} />
+                <BigNumbers items={revenueItems} label="revenus" iconFn={RDFIcon} year={explorationYear} />
+                <BigNumbers items={expenditureItems} label="dépenses" iconFn={RDFIcon} year={explorationYear} />
             </div>
         </section>
 
@@ -235,7 +235,18 @@ export function ExploreBudget (props) {
                  </li>*/}
             </ul>
             <div className="tabpanel" role="tabpanel">
-                <FinanceUserView families={bubbleTreeData} />
+                <FinanceUserView families={bubbleTreeData} InnerTooltip={(({node}) => (
+                    <div className={`rdfi-${RD} rdfi-${FI}`}>
+                        <p className='react-tooltip-type-aggregation'>
+                            {topLevelElement.text}
+                        </p>
+
+                        <p>
+                            {node.label}<MoneyAmount amount={node.total} />
+                            <small>soit {percentage(node.total, topLevelElement.value)} en {explorationYear}</small>
+                        </p>
+                    </div>
+                ))} />
             </div>
         </section>}
     </article>
