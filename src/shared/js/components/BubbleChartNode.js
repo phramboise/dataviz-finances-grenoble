@@ -1,4 +1,5 @@
 import React from 'react';
+import cx from 'clsx';
 import {pack, hierarchy} from 'd3-hierarchy';
 import {scaleLinear} from 'd3-scale';
 
@@ -18,6 +19,7 @@ const rdfi = (node) => {
 
 export default function BubbleChartNode (props) {
     const {node, maxNodeValue, onClick} = props;
+    const {onFocus, focusedItem} = props;
     const {total, label, children} = node;
     const {DISPLAY_MODE=DISPLAY_MODE_NODES} = props;
     const RorD = rdfi(node)[0];
@@ -51,9 +53,11 @@ export default function BubbleChartNode (props) {
                     <a
                         onClick={e => onClick(node, data)}
                         onKeyPress={e => e.key === 'Enter' && onClick(node, data)}
-                        className="clickable"
+                        className={cx('actionable', 'disk', data.id === focusedItem && 'focused')}
                         onFocus={e => ReactTooltip.show(e.target)}
                         onBlur={e => ReactTooltip.hide(e.target)}
+                        onMouseOver={onFocus ? () => onFocus(data.id) : undefined}
+                        onMouseOut={onFocus ? () => onFocus() : undefined}
                         data-tip={data.id}
                         data-for={`tooltip-bubblechart`}
                         tabIndex="0"

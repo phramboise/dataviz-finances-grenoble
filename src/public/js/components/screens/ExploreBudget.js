@@ -1,6 +1,6 @@
 import { Map as ImmutableMap, List } from "immutable";
 
-import React, {Fragment, useState, useEffect, useRef} from "react";
+import React, {Fragment, useState, useRef} from "react";
 import { connect } from "react-redux";
 import Tooltip from "react-tooltip";
 

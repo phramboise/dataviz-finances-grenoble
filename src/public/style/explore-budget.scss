@@ -473,7 +473,8 @@ $RX-L: 60%;
         cursor: pointer;
     }
 
-    .with-focus .brick:not(.focused) {
+    .with-focus .brick:not(.focused),
+    .with-focus .disk:not(.focused) {
         rect, circle, path {
             fill: $discrete-grey !important;
         }

@@ -1,5 +1,6 @@
-import React from 'react';
+import React, {useState} from 'react';
 import Tooltip from 'react-tooltip';
+import cx from 'clsx';
 
 import {aggregatedDocumentBudgetaireNodeTotal} from "../finance/AggregationDataStructures.js"
 import {flattenTree} from "../finance/visitHierarchical.js"
@@ -17,6 +18,9 @@ export default function BubbleChartCluster(props){
         return null;
     }
 
+    const [focusedItem, setFocusedItem] = useState(null);
+    const onFocus = (itemId) => setFocusedItem(itemId)
+
     const getNodeUrl = (node) => {
         const [nodeId, politiqueId] = node.id.split('.');
         return `/explorer/${nodeId}/details/${politiqueId}`
@@ -28,19 +32,20 @@ export default function BubbleChartCluster(props){
     console.log('families', families)
     console.log('families total %d | max %d', total, maxNodeValue)
 
-    return (<div className="bubble-chart-cluster">
+    return (<div className={cx('bubble-chart-cluster', focusedItem && 'with-focus')}>
         {families
             .sort((a, b) => b.total - a.total)
             .map(family => (<BubbleChartNode key={`rd-CH${family.id}`}
                                              node={family}
                                              maxNodeValue={maxNodeValue}
+                                             onFocus={onFocus}
+                                             focusedItem={focusedItem}
                                              onClick={(family, node) => page(getNodeUrl(node))}
                                              DISPLAY_MODE={DISPLAY_MODE_ROOT}
                                              getNodeUrl={getNodeUrl} />))}
          <Tooltip
              className="react-tooltip"
              id={`tooltip-bubblechart`}
-             delayHide={500}
              place="top"
              type="light"
              clickable={true}
