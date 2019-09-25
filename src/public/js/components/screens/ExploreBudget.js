@@ -1,8 +1,7 @@
 import { Map as ImmutableMap, List } from "immutable";
 
-import React, {Fragment, useState, useRef} from "react";
+import React, {Fragment, useRef, useCallback} from "react";
 import { connect } from "react-redux";
-import Tooltip from "react-tooltip";
 
 import { sum } from "d3-array";
 import page from "page";
@@ -26,16 +25,14 @@ import PageTitle from "../../../../shared/js/components/gironde.fr/PageTitle";
 import DownloadSection from "../../../../shared/js/components/gironde.fr/DownloadSection";
 
 import MoneyAmount, {makeAmountString, percentage} from "../../../../shared/js/components/MoneyAmount";
+import StackChart from '../../../../shared/js/components/StackChart';
 
 import InvestissementIcon from "../../../../../images/icons/rdfi-investissement.svg";
 import FonctionnementIcon from "../../../../../images/icons/rdfi-fonctionnement.svg";
-import AggregatedViewIcon from "../../../../../images/icons/aggregation.svg";
-import DetailedViewIcon from "../../../../../images/icons/details.svg";
 
-import BigNumbers from "../../../../shared/js/components/BigNumbers.js";
-import StackChart from '../../../../shared/js/components/StackChart';
-import BubbleChartCluster from "../../../../shared/js/components/BubbleChartCluster.js";
-import DetailsTable from "../../../../shared/js/components/DetailsTable.js";
+import ByPolitiqueSection from "../HomeSectionByPolitique.js";
+import EvolutionSection from "../HomeSectionEvolution.js";
+import BigNumbersSection from "../HomeSectionBigNumbers.js";
 
 
 const RDFIcon = (rdfi) => rdfi.includes('FONCTIONNEMENT') ? FonctionnementIcon : InvestissementIcon;
@@ -46,7 +43,7 @@ const scrollTo = (ref) => window.scrollTo({top: ref.current.offsetTop, behavior:
 export function ExploreBudget (props) {
     const { explorationYear, totals, aggregationByYear, resources } = props
     const { changeExplorationYear, financeDetailId, politiqueId, contentElement, rdfi } = props;
-    const { changePolitiqueView, FinanceUserView, politiqueView } = props;
+    const { politiqueView } = props;
     const [RD, FI] = [ rdfi[0], rdfi[1] ];
 
     const rdfiTreeByYear = aggregationByYear.map(aggregationTree => {
@@ -62,15 +59,10 @@ export function ExploreBudget (props) {
     })
     const currentYearrdfiTree = rdfiTreeByYear.get(explorationYear);
 
-    const expenditures = totals.get(EXPENDITURES);
-    const revenue = totals.get(REVENUE);
-
     // active Big Numbers
-    const bigNumbersRef = useRef()
-    const evolutionRef = useRef()
-    const byPolitiqueRef = useRef()
-
-    const [activeBigNumber, setActiveBigNumber] = useState(null);
+    const bigNumbersRef = useRef(null);
+    const evolutionRef = useRef(null);
+    const byPolitiqueRef = useRef(null);
 
     // BigNumbers data
     const expenditureItems = new List([
@@ -87,7 +79,7 @@ export function ExploreBudget (props) {
 
 
     // Bubble data
-    const bubbleTreeData = contentElement && hierarchicalByPolitique(contentElement)
+    const bubbleTreeData = contentElement && hierarchicalByPolitique(contentElement);
 
     // Build stackachart data from rdfiTree
     const years = aggregationByYear.keySeq().toArray();
@@ -138,151 +130,50 @@ export function ExploreBudget (props) {
         }
     });
 
+    const BubbleChartInnerTooltip = useCallback(({node}) => {
+        return <div className={`rdfi-${RD} rdfi-${FI}`}>
+            <p className='react-tooltip-type-aggregation'>
+                {topLevelElement.text}
+            </p>
+
+            <p>
+                {node.label}<MoneyAmount amount={node.total} />
+                <small>soit {percentage(node.total, topLevelElement.value)} en {explorationYear}</small>
+            </p>
+        </div>
+    }, [topLevelElement])
+
 
     return (<>
     <article className="explore-budget">
         <PageTitle text="Explorer les comptes de la ville" />
 
-        <section ref={bigNumbersRef} id="summary" className="yearly-budget" aria-label={`Les grands chiffres ${explorationYear}`} aria-describedby="yearly-budget--description">
-            <h2>Les grands chiffres</h2>
+        <BigNumbersSection {...{bigNumbersRef, RDFIcon, changeExplorationYear, explorationYear, revenueItems, expenditureItems, years}}
+            onNumberClick={(item) => {scrollTo(evolutionRef); page(`/explorer/${item.id}`)}} />
 
-            <p className="h4" id="yearly-budget--description">
-                <label htmlFor="select-year">Afficher les recettes et dépenses de</label>
-                <select id="select-year" value={explorationYear} onChange={(event) => changeExplorationYear(Number(event.target.value))}>
-                {years.map(year => <option key={year} value={year}>l'année {year}</option>)}
-                </select>
-            </p>
+        <EvolutionSection
+            {...{evolutionRef, currentYearrdfiTree, RDFIcon, years, revenueItems, expenditureItems, financeDetailId}}
+            onSelect={({target}) => page(`/explorer/${target.value}`)}
+            onTabClick={(item) => page(`/explorer/${item.id}`)}>
 
-            <div className="side-by-side" role="table">
-                <BigNumbers items={revenueItems} label="revenus" iconFn={RDFIcon} year={explorationYear} setActive={setActiveBigNumber} activeBigNumber={activeBigNumber} onClick={(item) => {scrollTo(evolutionRef); page(`/explorer/${item.id}`)}} />
-                <BigNumbers items={expenditureItems} label="dépenses" iconFn={RDFIcon} year={explorationYear} setActive={setActiveBigNumber} activeBigNumber={activeBigNumber} onClick={(item) => {scrollTo(evolutionRef); page(`/explorer/${item.id}`)}} />
-                <Tooltip
-                    className="react-tooltip"
-                    id="tooltip-bignumbers"
-                    place="top"
-                    type="light"
-                    effect="solid"
-                    getContent={(itemId) => {
-                        if (!itemId) return null;
-                        const allItems = revenueItems.concat(expenditureItems);
-                        const sameCategoryTotal = sum(allItems.filter(el => el.id.split('/')[0] === itemId.split('/')[0]).map(el => el.value).toArray());
-                        const item = allItems.find(d => d.id === itemId);
-
-                        return <div className={item.colorClassName}>
-                            <p className='react-tooltip-type-aggregation'>
-                                {item.text}
-                            </p>
-
-                            <p>
-                                <MoneyAmount amount={item.value} />
-                                <small>soit {percentage(item.value, sameCategoryTotal)} en {explorationYear}</small>
-                            </p>
-                        </div>
-                    }}/>
-            </div>
-        </section>
-
-        <section ref={evolutionRef} id="evolution">
-            <h2>Évolution et répartition du budget<br />de {years[0]} à {years[ years.length - 1]}</h2>
-
-            <p className="h4">Sélectionner la catégorie du budget à afficher :</p>
-
-            <ul className="tabs tabs--rdfi" role="tablist">
-                {revenueItems.concat(expenditureItems).map(item => {
-                    const Icon = RDFIcon(item.id);
-                    return (<li key={item.id} role="presentation">
-                        <a href={`#!/explorer/${item.id}`} aria-selected={financeDetailId.includes(item.id)} className={item.colorClassName} onClick={() => page(`/explorer/${item.id}`)} role="tab">
-                            <Icon className="icon" aria-hidden={true} />
-                            {item.text}
-                        </a>
-                    </li>)
-                })}
-            </ul>
-            <div className="tabpanel" role="tabpanel">
-                <p className="h4" aria-hidden={true}>
-                    <label htmlFor="select-tree-root">Afficher</label>
-                    <select id="select-tree-root" value={financeDetailId} onChange={({target}) => page(`/explorer/${target.value}`)}>
-                        {revenueItems.concat(expenditureItems).map(item => {
-                            if (currentYearrdfiTree && financeDetailId.includes(item.id)) {
-                                return (<Fragment key={item.id}>
-                                    <option value={item.id} className="selected">{item.text}</option>
-                                    {currentYearrdfiTree.children.map(node => (
-                                        <option key={node.id} value={node.id}>{'\u2003'}{node.label}</option>
-                                    ))}
-                                </Fragment>);
-                            }
-                            else {
-                                return (<option key={item.id} value={item.id}>{item.text}</option>);
-                            }
-                        })}
-                    </select>
-                </p>
-
-                {
-                    currentYearrdfiTree ?
-                        <StackChart
-                            xs={ years }
-                            ysByX={barchartPartitionByYear.map(partition => partition.map(part => [part.contentId, part.partAmount]))}
-                            selectedX={ explorationYear }
-                            legendItems={ legendItems }
-                            yValueDisplay={makeAmountString}
-                            contentId={currentYearrdfiTree.id}
-                            onSelectedXAxisItem={changeExplorationYear}
-                            onBrickClicked={Array.isArray(contentElement.children) ? (year, itemId) => {
-                                page(`/explorer/${itemId}`);
-                                changeExplorationYear(year);
-                            } : undefined}
-                            WIDTH={500}
-                            HEIGHT={250 * Math.max(legendItems.length / 10, 1)}
-                            BRICK_SPACING={2}
-                            MIN_BRICK_HEIGHT={0.1}
-                            BRICK_RADIUS={0}
-                            BRICK_DISPLAY_VALUE={false}
-                        /> :
-                        undefined
-                }
-            </div>
-        </section>
-
-        {currentYearrdfiTree && <section ref={byPolitiqueRef} className="discrete" id="politiques">
-            <h2>{topLevelElement && (topLevelElement.id !== contentElement.id ? `${topLevelElement.text} (${contentElement.label})` : topLevelElement.text)} réparties par politique publique en {explorationYear}</h2>
-
-            <p className="intro">
-            </p>
-
-            <ul className="inline-tabs tabs--rdfi" role="tablist">
-                <li role="presentation">
-                    <a aria-selected={politiqueView === 'aggregated'} className={`link rdfi-${RD} rdfi-${FI}`} role="tab" href={politiqueView !== 'aggregated' && `#!/explorer/${contentElement.id}`}>
-                        <AggregatedViewIcon className="icon icon--small" />
-                        vue d'ensemble
-                    </a>
-                </li>
-                <li role="presentation">
-                    <a aria-selected={politiqueView === 'tabular'} className={`link rdfi-${RD} rdfi-${FI}`} role="tab" href={politiqueView !== 'tabular' && `#!/explorer/${contentElement.id}/details`}>
-                        <DetailedViewIcon className="icon icon--small" />
-                        vue détaillée
-                    </a>
-                </li>
-                {/*<li role="presentation">
-                    <input type="checkbox" checked={false} id="hr-checkbox" />
-                    <label htmlFor="hr-checkbox">voir la part des ressources humaines</label>
-                 </li>*/}
-            </ul>
-            <div className="tabpanel" role="tabpanel">
-                <FinanceUserView families={bubbleTreeData} politiqueId={politiqueId} InnerTooltip={(({node}) => (
-                    <div className={`rdfi-${RD} rdfi-${FI}`}>
-                        <p className='react-tooltip-type-aggregation'>
-                            {topLevelElement.text}
-                        </p>
-
-                        <p>
-                            {node.label}<MoneyAmount amount={node.total} />
-                            <small>soit {percentage(node.total, topLevelElement.value)} en {explorationYear}</small>
-                        </p>
-                    </div>
-                ))} />
-            </div>
-        </section>}
+            <StackChart
+                xs={years}
+                ysByX={barchartPartitionByYear.map(partition => partition.map(part => [part.contentId, part.partAmount]))}
+                selectedX={explorationYear}
+                legendItems={legendItems}
+                yValueDisplay={makeAmountString}
+                contentId={currentYearrdfiTree && currentYearrdfiTree.id}
+                onSelectedXAxisItem={changeExplorationYear}
+                onBrickClicked={contentElement && Array.isArray(contentElement.children) ? (year, itemId) => { page(`/explorer/${itemId}`); changeExplorationYear(year); } : undefined}
+                WIDTH={500}
+                HEIGHT={250 * Math.max(legendItems.length / 10, 1)}
+                BRICK_SPACING={2}
+                MIN_BRICK_HEIGHT={0.1}
+                BRICK_RADIUS={0}
+                BRICK_DISPLAY_VALUE={false}
+            />
+        </EvolutionSection>
+        <ByPolitiqueSection {...{byPolitiqueRef, BubbleChartInnerTooltip, topLevelElement, contentElement, politiqueView, politiqueId, bubbleTreeData, explorationYear, RD, FI}} />
     </article>
     <DownloadSection {...resources} />
     </>);
@@ -304,7 +195,6 @@ export default connect(
         const aggregationTree = aggregationByYear.get(explorationYear)
         const rdfi = financeDetailId.split('/').map(id => id[0]).slice(0, 2);
 
-        const FinanceUserView = politiqueView === 'aggregated' ? BubbleChartCluster : DetailsTable;
         const contentElement = documentBudgetaire && getElementById(aggregationTree, financeDetailId);
 
         let totals = new ImmutableMap();
@@ -326,7 +216,6 @@ export default connect(
             aggregationByYear,
             financeDetailId,
             politiqueId,
-            FinanceUserView,
             politiqueView,
             rdfi,
             resources,

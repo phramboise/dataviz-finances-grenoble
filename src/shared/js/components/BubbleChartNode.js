@@ -56,8 +56,8 @@ export default function BubbleChartNode (props) {
                         className={cx('actionable', 'disk', data.id === focusedItem && 'focused')}
                         onFocus={e => ReactTooltip.show(e.target)}
                         onBlur={e => ReactTooltip.hide(e.target)}
-                        onMouseOver={onFocus ? () => onFocus(data.id) : undefined}
-                        onMouseOut={onFocus ? () => onFocus() : undefined}
+                        onMouseOver={() => onFocus(data.id)}
+                        onMouseOut={() => onFocus(null)}
                         data-tip={data.id}
                         data-for={`tooltip-bubblechart`}
                         tabIndex="0"

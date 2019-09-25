@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useCallback} from 'react';
 import Tooltip from 'react-tooltip';
 import cx from 'clsx';
 
@@ -19,7 +19,7 @@ export default function BubbleChartCluster(props){
     }
 
     const [focusedItem, setFocusedItem] = useState(null);
-    const onFocus = (itemId) => setFocusedItem(itemId)
+    const onFocus = (itemId) => setFocusedItem(itemId);
 
     const getNodeUrl = (node) => {
         const [nodeId, politiqueId] = node.id.split('.');
