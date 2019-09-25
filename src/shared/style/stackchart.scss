@@ -1,10 +1,6 @@
 @import 'd3-axis';
 
 .stackchart {
-    .actionable{
-        cursor: pointer;
-    }
-
     .content{
         text.stackchart-title{
             fill: $discrete-copy-color;
@@ -32,12 +28,6 @@
                 stroke: white;
                 stroke-width: 1px;
                 filter: drop-shadow(0 0 2px rgb(0, 0, 255));
-            }
-        }
-
-        &.with-focus .brick:not(.focused) {
-            rect, circle, path {
-                fill: $discrete-grey !important;
             }
         }
     }

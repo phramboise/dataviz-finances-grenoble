@@ -1,4 +1,5 @@
 import React from 'react';
+import cx from 'clsx';
 import {arc as _arc, pie as _pie} from 'd3-shape';
 
 /*
@@ -13,7 +14,9 @@ export default function Donut ({
     donutWidth = 50, outerRadius = 200,
     width = 2*outerRadius, height = 2*outerRadius,
     padAngle = Math.PI/30,
-    proportion, items, children
+    proportion, items, children,
+    setActive, activeItem, onClick,
+    className
 }){
     const arcDescs = _pie()
         .startAngle(2*Math.PI)
@@ -24,7 +27,7 @@ export default function Donut ({
     const arc = _arc();
     const {colorClassName} = items.first();
 
-    return (<figure className={`donut ${colorClassName}`}>
+    return (<figure className={cx('donut', colorClassName, className)}>
         <svg viewBox={`0 0 ${width} ${height}`}>
             <g transform={`translate(${width/2}, ${height/2})`} role="row">
                 {arcDescs.map(ad => {
@@ -34,9 +37,16 @@ export default function Donut ({
                         ...ad
                     });
 
-                    return <g className={ad.data.colorClassName} key={ad.data.id} tabIndex="0" role="cell">
+                    return <g key={ad.data.id}
+                              onMouseOver={setActive ? () => setActive(ad.data.id) : undefined}
+                              onMouseOut={setActive ? () => setActive(null) : undefined}
+                              onClick={() => onClick(ad.data)}
+                              data-for="tooltip-bignumbers"
+                              data-tip={ad.data.id}
+                              className={cx(ad.data.colorClassName, activeItem === ad.data.id && 'focused', setActive && 'actionable', onClick && 'actionable')}
+                              tabIndex="0"
+                              role="cell">
                         <path d={d} />
-                        <title>{ad.data.text} : {ad.data.value}€</title>
                     </g>
                 })}
             </g>
