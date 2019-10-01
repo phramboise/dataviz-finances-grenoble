@@ -40,7 +40,7 @@ export default function BigNumbersSection ({bigNumbersRef, RDFIcon, changeExplor
         </p>
 
         <div className="side-by-side" role="table">
-            <BigNumbers items={revenueItems} label="revenus" iconFn={RDFIcon} year={explorationYear} setActive={setActiveBigNumber} activeBigNumber={activeBigNumber} onClick={onNumberClick} />
+            <BigNumbers items={revenueItems} label="recettes" iconFn={RDFIcon} year={explorationYear} setActive={setActiveBigNumber} activeBigNumber={activeBigNumber} onClick={onNumberClick} />
             <BigNumbers items={expenditureItems} label="dépenses" iconFn={RDFIcon} year={explorationYear} setActive={setActiveBigNumber} activeBigNumber={activeBigNumber} onClick={onNumberClick} />
             <Tooltip
                 className="react-tooltip"
