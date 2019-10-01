@@ -15,10 +15,12 @@
             text-align: left;
         }
 
-        thead, tbody{
-            td.money-amount{
-                text-align: right;
-            }
+        th[scope="colgroup"].money-amount {
+            color: darken($table-border-color, 20%);
+        }
+
+        .money-amount{
+            text-align: right !important;
         }
 
         .colgroup {
@@ -64,9 +66,9 @@
         }
     }
 
-    .raw-data .money-amount,
-    .money-amount.tooltip {
+    .raw-data .money-amount {
         font-family: monospace;
+        font-weight: bold;
     }
 
 }
