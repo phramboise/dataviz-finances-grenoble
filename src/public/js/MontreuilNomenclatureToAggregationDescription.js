@@ -2,8 +2,6 @@ import { Set as ImmutableSet, Map as ImmutableMap } from 'immutable';
 
 import { AggregationLeaf, AggregationDescription } from '../../shared/js/finance/AggregationDataStructures.js'
 
-var fromEntries = require('object.fromentries');
-
 const FORMULA_MAP = {
     'DEPENSE': 'D',
     'RECETTE': 'R',
@@ -20,7 +18,7 @@ function rdfiFromSection (row) {
 }
 
 function fixLabels(row) {
-    return fromEntries(
+    return Object.fromEntries(
         Object.entries(row).map(([key, value], i, array) => {
             return [ key, value !== '-' ? value : array[i-1][1] ]
         })
