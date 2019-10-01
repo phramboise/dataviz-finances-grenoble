@@ -1,4 +1,4 @@
-import { Set as ImmutableSet, Map as ImmutableMap, List } from 'immutable';
+import { Set as ImmutableSet, Map as ImmutableMap } from 'immutable';
 
 import { AggregationLeaf, AggregationDescription } from '../../shared/js/finance/AggregationDataStructures.js'
 
@@ -69,7 +69,7 @@ function makeTagsFromMontreuilRows (rows) {
         const [Politique, SousPolitique] = [row['Niveau a - Politique'], row['Niveau b - Sous Politique']]
         const [Fonction, Nature] = [row["Fonction - Code"], row['Nature - Code']];
 
-        tags = tags.updateIn([Politique, SousPolitique], (val=List()) => val.push(makeFonctionNatureCombo(Fonction, Nature)))
+        tags = tags.updateIn([Politique, SousPolitique], (val=ImmutableSet()) => val.add(makeFonctionNatureCombo(Fonction, Nature)))
     });
 
     return tags.toJS();
