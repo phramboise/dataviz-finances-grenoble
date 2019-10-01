@@ -68,6 +68,13 @@ export default function(doc, natureToChapitreFI){
                 const amount = sum(xmlRows.map(r => Number(r['MtReal'])))
                 const r = xmlRows[0];
 
+                // move 'Cessions d\'Immobilisation' from 'F(onctionnement)' to 'I(investissement)'
+                // cf. https://github.com/dtc-innovation/dataviz-finances-montreuil/issues/101
+                // cf. https://github.com/dtc-innovation/dataviz-finances-montreuil/issues/156
+                if (r['Nature'] === '775' && r['CodRD'] === 'R' && r['FI'] === 'F') {
+                    r['FI'] = 'I';
+                }
+
                 return LigneBudgetRecord(Object.assign(
                     {},
                     r,
