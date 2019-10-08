@@ -1,9 +1,11 @@
 import React, {Fragment} from 'react';
+import {group, sum} from 'd3-array';
+import cx from 'clsx';
 
 import {makeLigneBudgetId}  from 'document-budgetaire/Records.js';
 
-import {natureLabels} from '../../../../build/finances/finance-strings.json';
-import {currencyFormat, percentage} from './MoneyAmount.js';
+import {natureLabels,fonctionLabels} from '../../../../build/finances/finance-strings.json';
+import {currencyFormat} from './MoneyAmount.js';
 
 const SPACE_REGEX = new RegExp(' ', 'g');
 const DOT_REGEX = new RegExp('\\.', 'g');
@@ -14,7 +16,9 @@ const byPolitique = (politiqueId) => (politiqueId
     : function allRows () { return true }
 );
 const byAmount = (r1, r2) => r2['MtReal'] - r1['MtReal'];
+const byGroupTotal = ([,,totalA], [,,totalB]) => totalB - totalA;
 const id = (string) => string.replace(PRE_DOT, '').replace(SPACE_REGEX, '-').replace(DOT_REGEX, '--');
+
 
 export default function DetailsTable({families, politiqueId}) {
     return <table className="raw-data">
@@ -28,31 +32,47 @@ export default function DetailsTable({families, politiqueId}) {
                         </th>
                     </tr>
 
-                    {Politique.children.map(SousPolitique => <Fragment key={SousPolitique.id}>
-                        <tr className="colgroup colgroup--subgroup">
-                            <th id={id(SousPolitique.id)} scope="colgroup">
-                                {SousPolitique.label}
-                            </th>
-                            <th className="money-amount" scope="colgroup" aria-label={`Montant total : ${currencyFormat(SousPolitique.total)}`}>
-                                {currencyFormat(SousPolitique.total)}
-                            </th>
-                        </tr>
-                        <tr>
-                            <th id="raw-col-nature" scope="col">Nature</th>
-                            <th id="raw-col-montant" scope="col" className="digits">Montant</th>
-                        </tr>
-                        {SousPolitique.elements.sort(byAmount).map(ligne => (
-                            <tr key={makeLigneBudgetId(ligne)} data-fonction-nature={makeLigneBudgetId(ligne)} className="raw-record" tabIndex="0">
-                                <td headers={`${id(Politique.id)} ${id(SousPolitique.id)} raw-col-nature`}>
-                                    {natureLabels[ ligne['Nature'] ]}
-                                </td>
-                                <td headers={`${id(Politique.id)} ${id(SousPolitique.id)} raw-col-montant`} className="money-amount">
-                                    {currencyFormat(ligne['MtReal'])}
-                                </td>
+                    {Politique.children.map(SousPolitique => {
+                        const lignesByNature = Array.from(
+                            group(SousPolitique.elements, (ligne) => ligne['Nature'])
+                        ).map(([id, lignes]) => [id, lignes, sum(lignes, ligne => ligne['MtReal'])])
+
+                        return <Fragment key={SousPolitique.id}>
+                            <tr className="colgroup colgroup--subgroup">
+                                <th id={id(SousPolitique.id)} scope="colgroup">
+                                    {SousPolitique.label}
+                                </th>
+                                <th className="money-amount" scope="colgroup" aria-label={`Montant total : ${currencyFormat(SousPolitique.total)}`}>
+                                    {currencyFormat(SousPolitique.total)}
+                                </th>
                             </tr>
-                        ))}
-                    </Fragment>
-                    )}
+                            <tr>
+                                <th id="raw-col-nature" scope="col">Nature</th>
+                                <th id="raw-col-montant" scope="col" className="digits">Montant</th>
+                            </tr>
+                            {lignesByNature.sort(byGroupTotal).map(([Nature, group, groupTotal]) => {
+                                const firstLigne = group[0];
+                                return <Fragment key={Nature}>
+                                    <tr className="raw-record" tabIndex="0" data-id={group.length === 1 && `N${firstLigne['Nature']}F${firstLigne['Fonction']}`}>
+                                        <td headers={`${id(Politique.id)} ${id(SousPolitique.id)} raw-col-nature`}>
+                                            {natureLabels[Nature]}
+                                        </td>
+                                        <td headers={`${id(Politique.id)} ${id(SousPolitique.id)} raw-col-montant`} className="money-amount">
+                                            {currencyFormat(groupTotal)}
+                                        </td>
+                                    </tr>
+                                    {group.length > 1 && group.sort(byAmount).map((ligne, i) => (
+                                        <tr key={makeLigneBudgetId(ligne)} data-id={`N${ligne['Nature']}F${ligne['Fonction']}`} className={cx('raw-record','raw-record--nature-detail', i === group.length-1 && 'last-item')}>
+                                            <td>{fonctionLabels[ ligne['Fonction'] ]}</td>
+                                            <td className="money-amount">
+                                                {currencyFormat(ligne['MtReal'])}
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </Fragment>
+                            })}
+                        </Fragment>
+                    })}
                 </Fragment>
             })}
         </tbody>

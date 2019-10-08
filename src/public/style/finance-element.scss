@@ -58,6 +58,27 @@
             text-align: right;
         }
 
+        .raw-record.raw-record--nature-detail {
+            color: darken($table-border-color, 20%);
+
+            td:first-of-type {
+                padding-left: .25em;
+
+                &:before {
+                    content: "├─ ";
+                    font-family: monospace;
+                }
+            }
+
+            &.last-item td:first-of-type:before {
+                content: "└─ ";
+            }
+
+            .money-amount {
+                font-weight: normal !important;
+            }
+        }
+
         .raw-record:hover,
         .raw-record:focus {
             background-color: #fff;
