@@ -36,14 +36,14 @@ test(`Pour le CA 2017, DI devrait représenter ~46,2 millions d'euros`, () => {
     expect(total).toBeCloseTo(46204100.86, 1);
 });
 
-test(`Pour le CA 2017, RF devrait représenter ~212,15 millions d'euros`, () => {
+test(`Pour le CA 2017, RF devrait représenter ~210,53 millions d'euros`, () => {
     const total = hierarchicalByFunction(docBudg, RF).total;
 
-    expect(total).toBeCloseTo(212154779.95, 1);
+    expect(total).toBeCloseTo(210527830.95, 1);
 });
 
-test(`Pour le CA 2017, RI devrait représenter ~34,03 millions d'euros`, () => {
+test(`Pour le CA 2017, RI devrait représenter ~35,66 millions d'euros`, () => {
     const total = hierarchicalByFunction(docBudg, RI).total;
 
-    expect(total).toBeCloseTo(34037415.36, 1);
+    expect(total).toBeCloseTo(35664364.36, 1);
 });
