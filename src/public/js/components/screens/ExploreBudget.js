@@ -144,39 +144,40 @@ export function ExploreBudget (props) {
     }, [topLevelElement])
 
 
-    return (<>
-    <article className="explore-budget">
-        <PageTitle text="Explorer les comptes de la ville" />
+    return <Fragment>
+        <article className="explore-budget">
+            <PageTitle text="Explorer les comptes de la ville" />
 
-        <BigNumbersSection {...{bigNumbersRef, RDFIcon, changeExplorationYear, explorationYear, revenueItems, expenditureItems, years}}
-            onNumberClick={(item) => {scrollTo(evolutionRef); page(`/explorer/${item.id}`)}} />
+            <BigNumbersSection {...{bigNumbersRef, RDFIcon, changeExplorationYear, explorationYear, revenueItems, expenditureItems, years}}
+                onNumberClick={(item) => {scrollTo(evolutionRef); page(`/explorer/${item.id}`)}} />
 
-        <EvolutionSection
-            {...{evolutionRef, currentYearrdfiTree, RDFIcon, years, revenueItems, expenditureItems, financeDetailId}}
-            onSelect={({target}) => page(`/explorer/${target.value}`)}
-            onTabClick={(item) => page(`/explorer/${item.id}`)}>
+            <EvolutionSection
+                {...{evolutionRef, currentYearrdfiTree, RDFIcon, years, revenueItems, expenditureItems, financeDetailId}}
+                onSelect={({target}) => page(`/explorer/${target.value}`)}
+                onTabClick={(item) => page(`/explorer/${item.id}`)}>
 
-            <StackChart
-                xs={years}
-                ysByX={barchartPartitionByYear.map(partition => partition.map(part => [part.contentId, part.partAmount]))}
-                selectedX={explorationYear}
-                legendItems={legendItems}
-                yValueDisplay={makeAmountString}
-                contentId={currentYearrdfiTree && currentYearrdfiTree.id}
-                onSelectedXAxisItem={changeExplorationYear}
-                onBrickClicked={contentElement && Array.isArray(contentElement.children) ? (year, itemId) => { page(`/explorer/${itemId}`); changeExplorationYear(year); } : undefined}
-                WIDTH={500}
-                HEIGHT={250 * Math.max(legendItems.length / 10, 1)}
-                BRICK_SPACING={2}
-                MIN_BRICK_HEIGHT={0.1}
-                BRICK_RADIUS={0}
-                BRICK_DISPLAY_VALUE={false}
-            />
-        </EvolutionSection>
-        <ByPolitiqueSection {...{byPolitiqueRef, BubbleChartInnerTooltip, topLevelElement, contentElement, politiqueView, politiqueId, bubbleTreeData, explorationYear, RD, FI}} />
-    </article>
-    <DownloadSection {...resources} />
-    </>);
+                <StackChart
+                    xs={years}
+                    ysByX={barchartPartitionByYear.map(partition => partition.map(part => [part.contentId, part.partAmount]))}
+                    selectedX={explorationYear}
+                    legendItems={legendItems}
+                    yValueDisplay={makeAmountString}
+                    contentId={currentYearrdfiTree && currentYearrdfiTree.id}
+                    onSelectedXAxisItem={changeExplorationYear}
+                    onBrickClicked={contentElement && Array.isArray(contentElement.children) ? (year, itemId) => { page(`/explorer/${itemId}`); changeExplorationYear(year); } : undefined}
+                    WIDTH={500}
+                    HEIGHT={250 * Math.max(legendItems.length / 10, 1)}
+                    BRICK_SPACING={2}
+                    MIN_BRICK_HEIGHT={0.1}
+                    BRICK_RADIUS={0}
+                    BRICK_DISPLAY_VALUE={false}
+                />
+            </EvolutionSection>
+
+            <ByPolitiqueSection {...{byPolitiqueRef, BubbleChartInnerTooltip, topLevelElement, contentElement, politiqueView, politiqueId, bubbleTreeData, changeExplorationYear, explorationYear, years, RD, FI}} />
+        </article>
+        <DownloadSection {...resources} />
+    </Fragment>;
 }
 
 export default connect(

@@ -39,7 +39,7 @@ const CONTAINER_ELEMENT = document.querySelector(REACT_CONTAINER_SELECTOR);
 CONTAINER_ELEMENT.setAttribute('aria-live', true);
 
 // Breadcrumb
-const BREADCRUMB_CONTAINER = document.body.querySelector('.breadcrumb-container');
+const BREADCRUMB_CONTAINER = document.body.querySelector('.ariane-container .filAriane');
 
 const DEFAULT_BREADCRUMB = List([
     {
@@ -71,6 +71,7 @@ const StoreRecord = Record({
     screenWidth: undefined,
     resources: {
         dataUrl: undefined,
+        reportsUrl: undefined,
         sourceCodeUrl: undefined,
     },
 });
@@ -87,7 +88,8 @@ const store = createStore(
         politiqueView: 'aggregated',
         screenWidth: window.innerWidth,
         resources: {
-            dataUrl: 'http://data.montreuil.fr/explore/dataset/comptes-administratifs/',
+            dataUrl: 'https://data.montreuil.fr/explore/dataset/comptes-administratifs/',
+            reportsUrl: 'https://www.montreuil.fr/vie-citoyenne/finances-et-marches-publics/le-compte-administratif/',
             sourceCodeUrl: 'https://github.com/dtc-innovation/dataviz-finances-montreuil/',
         }
     })

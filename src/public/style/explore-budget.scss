@@ -68,10 +68,6 @@ $RX-L: 60%;
         padding: 0 0 1.5em;
         width: 100%;
 
-        > .side {
-            max-width: 50vw;
-        }
-
         @media screen and (min-width: $main-column-breakpoint){
             & {
                 display: flex;
@@ -80,7 +76,7 @@ $RX-L: 60%;
 
                 > .side {
                     flex: 1 1 auto;
-                    max-width: 260px;
+                    max-width: 350px;
                     padding: 0;
                     margin: 0;
                 }
@@ -89,8 +85,6 @@ $RX-L: 60%;
 
         figcaption {
             font-size: 1.1em;
-            margin-top: -1em;
-            z-index: -1;    /* text does not hide any hover-able path underneath */
 
             .money-amount {
                 font-size: 1.3em;
@@ -143,16 +137,31 @@ $RX-L: 60%;
 
         background: $discrete-background-color;
         display: flex;
-        flex-flow: row nowrap;
+        flex-flow: column wrap;
         justify-content: flex-start;
+
+        @media screen and (min-width: $main-column-breakpoint){
+            & {
+                flex-flow: row nowrap;
+            }
+        }
+
+        > * {
+            flex: 1 1 auto;
+        }
 
         [role="tab"] {
             border-bottom: $padding solid $table-border-color;
             color: rgba($copy-color, .7);
             display: block;
-            flex: 1 1 auto;
-            padding: $padding;
+            padding: 1em;
             text-decoration: none;
+
+            &:hover:not([aria-selected="true"]),
+            &:focus:not([aria-selected="true"]) {
+                box-shadow: 0 0 4px darken($discrete-grey, 20%);
+                color: $copy-color;
+            }
 
             &[aria-selected="true"] {
                 box-shadow: 0 0 4px darken($discrete-grey, 40%);
@@ -169,7 +178,10 @@ $RX-L: 60%;
     .inline-tabs {
         border-bottom: 1px solid $table-border-color;
         display: flex;
-        padding: 0 3rem;
+
+        @media screen and (min-width: $main-column-breakpoint){
+            padding: 0 3rem;
+        }
 
         > li {
             align-self: center;
@@ -186,10 +198,17 @@ $RX-L: 60%;
             background: transparent;
             border: none;
             border-top: 3px solid transparent !important;
-            font-size: inherit;
+            font-size: .8em;
             padding: .5em 1em;
             text-decoration: underline;
             white-space: nowrap;
+
+
+            @media screen and (min-width: $main-column-breakpoint){
+                & {
+                    font-size: inherit;
+                }
+            }
 
             &[aria-selected="true"] {
                 background: $accented-background-color;

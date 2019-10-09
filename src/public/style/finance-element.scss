@@ -4,7 +4,14 @@
 
 .finance-dataviz-container {
     .raw-data{
+        font-size: .8em;
         width: 100%;
+
+        @media screen and (min-width: $stackchart-small-breakpoint) {
+            & {
+                font-size: inherit;
+            }
+        }
 
         thead th,
         th[scope="col"] {

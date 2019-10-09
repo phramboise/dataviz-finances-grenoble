@@ -220,7 +220,7 @@ export default function StackChart ({
             const partAmount = percentage(value, total, {suffix: ''});
             const legendItem = legendItems.find(item => focusedItem === item.id)
 
-            return (<div className={legendItem.colorClassName} style={{width: columnWidth - (BRICK_SPACING*2)}}>
+            return (<div className={legendItem.colorClassName}>
                 {selectedX === year && <p className="label">{legendItem.text}</p>}
                 <p>
                     <span className="money-amount">{yValueDisplay(value)}</span>

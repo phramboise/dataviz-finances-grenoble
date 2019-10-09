@@ -9,4 +9,7 @@
         font-size: .8em;
     }
 
+    &.x .actionable:not(.selected) text {
+        text-decoration: underline;
+    }
 }

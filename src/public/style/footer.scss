@@ -10,26 +10,34 @@ footer.w-files {
 
     .icon {
         @include icon();
+        color: black;
         margin-right: .3em;
         vertical-align: bottom;
     }
 
-    .w-files__links > li {
-        margin-bottom: .25em;
+    .w-files__links {
+        margin-bottom: 1.5em;
+
+        > li {
+            margin-bottom: .25em;
+        }
     }
 
     a {
         color: $copy-color;
-        text-decoration: none;
+        text-decoration: underline;
 
         &:hover,
         &:focus {
             color: black;
-            text-decoration: underline;
+            text-decoration: none;
         }
     }
 
+
     @media screen and (min-width: $main-column-breakpoint) {
-        padding: 2em 5em;
+        & {
+            padding: 2em 5em;
+        }
     }
 }
