@@ -30,12 +30,23 @@ L'outil est composé comme suit :
 - 📋 [**Fonctions d'agrégation**][outil-agregations] : visualisation de l'état de partition des fonctions d'agrégation
 - 🔢 [**Test des formules**][outil-formules] : formules d'agrégation interactives
 
+![Capture d'écran de l'outil de visualisation des comptes administratifs](screenshot.jpg)
+
+## Intégration sur un site web
+
+```html
+<div class="finance-dataviz-container"></div>
+<link rel="stylesheet" href="https://dtc-innovation.github.io/dataviz-finances-montreuil/build/public.css">
+<script defer crossorigin="anonymous" src="https://polyfill.io/v3/polyfill.min.js?flags=gated&features=Map%2CSet%2CIntl%2CArray.prototype.flat%2CArray.prototype.flatMap%2Ces2017%2Ces2016%2Ces2015"></script>
+<script defer src="https://dtc-innovation.github.io/dataviz-finances-montreuil/build/dataviz-finance-bundle.js"></script>
+```
+
 ## Compatibilité navigateur
 
 Minima:
 
 * Edge
-* Firefox
+* [Firefox Extended Support Release](https://www.mozilla.org/en-US/firefox/enterprise/) (ESR)
 * Chrome
 * navigateurs mobiles
 
@@ -153,23 +164,15 @@ https://docs.google.com/spreadsheets/d/1RQ6YAhFlFZaamvl6HpUxH_4MaG7Yg8l45pdTey14
 Pour mettre à jour l'exercice budgétaire rendu visible dans la page d'accueil les étapes suivantes sont actuellement nécessaires
 
 
-1. Mettre le fichier xml du nouveau CA dans data/finances/CA
-2. Lancer la commande `npm run dl:plans-de-compte` pour ajouter automatiquement le bon plan de compte dans `data/finances/planDeComptes`[^plan-de-compte].
-3. Modifier le tableau lignes 40-44 du fichier tools/make-public-data.js pour qu'il liste seulement les CA souhaités dans la dataviz. Le code pourrait lister tous les fichiers du dossier et tous les inclure, comme ça, pas besoin de les lister dans le code
-4. Modifier le tableau lignes 15-19 du fichier tools/make-public-data.js pour qu'il liste seulement les fichiers de plans de compte souhaités. Le code pourrait lister tous les fichiers du dossier et tous les inclure, comme ça, pas besoin de les lister dans le code
-5. Modifier les lignes 103 et 104 du fichier src/public/js/main.js pour mettre l'année la plus récente. Quand les données des CA arrivent côté client, on pourrait mettre à jour currentYear, explorationYear en trouvant l'année la plus récente qui existe dans les données. Comme ça, plus besoin de toucher à ce code
-
-Par ailleurs la référence à la localisation de l'environnement de démo est listé dans ce fichier.
-https://github.com/datalocale/dataviz-finances-seinesaintdenis/blob/master/src/public/js/constants/resources.js
-
-Il faut le modifier si l'emplacement de l'environnement de démo est modifié.
+1. Mettre le fichier xml du nouveau CA dans `data/finances/CA`
+1. Lancer la commande `npm run dl:plans-de-compte` pour ajouter automatiquement le bon plan de compte dans `data/finances/planDeComptes`[^plan-de-compte].
 
 ### Les données d'agrégats
 
 La dataviz finances est basé sur plusieurs éléments contribuant à son interopérabilité et à sa réutilisabilité :
 
-* appui sur la norme comptable M52  et le plan de compte associé
-* appui sur le schéma xsd TOTEM
+* appui sur la norme comptable M14 et le [plan de compte](http://odm-budgetaire.org/composants/normes/) associé
+* appui sur le schéma XSD ToTem
 * déploiement continu d'une SPA (Single page application) qui peut être intégré à n'importe quel type de publication (site web autonome, page dans un gestionnaire de contenu)
 
 En plus des présentations par fonctions ou nature M52, le Département de la Gironde présente ses comptes sous un format dit “agrégé”. Ils s’agit d’une centaine de catégories. Il existe (à une petite exception près) une association qui permet de passer d’un document budgétaire en M52 à un document agrégé.
