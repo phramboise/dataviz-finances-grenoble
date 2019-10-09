@@ -10,9 +10,12 @@
 
         <meta name="description" content="....">
 
+        <link rel="stylesheet" type="text/css" href="https://www.montreuil.fr/typo3temp/assets/css/85d0ba66f0.css?1570540102" media="all">
+        <link rel="stylesheet" type="text/css" href="https://www.montreuil.fr/typo3conf/ext/solr/Resources/Public/StyleSheets/Frontend/suggest.css?1570540097" media="all">
+        <link rel="stylesheet" type="text/css" href="https://www.montreuil.fr/typo3conf/ext/e_package/Resources/Public/Css/bootstrap.css?1570540105" media="all">
+        <link rel="stylesheet" type="text/css" href="https://www.montreuil.fr/typo3conf/ext/e_magineurs/montreuil/Resources/Public/Css/css/page.css?1570540105" media="all">
+        <link href="https://fonts.googleapis.com/css?family=Montserrat:400,400i,500,600,600i,700,700i&amp;display=swap" rel="stylesheet">
 
-        <link rel="stylesheet" href="../build/public.css">
-        <script crossorigin="anonymous" src="https://polyfill.io/v3/polyfill.min.js?flags=gated&features=Map%2CSet%2CIntl%2CArray.prototype.flat%2Ces2017%2Ces2016%2Ces2015"></script>
         <style>
             nav[aria-label="Breadcrumb"] {
                 max-width: 1280px;
@@ -27,15 +30,28 @@
                 margin-right: .25em;
             }
         </style>
-
-        <script defer src="../build/dataviz-finance-bundle.js"></script>
-
     </head>
 
-    <body style="margin: 0; padding-left: 200px;  background: linear-gradient(90deg, #FFF 0px, #FFF 10px, #F5F5F3 11px, #F5F5F3 200px, #FFF 201px);">
-        <div style="width: 730px; margin: 0 0 10px 35px; padding-bottom: 8px; border-right: 4px dashed red; border-left: 4px dashed red">
-            <div class="breadcrumb-container"></div>
-            <div class="finance-dataviz-container"></div>
+    <body>
+        <div id="demo-message" style="border:5px dashed red; background: yellow; padding: 1em; font-size: 1.5em; margin: 1em;">
+            Ceci est un site de démonstration, merci de ne pas en tenir compte comme un résultat définitif.
         </div>
+        <main id="mainContent">
+            <div class="pageInterne">
+                <div class="wrapper ariane-container clearfix">
+                    <nav class="filAriane"><ul><li><a href="/">Accueil</a></li><li><a href="/vie-citoyenne">Vie citoyenne</a></li><li><a href="/vie-citoyenne/finances-et-marches-publics">Finances et marchés publics</a></li></ul></nav>
+                </div>
+
+                <div class="content_center wrapper">
+                    <h1>Explorer les comptes de la ville</h1>
+
+                    <div class="breadcrumb-container"></div>
+                    <div class="finance-dataviz-container"></div>
+                    <link rel="stylesheet" href="../build/public.css">
+                    <script crossorigin="anonymous" src="https://polyfill.io/v3/polyfill.min.js?flags=gated&features=Map%2CSet%2CIntl%2CArray.prototype.flat%2CArray.prototype.flatMap%2Ces2017%2Ces2016%2Ces2015"></script>
+                    <script defer src="../build/dataviz-finance-bundle.js"></script>
+                </div>
+            </div>
+        </main>
     </body>
 </html>
