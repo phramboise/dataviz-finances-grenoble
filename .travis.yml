@@ -5,7 +5,7 @@ node_js: v12
 cache: npm
 
 # Travis Lifecycle
-before_script: npm run build-demo
+before_script: npm run build
 
 # Ajoute les artéfacts au déploiement
 before_deploy:

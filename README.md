@@ -136,8 +136,8 @@ Deux variables d'environnement doivent être configurées dans l'[onglet Setting
 
 Il existe 2 environnements :
 
-* **démo autonome** : `npm run build-demo` (construite par l'intégration continue)
-* **développement** : `npm run watch`
+* **démo autonome** : `npm run build` (construite par l'intégration continue)
+* **développement** : `npm start`
 
 | Variable d'environnement  | Valeur par défaut | Utilité
 | ---                       | ---               | ---
