@@ -1,4 +1,4 @@
-import React, {Fragment} from 'react';
+import React, {Fragment, useRef, useEffect} from 'react';
 import {group, sum} from 'd3-array';
 import cx from 'clsx';
 
@@ -21,7 +21,11 @@ const id = (string) => string.replace(PRE_DOT, '').replace(SPACE_REGEX, '-').rep
 
 
 export default function DetailsTable({families, politiqueId}) {
-    return <table className="raw-data">
+    const tableElement = useRef();
+
+    useEffect(() => tableElement.current.scrollIntoView());
+
+    return <table className="raw-data" ref={tableElement}>
         <tbody>
             {families.filter(byPolitique(politiqueId)).map(Politique => {
                 return <Fragment key={Politique.id}>
