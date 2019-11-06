@@ -119,6 +119,16 @@
             margin: 1em;
         }
     }
+
+    > * {
+        width: 100%;
+        padding: 0;
+
+        @media screen and (min-width: $main-column-breakpoint) {
+            max-width: $column-max-width;
+            padding: 0;
+        }
+    }
 }
 
 @import 'secundary-title';

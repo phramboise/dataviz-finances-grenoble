@@ -7,14 +7,7 @@ $RX-S: 40%;
 $RX-L: 60%;
 
 
-.explore-budget{
-    width: 100%;
-    padding: 0;
-
-    @media screen and (min-width: $main-column-breakpoint) {
-        max-width: $column-max-width;
-        padding: 0;
-    }
+.explore-budget {
 
     .h4 select {
         font-size: inherit;
