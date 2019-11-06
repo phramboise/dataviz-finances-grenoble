@@ -20,12 +20,15 @@ const rdfi = (node) => {
 export default function BubbleChartNode (props) {
     const {node, maxNodeValue, onClick} = props;
     const {onFocus, focusedItem} = props;
-    const {total, label, children} = node;
+    const {total, label} = node;
     const {DISPLAY_MODE=DISPLAY_MODE_NODES} = props;
+    const {NODE_MIN_SIZE = 5, NODE_MAX_SIZE = 66} = props;
     const RorD = rdfi(node)[0];
     const WIDTH = 250;
     const HEIGHT = 250;
-    const radius = scaleLinear().domain([0, maxNodeValue]).range([1, 80]);
+    const radius = scaleLinear()
+        .domain([0, maxNodeValue])
+        .range([NODE_MIN_SIZE, NODE_MAX_SIZE]);
 
     const nodes = hierarchy({...node, name: label})
         .sum(d => d.total)
@@ -54,8 +57,8 @@ export default function BubbleChartNode (props) {
                         onClick={e => onClick(node, data)}
                         onKeyPress={e => e.key === 'Enter' && onClick(node, data)}
                         className={cx('actionable', 'disk', data.id === focusedItem && 'focused')}
-                        onFocus={e => ReactTooltip.show(e.target)}
-                        onBlur={e => ReactTooltip.hide(e.target)}
+                        onFocus={e => onFocus(data.id)}
+                        onBlur={e => onFocus(null)}
                         onMouseOver={() => onFocus(data.id)}
                         onMouseOut={() => onFocus(null)}
                         data-tip={data.id}
