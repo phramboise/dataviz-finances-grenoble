@@ -6,7 +6,7 @@ export default function({dataUrl, reportsUrl, sourceCodeUrl}){
     const nbsp = '\u00A0';
 
     return <footer className="w-files" aria-labelledby="w-files-heading">
-        <h3 id="w-files-heading" className="w-files__title">Logiciel{nbsp}libre et données{nbsp}ouvertes</h3>
+        <h3 id="w-files-heading" className="w-files__title">Cette visualisation est un logiciel{nbsp}libre qui utilise des données{nbsp}ouvertes (<i lang="en">open{nbsp}data</i>)</h3>
 
         <p>
             Les informations affichées sont les données comptables du{' '}
