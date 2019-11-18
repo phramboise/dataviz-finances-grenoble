@@ -154,18 +154,25 @@ Les actions nécessaires à la mise à jour des contenus sont de plusieurs natur
 
 ### Les labels finances
 
-Actuellement les labels des articles de la norme comptable M52 sont stockés dans un fichier csv. Ce fichier est mis à disposition via l'outil google spreadsheet afin d'en faciliter l'édition collaborative.
-En complément un fichier contient des textes conjoncturels permettant d'expliciter l'évolution d'une recette ou d'une dépense significative sur la période couverte par l'outil. Ce fichier est géré de la même manière que le fichier de définition.
+Actuellement les labels des articles de la norme comptable sont stockés dans un fichier csv.
+Ce fichier est mis à disposition par la direction des finances au format Excel.
 
-https://docs.google.com/spreadsheets/d/1RQ6YAhFlFZaamvl6HpUxH_4MaG7Yg8l45pdTey14tOU/edit#gid=1852965930
+Ce fichier Excel se convertit en CSV à l'aide de [csvkit](https://csvkit.readthedocs.io/en/1.0.1/scripts/in2csv.html) :
+
+```bash
+in2csv --skip-lines 1 \
+        --no-inference \
+        --sheet "Table_Natures" \
+        "data/NATURES - FONCTIONS v9.xlsx" > "data/agrégation-montreuil.csv"
+```
 
 ### Les données budgétaires
 
 Pour mettre à jour l'exercice budgétaire rendu visible dans la page d'accueil les étapes suivantes sont actuellement nécessaires
 
 
-1. Mettre le fichier xml du nouveau CA dans `data/finances/CA`
-1. Lancer la commande `npm run dl:plans-de-compte` pour ajouter automatiquement le bon plan de compte dans `data/finances/planDeComptes`[^plan-de-compte].
+1. Mettre le fichier XML du nouveau CA dans [`data/finances/CA`][folder-CA]
+1. Lancer la commande `npm run dl:plans-de-compte` pour ajouter automatiquement le bon plan de compte dans [`data/finances/planDeComptes`][folder-plan-de-compte] [^plan-de-compte].
 
 ### Les données d'agrégats
 
@@ -217,5 +224,7 @@ L’outil contient des pages dites “focus” qui permettent au Département de
 [outil-agregations]: https://dtc-innovation.github.io/dataviz-finances-montreuil/
 [outil-formules]: https://dtc-innovation.github.io/dataviz-finances-montreuil/fonctions.html
 
+[folder-CA]: https://github.com/dtc-innovation/dataviz-finances-montreuil/tree/master/data/finances/CA
+[folder-plan-de-compte]: https://github.com/dtc-innovation/dataviz-finances-montreuil/tree/master/data/finances/plansDeCompte
 
 [^plans-de-compte]: La référence officielle des plans de compte se trouve en ligne sur http://odm-budgetaire.org/composants/normes/.
