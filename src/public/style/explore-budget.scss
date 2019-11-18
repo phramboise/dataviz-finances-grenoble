@@ -102,8 +102,15 @@ $RX-L: 60%;
                 margin-bottom: 1.5em;
             }
 
-            p {
-                font-size: .9em;
+            p, details {
+                font-size: .9rem;
+                margin-bottom: 0.25em;
+            }
+
+            summary {
+                cursor: pointer;
+                font-size: 1rem;
+                text-decoration: underline solid lighten($discrete-copy-color, 20%) 2px;
             }
 
             @each $rd, $pairs in $rdfi {

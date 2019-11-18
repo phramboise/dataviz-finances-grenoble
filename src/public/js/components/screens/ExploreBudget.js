@@ -71,13 +71,15 @@ export function ExploreBudget (props) {
             text: 'Dépenses de fonctionnement',
             description: `Les **dépenses de fonctionnement** comprennent toutes
                             les dépenses nécessaires au fonctionnement des services
-                            de la ville, c’est-à-dire les dépenses qui reviennent régulièrement
-                            chaque année. Il s’agit principalement des postes suivants :
+                            de la ville, c’est-à-dire les **dépenses qui reviennent régulièrement
+                            chaque année**.
+
+                            <details><summary>C'est-à-dire ?</summary>Il s’agit principalement des postes suivants :
                             dépenses de personnel, des achats de fournitures et prestations de
                             service, des frais de fonctionnement des services et
                             bâtiments municipaux mais aussi des intérêts de la
                             dette et des participations et subventions aux
-                            organismes extérieures et aux associations.`,
+                            organismes extérieures et aux associations.</details>`,
             colorClassName:'rdfi-D rdfi-F',
             value: totals.get(DF)
         },
@@ -87,12 +89,14 @@ export function ExploreBudget (props) {
             description: `Les **dépenses d'investissement** regroupent
                 essentiellement les opérations se
                 traduisant par une modification de la valeur
-                du patrimoine de la ville : construction ou
+                du patrimoine de la ville.
+
+                <details><summary>Voir des exemples.</summary>Construction ou
                 aménagement de bâtiments, travaux d’infrastructure
                 et sur les espaces publics, achats de matériels
                 et d’équipements durables mais aussi le
                 remboursement en capital des emprunts et toute
-                acquisition de titres de participation.`,
+                acquisition de titres de participation.</details>`,
             colorClassName:'rdfi-D rdfi-I',
             value: totals.get(DI)
         },
@@ -105,15 +109,17 @@ export function ExploreBudget (props) {
             description: `Les **recettes de fonctionnement** regroupent
                 l’ensemble des ressources nécessaires au
                 fonctionnement des services de la ville.
-                Ce sont principalement des recettes fiscales
-                (taxe d’habitation, taxes foncières, droits de
+                Ce sont **principalement des recettes fiscales**.
+
+                <details><summary>Afficher des exemples de recettes.</summary>
+                Taxe d’habitation, taxes foncières, droits de
                 mutation, compensations issues des différentes
-                réformes fiscales), des dotations (de l’Etat, des
+                réformes fiscales, des dotations (de l’Etat, des
                 Fonds de Péréquation) et subventions
                 (de différents partenaires) ou le produits des
                 services rendus par la ville (restauration scolaire,
                 centres de loisirs, activités culturelles, de
-                santé, etc.).`,
+                santé, etc.).</details>`,
             colorClassName:'rdfi-R rdfi-F',
             value: totals.get(RF)
         },
@@ -122,12 +128,14 @@ export function ExploreBudget (props) {
             text: 'Recettes d\'investissement',
             description: `Les **recettes d'investissement** regroupent
                 différentes ressources directement affectées au
-                financement des dépenses d’investissement :
-                remboursement par l’Etat de la TVA payé sur
+                financement des dépenses d’investissement.
+
+                <details><summary>C'est-à-dire ?</summary>
+                Remboursement par l’Etat de la TVA payé sur
                 certaines opérations d’investissement (FCTVA),
                 subventions de différents partenaires, fiscalité
                 spécifique (taxe d’aménagement), cessions
-                d’immobilisations et en derniers recours : l’emprunt.
+                d’immobilisations et en derniers recours : l’emprunt.</details>
 
                 _<acronym title="Nota bene">NB</acronym> : Seules les dépenses d’investissement peuvent être financées par l’emprunt._`,
             colorClassName:'rdfi-R rdfi-I',
