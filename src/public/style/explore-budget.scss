@@ -102,6 +102,10 @@ $RX-L: 60%;
                 margin-bottom: 1.5em;
             }
 
+            p {
+                font-size: .9em;
+            }
+
             @each $rd, $pairs in $rdfi {
                 @each $fi, $color in $pairs {
                     .rdfi-#{$rd}.rdfi-#{$fi} .icon path {
