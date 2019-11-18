@@ -163,7 +163,7 @@ Ce fichier Excel se convertit en CSV à l'aide de [csvkit](https://csvkit.readth
 in2csv --skip-lines 1 \
         --no-inference \
         --sheet "Table_Natures" \
-        "data/NATURES - FONCTIONS v9.xlsx" > "data/agrégation-montreuil.csv"
+        "data/NATURES - FONCTIONS v9_2.xlsx" > "data/agrégation-montreuil.csv"
 ```
 
 ### Les données budgétaires
