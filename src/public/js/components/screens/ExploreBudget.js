@@ -74,7 +74,7 @@ export function ExploreBudget (props) {
                             de la ville, c’est-à-dire les **dépenses qui reviennent régulièrement
                             chaque année**.
 
-                            <details><summary>C'est-à-dire ?</summary>Il s’agit principalement des postes suivants :
+                            <details><summary>C'est-à-dire ?</summary>Il s’agit principalement des postes suivants&nbsp;:
                             dépenses de personnel, des achats de fournitures et prestations de
                             service, des frais de fonctionnement des services et
                             bâtiments municipaux mais aussi des intérêts de la
