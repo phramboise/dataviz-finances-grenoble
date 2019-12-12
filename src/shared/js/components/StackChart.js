@@ -5,7 +5,7 @@ import React, {useState, useEffect} from 'react';
 import Tooltip from 'react-tooltip';
 
 import LegendList from './LegendList.js';
-import MoneyAmount, {percentage} from './MoneyAmount.js';
+import {percentage} from './MoneyAmount.js';
 import D3Axis from './D3Axis.js';
 
 const mapAccessor = ([contentId, value]) => value;
