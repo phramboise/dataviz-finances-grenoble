@@ -11,7 +11,6 @@ import reducer from './reducer';
 
 import {LigneBudgetRecord, DocumentBudgetaire} from 'document-budgetaire/Records.js';
 import csvStringToCorrections from '../../shared/js/finance/csvStringToCorrections.js';
-import {childToParent, elementById} from '../../shared/js/finance/flatHierarchicalById.js';
 
 import Breadcrumb from '../../shared/js/components/Breadcrumb';
 import ExploreBudget from './components/screens/ExploreBudget';

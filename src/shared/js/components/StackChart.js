@@ -1,11 +1,12 @@
 import { scaleLinear } from 'd3-scale';
 import { min, max, sum } from 'd3-array';
+import cx from 'clsx';
 
 import React, {useState, useEffect} from 'react';
 import Tooltip from 'react-tooltip';
 
 import LegendList from './LegendList.js';
-import MoneyAmount, {percentage} from './MoneyAmount.js';
+import {percentage} from './MoneyAmount.js';
 import D3Axis from './D3Axis.js';
 
 const mapAccessor = ([contentId, value]) => value;
@@ -80,7 +81,7 @@ export default function StackChart ({
             t: x
         },
         id: x,
-        className: x === selectedX ? 'selected' : undefined
+        className: cx({'selected': x === selectedX})
     }))
 
     const yAxisTickData = ticks.map(tick => {
@@ -116,13 +117,13 @@ export default function StackChart ({
         }
     })
 
-    return (<div className={['stackchart', portrait ? 'portrait' : ''].filter(e => e).join(' ')}>
+    return (<div className={cx('stackchart', portrait && 'portrait')}>
         {/* useless <div> to defend the <svg> in Chrome when using flex: 1 on the legend */}
         <div className="over-time">
             <svg viewBox={`0 0 ${WIDTH} ${HEIGHT}`}>
                 <D3Axis className="x" tickData={xAxisTickData} onSelectedAxisItem={onSelectedXAxisItem} />
                 <D3Axis className="y" tickData={yAxisTickData} />
-                <g className={`content ${focusedItem !== undefined ? ' with-focus' : ''}`}>
+                <g className={cx('content', focusedItem && 'with-focus')}>
                     {ysByX.entrySeq().toJS().map(([x, ysMap]) => {
                         const total = sum(ysMap, mapAccessor);
 
@@ -162,53 +163,53 @@ export default function StackChart ({
 
                         const totalY = HEIGHT - HEIGHT_PADDING - totalHeight;
 
-                        return (<g key={x} className={x === selectedX ? 'selected' : ''} transform={portrait ? `translate(0, ${xScale(x) + 6 })` : `translate(${xScale(x)})`}>
+                        return (<g key={x} data-total={total} className={cx(x === selectedX && 'selected')} transform={portrait ? `translate(0, ${xScale(x) + 6 })` : `translate(${xScale(x)})`}>
                             <g>{stack.map( ({value, contentId, height, y}) => {
                                 const legendItem = legendItems.find(item => item.id === contentId) || {}
                                 const colorClass = legendItem.colorClassName || uniqueColorClass;
 
                                 return (<g key={x+contentId} id={`brick-${x}-${contentId}`}
-                                            data-tip={`${value}|${total}`}
-                                            data-for={focusedItem === contentId ? `brick-${x}` : ''}
-                                            transform={portrait ? `translate(${y})` : `translate(0, ${y})`}
-                                            className={[
-                                                'brick',
-                                                onBrickClicked ? 'actionable' : '',
-                                                colorClass,
-                                                legendItem.id ? legendItem.id : contentId,
-                                                focusedItem === contentId ? 'focused' : ''
-                                            ].join(' ')}
-                                            onClick={onBrickClicked ? () => {
-                                                setFocusedItem(undefined)
-                                                onBrickClicked(
-                                                    x,
-                                                    legendItem ? legendItem.id : y
-                                                )
-                                            } : undefined}
-                                            onMouseOver={() => setFocusedItem(contentId)}
-                                            onFocus={() => setFocusedItem(contentId)}
-                                            onMouseOut={() => setFocusedItem(undefined)}
-                                            onBlur={() => setFocusedItem(undefined)}
-                                            aria-valuetext={value}
-                                    >
-                                        <rect y={0} x={portrait ? 0 : -columnWidth/2}
-                                            width={portrait ? height : columnWidth}
-                                            height={portrait ? PORTRAIT_COLUMN_WIDTH - 12 : height}
-                                            rx={BRICK_RADIUS}
-                                            ry={BRICK_RADIUS}>
-                                        </rect>
-                                    </g>)
+                                    data-tip={`${value}|${total}`}
+                                    data-for={focusedItem === contentId ? `brick-${x}` : ''}
+                                    transform={portrait ? `translate(${y})` : `translate(0, ${y})`}
+                                    className={cx(
+                                        'brick',
+                                        onBrickClicked && 'actionable',
+                                        colorClass,
+                                        legendItem.id || contentId,
+                                        focusedItem === contentId && 'focused'
+                                    )}
+                                    onClick={onBrickClicked ? () => {
+                                        setFocusedItem(undefined)
+                                        onBrickClicked(
+                                            x,
+                                            legendItem ? legendItem.id : y
+                                        )
+                                    } : undefined}
+                                    onMouseOver={() => setFocusedItem(contentId)}
+                                    onFocus={() => setFocusedItem(contentId)}
+                                    onMouseOut={() => setFocusedItem(undefined)}
+                                    onBlur={() => setFocusedItem(undefined)}
+                                    aria-valuetext={value}
+                                >
+                                    <rect y={0} x={portrait ? 0 : -columnWidth/2}
+                                        width={portrait ? height : columnWidth}
+                                        height={portrait ? PORTRAIT_COLUMN_WIDTH - 12 : height}
+                                        rx={BRICK_RADIUS}
+                                        ry={BRICK_RADIUS}>
+                                    </rect>
+                                </g>)
                             })}
                             <text className="stackchart-title"
-                                    x={portrait ? WIDTH - 90 : -columnWidth/2}
-                                    y={portrait ? 0 : totalY}
-                                    dy={portrait ? '-6' : '-1em'}
-                                    dx="0em"
-                                    textAnchor="right">
+                                x={portrait ? WIDTH - 90 : -columnWidth/2}
+                                y={portrait ? 0 : totalY}
+                                dy={portrait ? '-6' : '-1em'}
+                                dx="0em"
+                                textAnchor="right">
                                 <tspan>{yValueDisplay(total)}</tspan>
                             </text>
-                        </g>
-                    </g>)
+                            </g>
+                        </g>)
                     })}
                 </g>
             </svg>
@@ -233,7 +234,7 @@ export default function StackChart ({
                 {colorClassName: `area-color-${i+1}`},
                 {ariaCurrent: focusedItem === li.id},
                 li,
-                {className: `${li.className} ${focusedItem === li.id ? 'focused': ''}`},
+                {className: cx(li.className, focusedItem === li.id && 'focused')},
             ))} />}
     </div>);
 }
