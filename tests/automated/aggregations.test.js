@@ -31,7 +31,7 @@ test(`L'aggrégation DF devrait avoir le même montant que la hiérarchie DF`, (
         ({elements}) => sum(elements, ({MtReal}) => MtReal)
     );
 
-    expect(aggregationTotal).toEqual(hierarchicalTotal);
+    expect(aggregationTotal).toBeCloseTo(hierarchicalTotal, 2);
 });
 
 test(`L'aggrégation DI devrait avoir le même montant que la hiérarchie DI`, () => {
@@ -41,7 +41,7 @@ test(`L'aggrégation DI devrait avoir le même montant que la hiérarchie DI`, (
         ({elements}) => sum(elements, ({MtReal}) => MtReal)
     );
 
-    expect(aggregationTotal).toEqual(hierarchicalTotal);
+    expect(aggregationTotal).toBeCloseTo(hierarchicalTotal, 2);
 });
 
 test(`L'aggrégation RF devrait avoir le même montant que la hiérarchie RF`, () => {
@@ -51,7 +51,7 @@ test(`L'aggrégation RF devrait avoir le même montant que la hiérarchie RF`, (
         ({elements}) => sum(elements, ({MtReal}) => MtReal)
     );
 
-    expect(aggregationTotal).toEqual(hierarchicalTotal);
+    expect(aggregationTotal).toBeCloseTo(hierarchicalTotal, 2);
 });
 
 test(`L'aggrégation RI devrait avoir le même montant que la hiérarchie RI`, () => {
@@ -61,5 +61,5 @@ test(`L'aggrégation RI devrait avoir le même montant que la hiérarchie RI`, (
         ({elements}) => sum(elements, ({MtReal}) => MtReal)
     );
 
-    expect(aggregationTotal).toEqual(hierarchicalTotal);
+    expect(aggregationTotal).toBeCloseTo(hierarchicalTotal, 2);
 });
