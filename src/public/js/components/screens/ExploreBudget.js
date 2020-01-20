@@ -21,7 +21,6 @@ import { aggregatedDocumentBudgetaireNodeTotal } from '../../../../shared/js/fin
 import { getElementById, flattenTree } from '../../../../shared/js/finance/visitHierarchical.js';
 
 
-import PageTitle from "../../../../shared/js/components/gironde.fr/PageTitle";
 import DownloadSection from "../../../../shared/js/components/gironde.fr/DownloadSection";
 
 import MoneyAmount, {makeAmountString, percentage} from "../../../../shared/js/components/MoneyAmount";
@@ -214,8 +213,6 @@ export function ExploreBudget (props) {
 
     return <Fragment>
         <article className="explore-budget">
-            <PageTitle text="Explorer les comptes de la ville" />
-
             <BigNumbersSection {...{bigNumbersRef, RDFIcon, changeExplorationYear, explorationYear, revenueItems, expenditureItems, years}}
                 onNumberClick={(item) => {scrollTo(evolutionRef); page(`/explorer/${item.id}`)}} />
 
