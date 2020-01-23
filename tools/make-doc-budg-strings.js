@@ -9,7 +9,7 @@ const BUILD_FINANCE_DIR = process.env.BUILD_FINANCE_DIR;
 export function readXmlFilesInDir(sourceDir) {
     return readdir(sourceDir).then(items => Promise.all(
         items
-            .filter(item => item.endsWith('.xml'))
+            .filter(item => item.toLocaleLowerCase().endsWith('.xml'))
             .map(item => readFile(join(sourceDir, item)))
     ))
     .then(files => {
